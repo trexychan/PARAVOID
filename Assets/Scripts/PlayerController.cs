@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float playerSpeed = 2.0f;
     public float jumpHeight = 2.0f;
     public float gravityValue = -9.18f;
+    public float jumpTimeWindow = 0.1f;
 
     private void Awake()
     {
@@ -55,11 +56,18 @@ public class PlayerController : MonoBehaviour
         if (isGrounded && playerVelocity.y < 0)
         {
             playerVelocity.y = 0;
+            jumpTimeWindow = 0.1f;
         }
 
         HandleMouseMovement();
         HandlePlayerMovement();
+        UpdateJumpWindow();
         
+    }
+
+    private void UpdateJumpWindow()
+    {
+        jumpTimeWindow -= Time.deltaTime;
     }
 
 
@@ -68,8 +76,9 @@ public class PlayerController : MonoBehaviour
         Vector2 moveDir = new Vector3(getPlayerMoveVector().x, getPlayerMoveVector().y);
         Vector3 move = moveDir.x * transform.right + transform.forward * moveDir.y;
 
-        if (PlayerJumped() && isGrounded)
+        if (PlayerJumped() && jumpTimeWindow > 0)
         {
+            playerVelocity.y = 0f;
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);   
         }
 
