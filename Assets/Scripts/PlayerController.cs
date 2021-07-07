@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +12,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     public Transform groundCheck;
     private LayerMask layerMask = 1 << 9;
-    private bool isGrounded;
+    public bool isGrounded;
     public float playerSpeed = 2.0f;
     public float jumpHeight = 2.0f;
     public float gravityValue = -9.18f;
     public float jumpTimeWindow = 0.1f;
+    public bool hasDoubleJumped;
+    public bool hasJumpedOnce;
+    public bool sprinting = false;
 
     private void Awake()
     {
@@ -52,16 +56,36 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (playerControls.Player.Sprint.triggered)
+        {
+            ToggleSprint();
+        }
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, layerMask);
-        if (isGrounded && playerVelocity.y < 0)
+        if (isGrounded && playerVelocity.y <= 0)
         {
             playerVelocity.y = 0;
+            hasJumpedOnce = false;
+            hasDoubleJumped = false;
             jumpTimeWindow = 0.1f;
         }
 
         HandleMouseMovement();
         HandlePlayerMovement();
         UpdateJumpWindow();
+        
+    }
+
+    private void ToggleSprint()
+    {
+        if (!sprinting)
+        {
+            sprinting = !sprinting;
+            playerSpeed = playerSpeed * 2f;
+        } else
+        {
+            sprinting = !sprinting;
+            playerSpeed = playerSpeed / 2f;
+        }
         
     }
 
@@ -76,14 +100,33 @@ public class PlayerController : MonoBehaviour
         Vector2 moveDir = new Vector3(getPlayerMoveVector().x, getPlayerMoveVector().y);
         Vector3 move = moveDir.x * transform.right + transform.forward * moveDir.y;
 
-        if (PlayerJumped() && jumpTimeWindow > 0)
+        if (PlayerJumped() && canJump())
         {
-            playerVelocity.y = 0f;
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);   
+            Jump();
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         char_controller.Move(move * Time.deltaTime * playerSpeed + playerVelocity * Time.deltaTime);
+        
+    }
+
+    private void Jump()
+    {
+        if (!isGrounded && hasJumpedOnce && canJump())
+        {
+            Debug.Log("Double Jump");
+            playerVelocity.y = 0f;
+            playerVelocity.y += Mathf.Sqrt(jumpHeight/2 * -3.0f * gravityValue);
+            hasJumpedOnce = true;
+            hasDoubleJumped = true;  
+        } else if ((isGrounded || jumpTimeWindow > 0) && !hasJumpedOnce)
+        {
+            Debug.Log("Single Jump");
+            playerVelocity.y = 0f;
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            hasDoubleJumped = false;
+            hasJumpedOnce = true;
+        }
         
     }
 
@@ -105,6 +148,20 @@ public class PlayerController : MonoBehaviour
                 Debug.LogError("Could not find player camera");
             }
         }
+    }
+
+    private bool canJump()
+    {
+        if (isGrounded)
+        {
+            hasJumpedOnce = false;
+            return true;
+        } else if (!isGrounded && !hasDoubleJumped)
+        {
+            hasJumpedOnce = true;
+            return true;
+        }
+        return false;
     }
 
     
