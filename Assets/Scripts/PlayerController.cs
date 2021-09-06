@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public bool hasDoubleJumped;
     public bool hasJumpedOnce;
     public bool sprinting = false;
+    public Vector3 moveDir;
 
     private void Awake()
     {
@@ -97,7 +98,16 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerMovement()
     {
-        Vector2 moveDir = new Vector3(getPlayerMoveVector().x, getPlayerMoveVector().y);
+        Vector3 newMoveDir;
+        newMoveDir = new Vector3(getPlayerMoveVector().x, getPlayerMoveVector().y, 0);
+        if ((newMoveDir - moveDir).sqrMagnitude < 0.01f)
+        {
+            moveDir = Vector3.Lerp(moveDir, newMoveDir, Time.deltaTime / 0.01f);
+        }
+        else
+        {
+            moveDir = newMoveDir;
+        }
         Vector3 move = moveDir.x * transform.right + transform.forward * moveDir.y;
 
         if (PlayerJumped() && canJump())
