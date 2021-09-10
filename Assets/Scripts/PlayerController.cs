@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerControls playerControls;
+    public PlayerControls playerControls;
     private PlayerCamera playerCamera;
     private CharacterController char_controller;
     private Rigidbody rb;
