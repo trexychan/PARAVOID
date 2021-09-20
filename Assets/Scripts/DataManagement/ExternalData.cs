@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace DataManagement
 {
+    [System.Serializable]
     public class ExternalData
     {
         #region FileData (for storing all saves and time slots)
@@ -12,17 +13,23 @@ namespace DataManagement
 
         #endregion
 
-        #region SettingsData (for storing data applied to settings)
+        #region Settings Preferences (for storing data applied to settings)
 
         public float masterVolume;
         public float musicVolume;
-        public float SfxVolume;
+        public float SFXVolume;
 
         #endregion
 
-        public ExternalData()
+        public ExternalData(Player player)
         {
+            //Stores SaveFile Data
+            files = player.files;
 
+            //Stores Settings Preferences
+            masterVolume = player.masterVolume;
+            musicVolume = player.musicVolume;
+            SFXVolume = player.SFXVolume;
         }
     }
 }
