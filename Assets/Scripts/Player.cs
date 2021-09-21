@@ -52,18 +52,21 @@ public class Player : MonoBehaviour
 
             SaveSystem.SerializePlayerData(this, slotName);
 
-            //addNewSlot(slotName);
+            //addNewSlot(slotName); --Make a call to SlotManager
 
             files.Add(slotName);
+
+            SaveGameFiles();
         }
         else
         {
             dateAndTime = System.DateTime.Now.ToString();
             SaveSystem.SerializePlayerData(this, slotName);
 
+            // --Make a call to SlotManager
             //saveContent.transform.Find("SaveSlot (" + slotName + ")").transform.Find("Text").GetComponent<Text>().text =
             //"FILE: " + slotName +
-            //"\nLAST PLAYED: " + dateAndTime;
+            //"\nLAST PLAYED: " + dateAndTime; 
         }
     }
 
@@ -83,9 +86,31 @@ public class Player : MonoBehaviour
     {
         SaveSystem.DeleteFile(slotName);
         files.Remove(slotName);
-        //Destroy(saveContent.transform.Find("SaveSlot (" + slotName + ")").gameObject);
+        //Destroy(saveContent.transform.Find("SaveSlot (" + slotName + ")").gameObject); --Make a call to SlotManager
 
-        //SaveGameFiles();
+        SaveGameFiles();
+    }
+
+    #endregion
+
+    #region GameFiles
+
+    public void SaveGameFiles()
+    {
+        SaveSystem.SerializeGameFiles(this);
+    }
+
+    public void LoadGameFiles()
+    {
+        ExternalData data = SaveSystem.DeserializeGameFiles();
+
+        files = data.files;
+
+        //--make a call to slotmanager to re-add all slots
+
+        masterVolume = data.masterVolume;
+        musicVolume = data.musicVolume;
+        SFXVolume = data.SFXVolume;
     }
 
     #endregion

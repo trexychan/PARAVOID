@@ -17,7 +17,7 @@ namespace DataManagement
         #region PlayerData (for storing all player game data, vector pos and other stuff)
 
         public Scene currentScene; //Stores what scene level player will load back to
-        public float[] currentPosition; //Stores player postion in scene level
+        public float[] currentPosition = new float[3]; //Stores player postion in scene level
 
         #endregion
 
