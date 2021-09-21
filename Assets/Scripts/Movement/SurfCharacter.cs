@@ -32,11 +32,7 @@ namespace Fragsurf.Movement
         [Header("Input Settings")]
         public float XSens = 50;
         public float YSens = 50;
-        public KeyCode JumpButton = KeyCode.LeftShift;
-        public KeyCode MoveLeft = KeyCode.A;
-        public KeyCode MoveRight = KeyCode.D;
-        public KeyCode MoveForward = KeyCode.W;
-        public KeyCode MoveBack = KeyCode.S;
+        public PlayerControls playerControls;
 
         [Header("Movement Config")]
         [SerializeField]
@@ -103,10 +99,36 @@ namespace Fragsurf.Movement
 
         private void Awake()
         {
+            playerControls = new PlayerControls();
             Application.targetFrameRate = 144;
             QualitySettings.vSyncCount = 1;
 
             Time.fixedDeltaTime = 1f / TickRate;
+        }
+
+        void OnEnable()
+        {
+            playerControls.Enable();
+        }    
+
+        void OnDisable()
+        {
+            playerControls.Disable();
+        }
+
+        public Vector2 getPlayerMoveVector()
+        {
+            return playerControls.Player.Move.ReadValue<Vector2>();
+        }
+
+        public Vector2 getMouseDeltaVector()
+        {
+            return playerControls.Player.Look.ReadValue<Vector2>();
+        }
+
+        public bool PlayerJumped()
+        {
+            return playerControls.Player.Jump.triggered;
         }
 
         private void Start()
@@ -185,27 +207,22 @@ namespace Fragsurf.Movement
 
         private void UpdateMoveData()
         {
-            var moveLeft = Input.GetKey(MoveLeft);
-            var moveRight = Input.GetKey(MoveRight);
-            var moveFwd = Input.GetKey(MoveForward);
-            var moveBack = Input.GetKey(MoveBack);
-            var jump = Input.GetKey(JumpButton);
 
-            if (!moveLeft && !moveRight)
+            if (getPlayerMoveVector().x == 0)
                 _moveData.SideMove = 0;
-            else if (moveLeft)
+            else if (getPlayerMoveVector().x < 0)
                 _moveData.SideMove = -MoveConfig.Accel;
-            else if (moveRight)
+            else if (getPlayerMoveVector().x > 0)
                 _moveData.SideMove = MoveConfig.Accel;
 
-            if (!moveFwd && !moveBack)
+            if (getPlayerMoveVector().y == 0)
                 _moveData.ForwardMove = 0;
-            else if (moveFwd)
+            else if (getPlayerMoveVector().y > 0)
                 _moveData.ForwardMove = MoveConfig.Accel;
-            else if (moveBack)
+            else if (getPlayerMoveVector().y < 0)
                 _moveData.ForwardMove = -MoveConfig.Accel;
 
-            if (jump)
+            if (PlayerJumped())
                 _moveData.Buttons = _moveData.Buttons.AddFlag((int)InputButtons.Jump);
             else
                 _moveData.Buttons = _moveData.Buttons.RemoveFlag((int)InputButtons.Jump);
