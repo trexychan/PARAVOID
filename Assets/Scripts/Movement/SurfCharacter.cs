@@ -1,10 +1,8 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Fragsurf.Movement
 {
-    //test
-    
     /// <summary>
     /// Easily add a surfable character to the scene
     /// </summary>
@@ -32,7 +30,11 @@ namespace Fragsurf.Movement
         [Header("Input Settings")]
         public float XSens = 50;
         public float YSens = 50;
-        public PlayerControls playerControls;
+        public KeyCode JumpButton = KeyCode.LeftShift;
+        public KeyCode MoveLeft = KeyCode.A;
+        public KeyCode MoveRight = KeyCode.D;
+        public KeyCode MoveForward = KeyCode.W;
+        public KeyCode MoveBack = KeyCode.S;
 
         [Header("Movement Config")]
         [SerializeField]
@@ -99,36 +101,10 @@ namespace Fragsurf.Movement
 
         private void Awake()
         {
-            playerControls = new PlayerControls();
             Application.targetFrameRate = 144;
             QualitySettings.vSyncCount = 1;
 
             Time.fixedDeltaTime = 1f / TickRate;
-        }
-
-        void OnEnable()
-        {
-            playerControls.Enable();
-        }    
-
-        void OnDisable()
-        {
-            playerControls.Disable();
-        }
-
-        public Vector2 getPlayerMoveVector()
-        {
-            return playerControls.Player.Move.ReadValue<Vector2>();
-        }
-
-        public Vector2 getMouseDeltaVector()
-        {
-            return playerControls.Player.Look.ReadValue<Vector2>();
-        }
-
-        public bool PlayerJumped()
-        {
-            return playerControls.Player.Jump.triggered;
         }
 
         private void Start()
@@ -176,6 +152,7 @@ namespace Fragsurf.Movement
             UpdateTestBinds();
             UpdateRotation();
             UpdateMoveData();
+            _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
 
         }
         public float GetTheVelocity()
@@ -201,29 +178,36 @@ namespace Fragsurf.Movement
 
         private void FixedUpdate()
         {
-            _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
+            
             transform.position = MoveData.Origin;
         }
 
         private void UpdateMoveData()
         {
+            var moveLeft = Input.GetKey(MoveLeft);
+            var moveRight = Input.GetKey(MoveRight);
+            var moveFwd = Input.GetKey(MoveForward);
+            var moveBack = Input.GetKey(MoveBack);
+            var jump = Input.GetKey(JumpButton);
 
-            if (getPlayerMoveVector().x == 0)
+            if (!moveLeft && !moveRight)
                 _moveData.SideMove = 0;
-            else if (getPlayerMoveVector().x < 0)
+            else if (moveLeft)
                 _moveData.SideMove = -MoveConfig.Accel;
-            else if (getPlayerMoveVector().x > 0)
+            else if (moveRight)
                 _moveData.SideMove = MoveConfig.Accel;
 
-            if (getPlayerMoveVector().y == 0)
+            if (!moveFwd && !moveBack)
                 _moveData.ForwardMove = 0;
-            else if (getPlayerMoveVector().y > 0)
+            else if (moveFwd)
                 _moveData.ForwardMove = MoveConfig.Accel;
-            else if (getPlayerMoveVector().y < 0)
+            else if (moveBack)
                 _moveData.ForwardMove = -MoveConfig.Accel;
 
-            if (PlayerJumped())
+            if (Input.GetKeyDown(JumpButton)){
                 _moveData.Buttons = _moveData.Buttons.AddFlag((int)InputButtons.Jump);
+                Debug.Log(true);
+        }
             else
                 _moveData.Buttons = _moveData.Buttons.RemoveFlag((int)InputButtons.Jump);
 
