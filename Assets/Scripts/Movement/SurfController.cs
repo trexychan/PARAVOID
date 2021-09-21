@@ -12,6 +12,7 @@ namespace Fragsurf.Movement
         private MovementConfig _config;
         private float _deltaTime;
         public bool bruh;
+        private int counter=1;
         ///// Methods /////
 
         /// <summary>
@@ -57,19 +58,25 @@ namespace Fragsurf.Movement
                     {
                         // apply movement from input
                         _surfer.MoveData.Velocity += AirInputMovement();
-
+if (_surfer.MoveData.Buttons.HasFlag((int)InputButtons.Jump)&&counter>0)
+                        {
+                            Jump();
+                            Debug.Log(false);
+                            counter-=1;
+                        }
                         // let the magic happen
                         SurfPhysics.Reflect(ref _surfer.MoveData.Velocity, _surfer.Collider, _surfer.MoveData.Origin, _deltaTime);
                     }
                     else
-                    {
+                    {counter=1;
                         // apply movement from input
                         _surfer.MoveData.Velocity += GroundInputMovement();
 
                         // jump/friction
-                        if (_surfer.MoveData.Buttons.HasFlag((int)InputButtons.Jump))
+                        if (Input.GetKey(KeyCode.Space))
                         {
                             Jump();
+                            Debug.Log("what");
                         }
                         else
                         {
