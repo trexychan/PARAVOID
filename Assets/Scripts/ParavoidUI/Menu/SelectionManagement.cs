@@ -22,7 +22,6 @@ namespace ParavoidUI
                     toggle.isOn = true;
         }
     
-
         public void ActivateGameObjectOnly(GameObject obj)
         {
             foreach (Transform child in transform)
@@ -32,7 +31,17 @@ namespace ParavoidUI
         public void ActivateToggleComponentOnly(GameObject obj)
         {
             foreach (Transform child in transform)
-                child.gameObject.GetComponent<Toggle>().SetIsOnWithoutNotify(obj == child.gameObject ? true : false);
+            {
+                try
+                {
+                    child.gameObject.GetComponent<Toggle>().SetIsOnWithoutNotify(obj == child.gameObject ? true : false); 
+                }
+                catch (System.Exception)
+                {
+                    //To just overthrow GameObjects that don't have toggle componenet
+                }
+            }
+                
         }
 
         private void DeactivateGameObject(GameObject obj)

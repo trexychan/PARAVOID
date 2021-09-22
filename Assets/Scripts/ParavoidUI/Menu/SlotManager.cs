@@ -11,12 +11,15 @@ namespace ParavoidUI
         public GameObject saveSlotPrefab;
         public GameObject addNewSlotPrefab;
         public Player player;
+        public SelectionManagement selectManager;
+        public GameObject createNewFileWindow;
 
         public GameObject targetSlot;
-        public List<SaveSlot> saveSlots;
+        public List<GameObject> saveSlots;
 
         public void Awake()
         {
+            selectManager = gameObject.GetComponent<SelectionManagement>();
             if(player != null)
             {
                 player.LoadGameFiles();
@@ -28,11 +31,30 @@ namespace ParavoidUI
             
         }
 
+        public void Update()
+        {
+            foreach (GameObject slot in saveSlots)
+                if(slot.GetComponent<Toggle>().isOn)
+                    targetSlot = slot;
+        }
+
+        public void OpenCreateFileWindow()
+        {
+            GameObject window = Instantiate(createNewFileWindow);
+            window.transform.SetParent(GameObject.Find("Save").transform, false);
+        }
+
         #region SlotManger methods
 
         public void AddNewSaveFile(string slotName)
         {
+            //Checks if saveslot name already exsists
+            foreach (GameObject slot in saveSlots)
+                if(slot.GetComponent<SaveSlot>().slotName == slotName)
+                    return;
+
             player.SavePlayer(slotName);
+            //Add Environment Data and other game specific stuff
             AddNewSlot(slotName);
         }
 
@@ -47,7 +69,10 @@ namespace ParavoidUI
             newSlot.GetComponent<SaveSlot>().slotName = slotName;
             newSlot.transform.Find("Text").GetComponent<Text>().text = "FILE: " + slotName +
             "\nLAST PLAYED: " + data.dateAndTime;
-            saveSlots.Add(newSlot.GetComponent<SaveSlot>());
+            newSlot.GetComponent<Toggle>().onValueChanged.AddListener(delegate {
+                selectManager.ActivateToggleComponentOnly(newSlot);
+            });
+            saveSlots.Add(newSlot);
 
             ResortAddNewSlotPrefab();
         }
@@ -61,6 +86,7 @@ namespace ParavoidUI
         {
             GameObject newSlot = Instantiate(addNewSlotPrefab);
             newSlot.transform.SetParent(transform, false);
+            newSlot.name = "AddSlot";
 
             Destroy(addNewSlotPrefab);
 
@@ -81,26 +107,41 @@ namespace ParavoidUI
 
         public void SaveFile()
         {
-            player.SavePlayer(targetSlot.GetComponent<SaveSlot>().slotName);
-            targetSlot.transform.Find("Text").GetComponent<Text>().text = "FILE: " 
-            + targetSlot.GetComponent<SaveSlot>().slotName + "\nLAST PLAYED: " + player.dateAndTime;
+            if(targetSlot != null)
+            {
+                player.SavePlayer(targetSlot.GetComponent<SaveSlot>().slotName);
+                
+                targetSlot.transform.Find("Text").GetComponent<Text>().text = "FILE: " 
+                + targetSlot.GetComponent<SaveSlot>().slotName + "\nLAST PLAYED: " + player.dateAndTime;
+            }      
         }
 
         public void LoadFile()
         {
-            player.LoadPlayer(targetSlot.GetComponent<SaveSlot>().slotName);
+            if(targetSlot != null)
+            {
+                player.LoadPlayer(targetSlot.GetComponent<SaveSlot>().slotName);
+                //Environemtn Datat load
+            }  
         }
 
         public void DeleteFile()
         {
-            saveSlots.Remove(targetSlot.GetComponent<SaveSlot>());
-            player.DeletePlayer(targetSlot.GetComponent<SaveSlot>().slotName);
-            RemoveExsistingSlot(targetSlot.GetComponent<SaveSlot>().slotName);
+            if(targetSlot != null)
+            {
+                saveSlots.Remove(targetSlot);
+                player.DeletePlayer(targetSlot.GetComponent<SaveSlot>().slotName);
+                //Environemtn Datat Delete
+                RemoveExsistingSlot(targetSlot.GetComponent<SaveSlot>().slotName);
+            }   
         }
 
         public void RenameFile()
         {
-            
+            if(targetSlot != null)
+            {
+
+            }
         }
 
         #endregion
