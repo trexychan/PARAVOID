@@ -5391,7 +5391,7 @@ PrefabInstance:
     - target: {fileID: 7215942144287312416, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: moveConfig.Gravity
-      value: 9
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7215942144287312416, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}

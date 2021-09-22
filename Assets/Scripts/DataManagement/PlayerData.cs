@@ -11,6 +11,7 @@ namespace DataManagement
         #region FileData (for storing file specific data)
 
         public string dateAndTime;
+        public string playerFileName;
 
         #endregion
 
@@ -25,6 +26,7 @@ namespace DataManagement
         {
             //Stores File specifc data
             dateAndTime = player.dateAndTime;
+            playerFileName = player.playerFileName;
 
             //Stores player current position in currentlevel
             currentPosition[0] = player.currentPosition.x;
