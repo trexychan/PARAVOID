@@ -1,10 +1,8 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Fragsurf.Movement
 {
-    //test
-    
     /// <summary>
     /// Easily add a surfable character to the scene
     /// </summary>
@@ -154,6 +152,7 @@ namespace Fragsurf.Movement
             UpdateTestBinds();
             UpdateRotation();
             UpdateMoveData();
+            _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
 
         }
         public float GetTheVelocity()
@@ -179,7 +178,7 @@ namespace Fragsurf.Movement
 
         private void FixedUpdate()
         {
-            _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
+            
             transform.position = MoveData.Origin;
         }
 
@@ -205,8 +204,10 @@ namespace Fragsurf.Movement
             else if (moveBack)
                 _moveData.ForwardMove = -MoveConfig.Accel;
 
-            if (jump)
+            if (Input.GetKeyDown(JumpButton)){
                 _moveData.Buttons = _moveData.Buttons.AddFlag((int)InputButtons.Jump);
+                Debug.Log(true);
+        }
             else
                 _moveData.Buttons = _moveData.Buttons.RemoveFlag((int)InputButtons.Jump);
 
