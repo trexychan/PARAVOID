@@ -40,7 +40,7 @@ namespace DataManagement
         }
 
         //File Saving and Loading Methods
-        public static void SaveGameFiles(Player player)
+        public static void SerializeGameFiles(Player player)
         {
             BinaryFormatter formatter = new BinaryFormatter();
             string path = Application.persistentDataPath + "/external.gameData";
@@ -52,7 +52,7 @@ namespace DataManagement
             stream.Close();
         }
 
-        public static ExternalData LoadGameFiles()
+        public static ExternalData DeserializeGameFiles()
         {
             string path = Application.persistentDataPath + "/external.gameData";
             if (File.Exists(path))
