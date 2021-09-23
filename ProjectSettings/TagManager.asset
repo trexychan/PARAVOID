@@ -6,6 +6,7 @@ TagManager:
   tags:
   - InteractText
   - jumpy
+  - Collectible
   layers:
   - Default
   - TransparentFX
