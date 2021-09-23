@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace ParavoidUI
 {
@@ -30,15 +31,27 @@ namespace ParavoidUI
 
         public void Update()
         {
-            if (inputField.text == "" || inputField.text.Contains(" ") || DoesSlotNameExsist(inputField.text))
+            if (DoesSlotNameExist(inputField.text))
+            {
                 buttonCreateNewFile.interactable = false;
-            else
+                buttonCreateNewFile.gameObject.transform.Find("Text").GetComponent<Text>().text = "Unavailable Name";
+            }
+            else if (inputField.text != "" && !inputField.text.Contains(" "))
+            {
                 buttonCreateNewFile.interactable = true;
+                buttonCreateNewFile.gameObject.transform.Find("Text").GetComponent<Text>().text = "Creat New File";
+            }
+            else
+            {
+                buttonCreateNewFile.interactable = false;
+                buttonCreateNewFile.gameObject.transform.Find("Text").GetComponent<Text>().text = "Creat New File";
+            }
 
-
+            if(Input.GetKeyDown(KeyCode.Return) && buttonCreateNewFile.interactable == true)
+                buttonCreateNewFile.Select();
         }
 
-        public bool DoesSlotNameExsist(string slotName)
+        public bool DoesSlotNameExist(string slotName)
         {
             foreach (GameObject slot in saveContent.saveSlots)
                 if (slot.GetComponent<SaveSlot>().slotName == slotName)

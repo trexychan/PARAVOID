@@ -11,15 +11,22 @@ public class Player : MonoBehaviour
     public Vector3 currentPosition;
     public Scene currentScene;
     public string dateAndTime;
+    public string playerFileName;
 
     #endregion
 
-    #region ExternalData
-    
-    //For Settings Panel Preferences
+    #region UniversalData
+
+    //For Settings General Panel Preferences
+
+    //For Settings Graphics Panel Preferences
+      
+    //For Settings Audio Panel Preferences
     public float masterVolume;
     public float musicVolume;
     public float SFXVolume;
+
+    //For Settings Controls Panel Preferences
 
     //For Save Panel Data
     public List<string> files = new List<string>();
@@ -46,27 +53,16 @@ public class Player : MonoBehaviour
 
     public void SavePlayer(string slotName) //
     {
+        dateAndTime = System.DateTime.Now.ToString();
+        playerFileName = slotName;
+
+        SaveSystem.SerializePlayerData(this, slotName);
+
         if(!files.Contains(slotName))
         {
-            dateAndTime = System.DateTime.Now.ToString();
-
-            SaveSystem.SerializePlayerData(this, slotName);
-
-            //addNewSlot(slotName); --Make a call to SlotManager
-
             files.Add(slotName);
 
             SaveGameFiles();
-        }
-        else
-        {
-            dateAndTime = System.DateTime.Now.ToString();
-            SaveSystem.SerializePlayerData(this, slotName);
-
-            // --Make a call to SlotManager
-            //saveContent.transform.Find("SaveSlot (" + slotName + ")").transform.Find("Text").GetComponent<Text>().text =
-            //"FILE: " + slotName +
-            //"\nLAST PLAYED: " + dateAndTime; 
         }
     }
 
@@ -76,7 +72,10 @@ public class Player : MonoBehaviour
 
         //Load Data
         currentScene = data.currentScene;
+
+        //Load File Data
         dateAndTime = data.dateAndTime;
+        playerFileName = data.playerFileName;
 
         //Load specific objects, entities, and player positions and states
         transform.position = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
@@ -102,7 +101,7 @@ public class Player : MonoBehaviour
 
     public void LoadGameFiles()
     {
-        ExternalData data = SaveSystem.DeserializeGameFiles();
+        UniversalData data = SaveSystem.DeserializeGameFiles();
 
         files = data.files;
 

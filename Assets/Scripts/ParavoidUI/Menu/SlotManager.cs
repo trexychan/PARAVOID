@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,10 @@ namespace ParavoidUI
         public GameObject addNewSlotPrefab;
         public Player player;
         public SelectionManagement selectManager;
+
+        //windows
         public GameObject createNewFileWindow;
+        public GameObject alertWindow;
 
         public GameObject targetSlot;
         public List<GameObject> saveSlots;
@@ -20,15 +24,19 @@ namespace ParavoidUI
         public void Awake()
         {
             selectManager = gameObject.GetComponent<SelectionManagement>();
-            if(player != null)
+            //Auto assigns player if their exisists a player GameObject in scene
+            try
             {
+                player = GameObject.Find("Player").GetComponent<Player>(); 
+
                 player.LoadGameFiles();
                 AddAllSavedSlots(player.files);
             }
-            else
-                Debug.LogError("Error: player variable is empty in SlotManger");
-
-            
+            catch (NullReferenceException ex)
+            {
+                Debug.LogError("Error: SlotManager's player variable has not been assigned a value \n[No GameObject nammed \"Player\" found to auto assign variable]"); 
+            }             
+                        
         }
 
         public void Update()
@@ -38,11 +46,7 @@ namespace ParavoidUI
                     targetSlot = slot;
         }
 
-        public void OpenCreateFileWindow()
-        {
-            GameObject window = Instantiate(createNewFileWindow);
-            window.transform.SetParent(GameObject.Find("Save").transform, false);
-        }
+        
 
         #region SlotManger methods
 
@@ -103,6 +107,73 @@ namespace ParavoidUI
 
         #endregion
 
+        #region WindowOpener Methods
+
+        public void OpenCreateFileWindow()
+        {
+            GameObject window = Instantiate(createNewFileWindow);
+            window.transform.SetParent(GameObject.Find("Save").transform, false);
+        }
+
+        public void OpenSaveFileWindow()
+        {
+            GameObject window = Instantiate(alertWindow);
+            AlertWindow windowScript = window.GetComponent<AlertWindow>();
+            windowScript.message.text = "Are sure you want to overwrite Save data for File: "
+            + targetSlot.GetComponent<SaveSlot>().slotName + "?";
+
+            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+            windowScript.AddMethodToButtonLeft(delegate {
+                SaveFile();
+                Destroy(window);});
+            
+            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+             windowScript.AddMethodToButtonRight(delegate {
+                Destroy(window);});
+
+            window.transform.SetParent(GameObject.Find("Save").transform, false);
+        }
+
+        public void OpenLoadFileWindow()
+        {
+            GameObject window = Instantiate(alertWindow);
+            AlertWindow windowScript = window.GetComponent<AlertWindow>();
+            windowScript.message.text = "Are you sure you want to load File: "
+            + targetSlot.GetComponent<SaveSlot>().slotName + "?";
+
+            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+            windowScript.AddMethodToButtonLeft(delegate {
+                LoadFile();
+                Destroy(window);});
+            
+            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+             windowScript.AddMethodToButtonRight(delegate {
+                Destroy(window);});
+
+            window.transform.SetParent(GameObject.Find("Save").transform, false);
+        }
+
+        public void OpenDeleteFileWindow()
+        {
+            GameObject window = Instantiate(alertWindow);
+            AlertWindow windowScript = window.GetComponent<AlertWindow>();
+            windowScript.message.text = "Are you sure you want to delete File: "
+            + targetSlot.GetComponent<SaveSlot>().slotName + "?";
+
+            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+            windowScript.AddMethodToButtonLeft(delegate {
+                DeleteFile();
+                Destroy(window);});
+            
+            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+             windowScript.AddMethodToButtonRight(delegate {
+                Destroy(window);});
+
+            window.transform.SetParent(GameObject.Find("Save").transform, false);
+        }
+
+        #endregion
+
         #region targetSlotOptions
 
         public void SaveFile()
@@ -136,13 +207,16 @@ namespace ParavoidUI
             }   
         }
 
-        public void RenameFile()
+        /* Consider another time
+        public void RenameFile(string newName)
         {
             if(targetSlot != null)
             {
-
+                DeleteFile();
+                targetSlot.
             }
         }
+        */
 
         #endregion
 
