@@ -88,6 +88,7 @@ namespace Fragsurf.Movement
                         if (Input.GetKey(KeyCode.LeftControl))
                         {
                             _config.MaxSpeed = 3f;
+                            
 
                         }
                         else
