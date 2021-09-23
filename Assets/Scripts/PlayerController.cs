@@ -5,28 +5,35 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerControls playerControls;
+    //Objects
     private PlayerCamera playerCamera;
     private CharacterController char_controller;
-    private Rigidbody rb;
+   
+    //Base Physics
     private Vector3 playerVelocity;
-    public Transform groundCheck;
     private LayerMask layerMask = 1 << 9;
+
+    //Primary Controls
+    public PlayerControls playerControls;
+    public Transform groundCheck;
     public bool isGrounded;
     public float playerSpeed = 2.0f;
     public float jumpHeight = 2.0f;
     public float gravityValue = -9.18f;
     public float jumpTimeWindow = 0.1f;
+    public Vector3 moveDir;
+    
+    //Secondary Mechanics    
+    public bool sprinting = false;
+
+    public bool doubleJumpUnlocked = false;
     public bool hasDoubleJumped;
     public bool hasJumpedOnce;
-    public bool sprinting = false;
-    public Vector3 moveDir;
 
     private void Awake()
     {
         playerControls = new PlayerControls();
         char_controller = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody>();
         playerCamera = PlayerCamera.singleton;
     }
 
@@ -166,7 +173,7 @@ public class PlayerController : MonoBehaviour
         {
             hasJumpedOnce = false;
             return true;
-        } else if (!isGrounded && !hasDoubleJumped)
+        } else if (doubleJumpUnlocked && !isGrounded && !hasDoubleJumped)
         {
             hasJumpedOnce = true;
             return true;
@@ -174,5 +181,7 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    
+    public void EnableDoubleJump() {
+        doubleJumpUnlocked = true;
+    }
 }
