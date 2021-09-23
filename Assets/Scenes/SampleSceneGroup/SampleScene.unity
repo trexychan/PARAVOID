@@ -15001,6 +15001,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7215942144287312416, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
+      propertyPath: CrouchButton
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 7215942144287312416, guid: f4fb1bc40aa5df242b214fd4d72770ab,
+        type: 3}
       propertyPath: moveConfig.AutoBhop
       value: 1
       objectReference: {fileID: 0}
@@ -15026,7 +15031,7 @@ PrefabInstance:
     - target: {fileID: 5305052311885863944, guid: c30fbefc32022884db1442eaf402ac82,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5305052311885863949, guid: c30fbefc32022884db1442eaf402ac82,
         type: 3}

@@ -22,6 +22,7 @@ namespace Fragsurf.Movement
         public int Buttons;
         public int OldButtons;
         public float ForwardMove;
+        public float CrouchMove;
         public float SideMove;
         public float UpMove;
         public float SurfaceFriction = 1f;

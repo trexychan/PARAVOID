@@ -58,8 +58,9 @@ namespace Fragsurf.Movement
                     {
                         // apply movement from input
                         _surfer.MoveData.Velocity += AirInputMovement();
-if (_surfer.MoveData.Buttons.HasFlag((int)InputButtons.Jump)&&counter>0)
+                    if (_surfer.MoveData.Buttons.HasFlag((int)InputButtons.Jump)&&counter>0)
                         {
+                            _surfer.MoveData.Velocity = new Vector3(_surfer.MoveData.Velocity.x, 0, _surfer.MoveData.Velocity.z);
                             Jump();
                             Debug.Log(false);
                             counter-=1;
@@ -83,6 +84,15 @@ if (_surfer.MoveData.Buttons.HasFlag((int)InputButtons.Jump)&&counter>0)
                             var friction = _surfer.MoveData.SurfaceFriction * _config.Friction;
                             var stopSpeed = _config.StopSpeed;
                             SurfPhysics.Friction(ref _surfer.MoveData.Velocity, stopSpeed, friction, _deltaTime);
+                        }
+                        if (Input.GetKey(KeyCode.LeftControl))
+                        {
+                            _config.MaxSpeed = 3f;
+
+                        }
+                        else
+                        {
+                            _config.MaxSpeed = 6f;
                         }
                     }
 

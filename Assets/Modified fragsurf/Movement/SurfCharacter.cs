@@ -20,7 +20,10 @@ namespace Fragsurf.Movement
 
         [Header("Physics Settings")]
         public int TickRate = 128;
-        public Vector3 ColliderSize = new Vector3(1, 2, 1);
+        public int ColliderSizeX = 1;
+        public int ColliderSizeY = 2;
+        public int ColliderSizeZ = 1;
+        //public Vector3 ColliderSize = new Vector3(1, 2, 1);
         public ColliderType CollisionType;
 
         [Header("View Settings")]
@@ -31,6 +34,7 @@ namespace Fragsurf.Movement
         public float XSens = 50;
         public float YSens = 50;
         public KeyCode JumpButton = KeyCode.LeftShift;
+        public KeyCode CrouchButton = KeyCode.LeftControl;
         public KeyCode MoveLeft = KeyCode.A;
         public KeyCode MoveRight = KeyCode.D;
         public KeyCode MoveForward = KeyCode.W;
@@ -109,7 +113,7 @@ namespace Fragsurf.Movement
 
         private void Start()
         {
-            if(viewTransform == null)
+            if (viewTransform == null)
                 viewTransform = Camera.main.transform;
             viewTransform.SetParent(transform, false);
             viewTransform.localPosition = ViewOffset;
@@ -126,7 +130,7 @@ namespace Fragsurf.Movement
                 rbody = gameObject.AddComponent<Rigidbody>();
             rbody.isKinematic = true;
 
-            switch(CollisionType)
+            /*switch(CollisionType)
             {
                 case ColliderType.Box:
                     _collider = gameObject.AddComponent<BoxCollider>();
@@ -140,7 +144,11 @@ namespace Fragsurf.Movement
                     capc.height = ColliderSize.y;
                     capc.radius = ColliderSize.x / 2f;
                     break;
-            }
+            }*/
+            _collider = gameObject.AddComponent<CapsuleCollider>();
+            var capc = (CapsuleCollider)_collider;
+            capc.height = ColliderSizeY;
+            capc.radius = ColliderSizeX / 2f;
 
             _collider.isTrigger = true;
             _moveData.Origin = transform.position;
@@ -159,26 +167,26 @@ namespace Fragsurf.Movement
         {
             return Mathf.Round(_moveData.Velocity.magnitude);
         }
-       public bool accessController()
+        public bool accessController()
         {
             return _controller.bruh;
         }
-            
+
 
         private void UpdateTestBinds()
         {
-            if(Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R))
             {
                 MoveData.Velocity = Vector3.zero;
                 MoveData.Origin = _startPosition;
             }
         }
 
-        
+
 
         private void FixedUpdate()
         {
-            
+
             transform.position = MoveData.Origin;
         }
 
@@ -189,6 +197,9 @@ namespace Fragsurf.Movement
             var moveFwd = Input.GetKey(MoveForward);
             var moveBack = Input.GetKey(MoveBack);
             var jump = Input.GetKey(JumpButton);
+            var crouch = Input.GetKey(CrouchButton);
+
+            var capc = (CapsuleCollider)_collider;
 
             if (!moveLeft && !moveRight)
                 _moveData.SideMove = 0;
@@ -204,12 +215,23 @@ namespace Fragsurf.Movement
             else if (moveBack)
                 _moveData.ForwardMove = -MoveConfig.Accel;
 
-            if (Input.GetKeyDown(JumpButton)){
+            if (Input.GetKeyDown(JumpButton))
+            {
                 _moveData.Buttons = _moveData.Buttons.AddFlag((int)InputButtons.Jump);
                 Debug.Log(true);
-        }
+            }
             else
                 _moveData.Buttons = _moveData.Buttons.RemoveFlag((int)InputButtons.Jump);
+
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                capc.height = ColliderSizeY / 2;
+                _moveData.CrouchMove = MoveConfig.Accel / 2;
+            }
+            else
+            {
+                capc.height = ColliderSizeY;
+            }
 
             _moveData.OldButtons = _moveData.Buttons;
             _moveData.ViewAngles = _angles;
@@ -217,7 +239,7 @@ namespace Fragsurf.Movement
         private void LateUpdate()
         {
             viewTransform.rotation = Quaternion.Euler(_angles);
-            
+
         }
         private void UpdateRotation()
         {
@@ -226,7 +248,7 @@ namespace Fragsurf.Movement
             var rot = _angles + new Vector3(-my, mx, 0f);
             rot.x = Mathf.Clamp(rot.x, -85f, 85f);
             _angles = rot;
-            
+
         }
 
         /// <summary>
