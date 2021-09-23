@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DataManagement
 {
     [System.Serializable]
-    public class ExternalData
+    public class UniversalData
     {
         #region FileData (for storing all saves and time slots)
 
@@ -21,7 +21,7 @@ namespace DataManagement
 
         #endregion
 
-        public ExternalData(Player player)
+        public UniversalData(Player player)
         {
             //Stores SaveFile Data
             files = player.files;
