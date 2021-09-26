@@ -39,6 +39,16 @@ namespace DataManagement
             }
         }
 
+        public static bool doesFileExist(string slotName)
+        {
+            string path = Application.persistentDataPath + "/" + slotName +".playerData";
+
+            if (File.Exists(path))
+                return true;
+
+            return false;
+        }
+
         //File Saving and Loading Methods
         public static void SerializeGameFiles(Player player)
         {

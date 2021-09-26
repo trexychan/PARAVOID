@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
 
     #region Player Save System Methods
 
-    public void SavePlayer(string slotName) //
+    public void SavePlayer(string slotName)
     {
         dateAndTime = System.DateTime.Now.ToString();
         playerFileName = slotName;
@@ -81,6 +81,11 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
     }
 
+    public void ErasePlayer(string slotName)
+    {
+        SaveSystem.SerializePlayerData(null, slotName);
+    }
+
     public void DeletePlayer(string slotName)
     {
         SaveSystem.DeleteFile(slotName);
@@ -100,10 +105,28 @@ public class Player : MonoBehaviour
     }
 
     public void LoadGameFiles()
-    {
+    {   
         UniversalData data = SaveSystem.DeserializeGameFiles();
 
-        files = data.files;
+        if (data == null)
+        {
+            Debug.Log("Adding Universal Data");
+            SaveGameFiles();
+            data = SaveSystem.DeserializeGameFiles();
+        }
+
+        foreach (string file in data.files)
+        {
+            if (SaveSystem.doesFileExist(file))
+                files.Add(file);
+            else
+            {
+                SaveSystem.SerializePlayerData(null, file);
+                files.Add(file);
+            }
+                
+        }
+
 
         //--make a call to slotmanager to re-add all slots
 
