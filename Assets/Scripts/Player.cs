@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
 
     #region Player Save System Methods
 
-    public void SavePlayer(string slotName) //
+    public void SavePlayer(string slotName)
     {
         dateAndTime = System.DateTime.Now.ToString();
         playerFileName = slotName;
@@ -81,6 +81,11 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
     }
 
+    public void ErasePlayer(string slotName)
+    {
+        SaveSystem.SerializePlayerData(null, slotName);
+    }
+
     public void DeletePlayer(string slotName)
     {
         SaveSystem.DeleteFile(slotName);
@@ -100,8 +105,15 @@ public class Player : MonoBehaviour
     }
 
     public void LoadGameFiles()
-    {
+    {   
         UniversalData data = SaveSystem.DeserializeGameFiles();
+
+        if (data == null)
+        {
+            Debug.Log("Adding Universal Data");
+            SaveGameFiles();
+            data = SaveSystem.DeserializeGameFiles();
+        }
 
         files = data.files;
 
@@ -110,6 +122,15 @@ public class Player : MonoBehaviour
         masterVolume = data.masterVolume;
         musicVolume = data.musicVolume;
         SFXVolume = data.SFXVolume;
+    }
+
+    public bool doesFileExist(string slotName)
+    {
+        foreach (string file in files)
+            if (file == slotName)
+                return true;
+        
+        return false;
     }
 
     #endregion
