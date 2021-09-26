@@ -38,7 +38,7 @@ namespace ParavoidUI
 
                 if (overwriteMode) //When Overwrite mode on, potentially incinerates previously stored files
                 {
-                    if (fileLimit > 0 && player.files.Count < fileLimit) //Readds all files if limit isn't satisfied (Developer's concern only)
+                    if (fileLimit > 0 && player.files.Count != fileLimit) //Readds all files if limit isn't satisfied (Developer's concern only)
                     {
                          IncinerateAllPlayerFiles();
                     
@@ -93,6 +93,12 @@ namespace ParavoidUI
         public void AddNewSlot(string slotName)
         {
             PlayerData data = SaveSystem.DeserializePlayerData(slotName);
+
+            if (data == null)
+            {
+                Debug.LogError("Error: Attempts to add notexisistent data: " + slotName);
+                return;
+            }
 
             //saveSlot
             GameObject newSlot = Instantiate(saveSlotPrefab);
@@ -286,7 +292,7 @@ namespace ParavoidUI
         public void LoadFile()
         {
             if(targetSlot != null && !targetSlot.GetComponent<SaveSlot>().isFileEmpty 
-            && player.doesFileExist(targetSlot.GetComponent<SaveSlot>().slotName))
+            && SaveSystem.doesFileExist(targetSlot.GetComponent<SaveSlot>().slotName))
             {
                 player.LoadPlayer(targetSlot.GetComponent<SaveSlot>().slotName);
                 //Environemtn Datat load
@@ -343,12 +349,15 @@ namespace ParavoidUI
 
         private void IncinerateAllPlayerFiles()
         {
-            foreach (string fileName in player.files)
+            foreach (GameObject slot in saveSlots)
             {
+                string fileName = slot.GetComponent<SaveSlot>().slotName;
                 player.DeletePlayer(fileName);
                 //Environemtn Datat Delete
                 RemoveExsistingSlot(fileName);
             }
+
+            
 
             saveSlots = new List<GameObject>();
         }

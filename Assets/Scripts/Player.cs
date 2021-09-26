@@ -115,22 +115,24 @@ public class Player : MonoBehaviour
             data = SaveSystem.DeserializeGameFiles();
         }
 
-        files = data.files;
+        foreach (string file in data.files)
+        {
+            if (SaveSystem.doesFileExist(file))
+                files.Add(file);
+            else
+            {
+                SaveSystem.SerializePlayerData(null, file);
+                files.Add(file);
+            }
+                
+        }
+
 
         //--make a call to slotmanager to re-add all slots
 
         masterVolume = data.masterVolume;
         musicVolume = data.musicVolume;
         SFXVolume = data.SFXVolume;
-    }
-
-    public bool doesFileExist(string slotName)
-    {
-        foreach (string file in files)
-            if (file == slotName)
-                return true;
-        
-        return false;
     }
 
     #endregion
