@@ -53,6 +53,10 @@ namespace Fragsurf.Movement
 
         private MoveData _moveData = new MoveData();
         private SurfController _controller = new SurfController();
+        //shit variables for shit step up ability
+        private float capcHeight;
+        private float capcRadius;
+        
 
         ///// Properties /////
         
@@ -151,7 +155,13 @@ namespace Fragsurf.Movement
             _collider = gameObject.AddComponent<CapsuleCollider>();
             var capc = (CapsuleCollider)_collider;
             capc.height = ColliderSizeY;
+            //shit variables for shit step up ability
+            capcHeight = capc.height;
             capc.radius = ColliderSizeX / 2f;
+            capcRadius = capc.radius;
+
+            //stepRayUpper = new Vector3(transform.position.x, capcHeight/5, transform.position.z);
+            //stepRayLower = new Vector3(transform.position.x, 0, transform.position.z);
 
             _collider.isTrigger = true;
             _moveData.Origin = transform.position;
@@ -202,9 +212,14 @@ namespace Fragsurf.Movement
             var jump = Input.GetKey(JumpButton);
             var crouch = Input.GetKey(CrouchButton);
             InteractPressed = Input.GetKeyDown(InteractButton);
-            Vector3 up = transform.TransformDirection(Vector3.up);
+
             //Shit Variables for the Shit Crouch mechanic
             var capc = (CapsuleCollider)_collider;
+            Vector3 up = transform.TransformDirection(Vector3.up);
+
+            Vector3 stepRayLower = new Vector3(transform.position.x, (transform.position.y)-(capcHeight/2), transform.position.z);;
+            Vector3 stepRayUpper = new Vector3(transform.position.x, (transform.position.y)-capcHeight/3, transform.position.z);
+            
 
             if (!moveLeft && !moveRight)
                 _moveData.SideMove = 0;
@@ -235,19 +250,26 @@ namespace Fragsurf.Movement
             }
             else
             {
-                if (!Physics.Raycast(transform.position, up, capc.height /2 ))
-                {
-                    if(capc.height < ColliderSizeY - (ColliderSizeY / 100.0f)) {
+                if (!Physics.Raycast(transform.position, up, capc.height/2)) {
+                    if (capc.height < ColliderSizeY - (ColliderSizeY / 100.0f))
                         capc.height = Mathf.Lerp(capc.height, ColliderSizeY, Time.deltaTime * 8f);
-                    }
                     else
                         capc.height = ColliderSizeY;
                 }
-                
             }
 
+            if (Physics.Raycast(stepRayLower, transform.TransformDirection(Vector3.forward), capcRadius*1.1f)) {
+                
+                if (!Physics.Raycast(stepRayUpper, transform.TransformDirection(Vector3.forward), capcRadius*1.1f)){
+                    
+                    MoveData.Origin += new Vector3(0, 0.1f, 0);
+                }
+            }
+
+            //Debug.DrawRay(transform.position, up, Color.green);
             _moveData.OldButtons = _moveData.Buttons;
             _moveData.ViewAngles = _angles;
+
         }
         private void LateUpdate()
         {
@@ -277,6 +299,17 @@ namespace Fragsurf.Movement
             if (angle > 180f) return Mathf.Max(angle, 360 + from);
             return Mathf.Min(angle, to);
         }
+
+/*        private void stepUp(){
+            Debug.Log("test1");
+            if (Physics.Raycast(stepRayLower, transform.TransformDirection(Vector3.forward), capcRadius*2)) {
+                Debug.Log("test2");
+                if (!Physics.Raycast(stepRayUpper, transform.TransformDirection(Vector3.forward), capcRadius)){
+                    Debug.Log("test3");
+                    MoveData.Origin += new Vector3(0, 0.1f, 0);
+                }
+            }
+        }*/
 
     }
 }
