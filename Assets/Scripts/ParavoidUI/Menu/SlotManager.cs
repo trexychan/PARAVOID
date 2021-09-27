@@ -347,6 +347,7 @@ namespace ParavoidUI
 
         #region Developer Restricted Methods
 
+        [ContextMenu("IncinerateAllPlayerFiles")]
         private void IncinerateAllPlayerFiles()
         {
             foreach (GameObject slot in saveSlots)
@@ -356,8 +357,6 @@ namespace ParavoidUI
                 //Environemtn Datat Delete
                 RemoveExsistingSlot(fileName);
             }
-
-            
 
             saveSlots = new List<GameObject>();
         }
