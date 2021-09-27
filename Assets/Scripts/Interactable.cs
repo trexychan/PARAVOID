@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Fragsurf.Movement;
 
 public class Interactable : MonoBehaviour
 {
     public GameObject promptText;
     public string dest_scene;
     public Vector3 dest_pos;
-    PlayerController player;
+    SurfCharacter player;
     private bool playerInRange = false;
     
     void Awake()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindObjectOfType<SurfCharacter>();
     }
 
     void Start()
@@ -42,7 +43,7 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && player.playerControls.Player.Interact.triggered)
+        if (playerInRange && player.InteractPressed)
         {
             SwitchSite();
         }

@@ -20,9 +20,9 @@ namespace Fragsurf.Movement
 
         [Header("Physics Settings")]
         public int TickRate = 128;
-        public int ColliderSizeX = 1;
-        public int ColliderSizeY = 2;
-        public int ColliderSizeZ = 1;
+        public float ColliderSizeX = 1f;
+        public float ColliderSizeY = 2f;
+        public float ColliderSizeZ = 1f;
         //public Vector3 ColliderSize = new Vector3(1, 2, 1);
         public ColliderType CollisionType;
 
@@ -39,6 +39,7 @@ namespace Fragsurf.Movement
         public KeyCode MoveRight = KeyCode.D;
         public KeyCode MoveForward = KeyCode.W;
         public KeyCode MoveBack = KeyCode.S;
+        public KeyCode InteractButton = KeyCode.E;
 
         [Header("Movement Config")]
         [SerializeField]
@@ -54,12 +55,14 @@ namespace Fragsurf.Movement
         private SurfController _controller = new SurfController();
 
         ///// Properties /////
-
+        
+        public bool InteractPressed { get; private set; }
+        
         public MoveType MoveType
         {
             get { return MoveType.Walk; }
         }
-
+        
         public MovementConfig MoveConfig
         {
             get { return moveConfig; }
@@ -198,7 +201,9 @@ namespace Fragsurf.Movement
             var moveBack = Input.GetKey(MoveBack);
             var jump = Input.GetKey(JumpButton);
             var crouch = Input.GetKey(CrouchButton);
-
+            InteractPressed = Input.GetKeyDown(InteractButton);
+            Vector3 up = transform.TransformDirection(Vector3.up);
+            //Shit Variables for the Shit Crouch mechanic
             var capc = (CapsuleCollider)_collider;
 
             if (!moveLeft && !moveRight)
@@ -223,14 +228,22 @@ namespace Fragsurf.Movement
             else
                 _moveData.Buttons = _moveData.Buttons.RemoveFlag((int)InputButtons.Jump);
 
-            if (Input.GetKey(KeyCode.LeftControl))
+            if (crouch)
             {
                 capc.height = ColliderSizeY / 2;
-                _moveData.CrouchMove = MoveConfig.Accel / 2;
+                
             }
             else
             {
-                capc.height = ColliderSizeY;
+                if (!Physics.Raycast(transform.position, up, capc.height /2 ))
+                {
+                    if(capc.height < ColliderSizeY - (ColliderSizeY / 100.0f)) {
+                        capc.height = Mathf.Lerp(capc.height, ColliderSizeY, Time.deltaTime * 8f);
+                    }
+                    else
+                        capc.height = ColliderSizeY;
+                }
+                
             }
 
             _moveData.OldButtons = _moveData.Buttons;

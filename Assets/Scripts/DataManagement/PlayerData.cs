@@ -10,6 +10,7 @@ namespace DataManagement
     {
         #region FileData (for storing file specific data)
 
+        public bool empty;
         public string dateAndTime;
         public string playerFileName;
 
@@ -24,17 +25,26 @@ namespace DataManagement
 
         public PlayerData(Player player)
         {
-            //Stores File specifc data
-            dateAndTime = player.dateAndTime;
-            playerFileName = player.playerFileName;
+            if (player != null)
+            {
+                empty = false;
 
-            //Stores player current position in currentlevel
-            currentPosition[0] = player.currentPosition.x;
-            currentPosition[1] = player.currentPosition.y;
-            currentPosition[2] = player.currentPosition.z;
+                //Stores File specifc data
+                dateAndTime = player.dateAndTime;
+                playerFileName = player.playerFileName;
 
-            //Stores the last scene the player loaded to
-            currentScene = player.currentScene;
+                //Stores player current position in currentlevel
+                currentPosition[0] = player.currentPosition.x;
+                currentPosition[1] = player.currentPosition.y;
+                currentPosition[2] = player.currentPosition.z;
+
+                //Stores the last scene the player loaded to
+                currentScene = player.currentScene;
+            }  
+            else
+            {
+                empty = true;
+            }     
         }
     }
 }
