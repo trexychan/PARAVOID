@@ -11,15 +11,22 @@ public class Player : MonoBehaviour
     public Vector3 currentPosition;
     public Scene currentScene;
     public string dateAndTime;
+    public string playerFileName;
 
     #endregion
 
-    #region ExternalData
-    
-    //For Settings Panel Preferences
+    #region UniversalData
+
+    //For Settings General Panel Preferences
+
+    //For Settings Graphics Panel Preferences
+      
+    //For Settings Audio Panel Preferences
     public float masterVolume;
     public float musicVolume;
     public float SFXVolume;
+
+    //For Settings Controls Panel Preferences
 
     //For Save Panel Data
     public List<string> files = new List<string>();
@@ -44,26 +51,18 @@ public class Player : MonoBehaviour
 
     #region Player Save System Methods
 
-    public void SavePlayer(string slotName) //
+    public void SavePlayer(string slotName)
     {
+        dateAndTime = System.DateTime.Now.ToString();
+        playerFileName = slotName;
+
+        SaveSystem.SerializePlayerData(this, slotName);
+
         if(!files.Contains(slotName))
         {
-            dateAndTime = System.DateTime.Now.ToString();
-
-            SaveSystem.SerializePlayerData(this, slotName);
-
-            //addNewSlot(slotName);
-
             files.Add(slotName);
-        }
-        else
-        {
-            dateAndTime = System.DateTime.Now.ToString();
-            SaveSystem.SerializePlayerData(this, slotName);
 
-            //saveContent.transform.Find("SaveSlot (" + slotName + ")").transform.Find("Text").GetComponent<Text>().text =
-            //"FILE: " + slotName +
-            //"\nLAST PLAYED: " + dateAndTime;
+            SaveGameFiles();
         }
     }
 
@@ -73,19 +72,67 @@ public class Player : MonoBehaviour
 
         //Load Data
         currentScene = data.currentScene;
+
+        //Load File Data
         dateAndTime = data.dateAndTime;
+        playerFileName = data.playerFileName;
 
         //Load specific objects, entities, and player positions and states
         transform.position = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
+    }
+
+    public void ErasePlayer(string slotName)
+    {
+        SaveSystem.SerializePlayerData(null, slotName);
     }
 
     public void DeletePlayer(string slotName)
     {
         SaveSystem.DeleteFile(slotName);
         files.Remove(slotName);
-        //Destroy(saveContent.transform.Find("SaveSlot (" + slotName + ")").gameObject);
+        //Destroy(saveContent.transform.Find("SaveSlot (" + slotName + ")").gameObject); --Make a call to SlotManager
 
-        //SaveGameFiles();
+        SaveGameFiles();
+    }
+
+    #endregion
+
+    #region GameFiles
+
+    public void SaveGameFiles()
+    {
+        SaveSystem.SerializeGameFiles(this);
+    }
+
+    public void LoadGameFiles()
+    {   
+        UniversalData data = SaveSystem.DeserializeGameFiles();
+
+        if (data == null)
+        {
+            Debug.Log("Adding Universal Data");
+            SaveGameFiles();
+            data = SaveSystem.DeserializeGameFiles();
+        }
+
+        foreach (string file in data.files)
+        {
+            if (SaveSystem.doesFileExist(file))
+                files.Add(file);
+            else
+            {
+                SaveSystem.SerializePlayerData(null, file);
+                files.Add(file);
+            }
+                
+        }
+
+
+        //--make a call to slotmanager to re-add all slots
+
+        masterVolume = data.masterVolume;
+        musicVolume = data.musicVolume;
+        SFXVolume = data.SFXVolume;
     }
 
     #endregion

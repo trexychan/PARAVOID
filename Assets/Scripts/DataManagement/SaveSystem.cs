@@ -39,28 +39,38 @@ namespace DataManagement
             }
         }
 
+        public static bool doesFileExist(string slotName)
+        {
+            string path = Application.persistentDataPath + "/" + slotName +".playerData";
+
+            if (File.Exists(path))
+                return true;
+
+            return false;
+        }
+
         //File Saving and Loading Methods
-        public static void SaveGameFiles(Player player)
+        public static void SerializeGameFiles(Player player)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            string path = Application.persistentDataPath + "/external.gameData";
+            string path = Application.persistentDataPath + "/universal.gameData";
             FileStream stream = new FileStream(path, FileMode.Create);
 
-            ExternalData data = new ExternalData(player);
+            UniversalData data = new UniversalData(player);
 
             formatter.Serialize(stream, data);
             stream.Close();
         }
 
-        public static ExternalData LoadGameFiles()
+        public static UniversalData DeserializeGameFiles()
         {
-            string path = Application.persistentDataPath + "/external.gameData";
+            string path = Application.persistentDataPath + "/universal.gameData";
             if (File.Exists(path))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 FileStream stream = new FileStream(path, FileMode.Open);
 
-                ExternalData data = formatter.Deserialize(stream) as ExternalData;
+                UniversalData data = formatter.Deserialize(stream) as UniversalData;
                 stream.Close();
 
                 return data;
