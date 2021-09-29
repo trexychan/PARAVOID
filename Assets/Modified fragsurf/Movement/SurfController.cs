@@ -13,6 +13,9 @@ namespace Fragsurf.Movement
         private float _deltaTime;
         public bool bruh;
         private int counter=1;
+        private bool sprintOut = false;
+        private float sprintCountdown = 5.0f;
+        private bool crouchReduce = false;
         ///// Methods /////
 
         /// <summary>
@@ -85,16 +88,39 @@ namespace Fragsurf.Movement
                             var stopSpeed = _config.StopSpeed;
                             SurfPhysics.Friction(ref _surfer.MoveData.Velocity, stopSpeed, friction, _deltaTime);
                         }
+                        // crouch speed
                         if (Input.GetKey(KeyCode.LeftControl))
                         {
-                            _config.MaxSpeed = 3f;
-                            
-
+                            if(crouchReduce == false){
+                                _config.MaxSpeed /= 2;
+                            }
+                            crouchReduce = true;
                         }
                         else
                         {
-                            _config.MaxSpeed = 6f;
+                            if(crouchReduce == true){
+                                _config.MaxSpeed *= 2;
+                            }
+                            crouchReduce = false;
                         }
+                        /*
+                        //sprint speed
+                        if (Input.GetKey(KeyCode.LeftShift)) {
+                            if(sprintCountdown != 0 && sprintOut == false){
+                                _config.MaxSpeed = 12f;
+                                sprintCountdown -= Time.deltaTime;
+                                if(sprintCountdown <= 0){
+                                    sprintCountdown = 0;
+                                    sprintOut = true;
+                                }
+                            } else if (sprintOut == true){
+
+                            }
+                            
+                        }
+                        else{
+                        }
+                        */
                     }
 
                     break;
