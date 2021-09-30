@@ -80,7 +80,6 @@ namespace Fragsurf.Movement
                         if (Input.GetKey(KeyCode.Space))
                         {
                             Jump();
-                            Debug.Log("what");
                         }
                         else
                         {
