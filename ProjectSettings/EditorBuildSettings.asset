@@ -5,16 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/ApartmentScene/Apartment.unity
     guid: 97f4c7373f931da41a891f5ec7b24368
-  - enabled: 1
-    path: Assets/Scenes/SampleSceneGroup/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/Alex/AlexTutorial.unity
     guid: 339800484a9acee44b8651cae8f095df
   - enabled: 1
     path: Assets/Scenes/Level1Master.unity
     guid: 1ed91a953633d7145bc47297081baac7
+  - enabled: 1
+    path: Assets/Scenes/HouseMaze/MazeScene.unity
+    guid: c2d8438ed9b88254c8a61bd5c1d70a60
+  - enabled: 1
+    path: Assets/Scenes/ApartmentScene/AptChapter2.unity
+    guid: 798c999f847273c4d8f628bea1de3a2f
   m_configObjects: {}
