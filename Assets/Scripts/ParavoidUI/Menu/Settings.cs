@@ -8,7 +8,6 @@ namespace ParavoidUI
 {
     public class Settings : MonoBehaviour
     {
-        public Player player;
         #region General Variables
 
         #endregion
@@ -19,9 +18,9 @@ namespace ParavoidUI
 
         #region Audio Variables
 
-        Slider masterVolume;
-        Slider musicVolume;
-        Slider SFXVolume;
+        public Slider masterVolume;
+        public Slider musicVolume;
+        public Slider SFXVolume;
 
         #endregion
 
@@ -31,8 +30,6 @@ namespace ParavoidUI
 
         public void Awake()
         {
-            player = GameObject.Find("Player").GetComponent<Player>();
-
             #region Initilize Audio Variables
             masterVolume = transform.Find("Audio").Find("MasterVolume").Find("VolumeAdjuster").GetComponent<Slider>();
             musicVolume = transform.Find("Audio").Find("MusicVolume").Find("VolumeAdjuster").GetComponent<Slider>();
@@ -44,15 +41,7 @@ namespace ParavoidUI
 
         public void ApplySettingsData()
         {
-            #region Saving Audio Variables
-
-            player.masterVolume = masterVolume.value;
-            player.musicVolume = musicVolume.value;
-            player.SFXVolume = SFXVolume.value;
-
-            #endregion
-
-            SaveSystem.SerializeGameFiles(player);
+            SaveSystem.SerializeGameFiles(this, null);
         }
 
         public void ReloadSettingsData()
@@ -70,7 +59,13 @@ namespace ParavoidUI
 
         public void SetDefaultSettings()
         {
-            
+            #region Loading Default Audio Variables
+
+            masterVolume.value = 1; 
+            musicVolume.value = 1;
+            SFXVolume.value = 1;
+
+            #endregion
         }
 
 

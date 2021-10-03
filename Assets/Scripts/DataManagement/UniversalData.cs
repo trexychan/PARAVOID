@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ParavoidUI;
 
 namespace DataManagement
 {
@@ -21,15 +22,44 @@ namespace DataManagement
 
         #endregion
 
-        public UniversalData(Player player)
+        public UniversalData(Settings settings, Player player)
         {
-            //Stores SaveFile Data
-            files = player.files;
+            UniversalData data = SaveSystem.DeserializeGameFiles();
+        
+            if (data != null)
+            {
+                this.files = player != null ? player.files : data.files;
 
-            //Stores Settings Preferences
-            masterVolume = player.masterVolume;
-            musicVolume = player.musicVolume;
-            SFXVolume = player.SFXVolume;
+                #region Saving Audio Variables
+
+                //Stores Audio Variables
+                this.masterVolume = settings != null ? 
+                    settings.masterVolume.value : data.masterVolume;
+                this.musicVolume = settings != null ?
+                    settings.musicVolume.value : data.musicVolume;
+                this.SFXVolume = settings != null ? 
+                    settings.SFXVolume.value : data.SFXVolume;
+
+                #endregion    
+            }
+            else if (data == null)
+            {
+                this.files = player != null ? player.files : null;
+
+                #region Saving Audio Variables
+
+                //Stores Audio Variables
+                this.masterVolume = settings != null ? 
+                    settings.masterVolume.value : 1F;
+                this.musicVolume = settings != null ?
+                    settings.musicVolume.value : 1F;
+                this.SFXVolume = settings != null ? 
+                    settings.SFXVolume.value : 1F;
+
+                #endregion   
+            }
+            
+            
         }
     }
 }

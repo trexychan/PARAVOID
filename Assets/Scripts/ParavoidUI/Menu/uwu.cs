@@ -9,24 +9,32 @@ namespace ParavoidUI
     {
         public Text uwuText;
         public bool touched;
+        public bool touchRepeated;
 
         public void Awake()
         {
             touched = false;
+            touchRepeated = false;
 
             uwuText = transform.Find("Text").GetComponent<Text>();
 
-            StartCoroutine(uwuing());
+            StartCoroutine(blinking());
         }
 
         public void Update()
         {
-            if (touched)
+            if (touchRepeated && touched)
             {
-                StopCoroutine(uwuing());
-                uwuText.text = "uwu";
-                StartCoroutine(uwuing());
+                StopAllCoroutines();
+                StartCoroutine(uwuing(">w<"));
                 touched = false;
+            }
+            else if (touched)
+            {
+                StopAllCoroutines();
+                StartCoroutine(uwuing("uwu"));
+                touched = false;
+                touchRepeated = true;
             }
         }
 
@@ -35,16 +43,26 @@ namespace ParavoidUI
             touched = true;
         }
 
-        private IEnumerator uwuing()
+        private IEnumerator uwuing(string uwuFace)
+        {
+            uwuText.text = uwuFace;
+
+            yield return new WaitForSeconds(1.2f);
+
+            touchRepeated = false;
+
+            StartCoroutine(blinking());
+        }
+
+        private IEnumerator blinking()
         {
             while(true)
             {
-                yield return new WaitForSeconds(3f);
-
                 uwuText.text = "-w-";
                 yield return new WaitForSeconds(0.3f);
 
                 uwuText.text = "OwO";
+                yield return new WaitForSeconds(3f);
             }
         }
     }
