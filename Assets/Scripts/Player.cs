@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; 
 using DataManagement;
+using ParavoidUI;
 
 public class Player : MonoBehaviour 
 {
@@ -17,18 +18,6 @@ public class Player : MonoBehaviour
 
     #region UniversalData
 
-    //For Settings General Panel Preferences
-
-    //For Settings Graphics Panel Preferences
-      
-    //For Settings Audio Panel Preferences
-    public float masterVolume;
-    public float musicVolume;
-    public float SFXVolume;
-
-    //For Settings Controls Panel Preferences
-
-    //For Save Panel Data
     public List<string> files = new List<string>();
 
     #endregion
@@ -101,7 +90,7 @@ public class Player : MonoBehaviour
 
     public void SaveGameFiles()
     {
-        SaveSystem.SerializeGameFiles(this);
+        SaveSystem.SerializeGameFiles(null, this);
     }
 
     public void LoadGameFiles()
@@ -126,13 +115,6 @@ public class Player : MonoBehaviour
             }
                 
         }
-
-
-        //--make a call to slotmanager to re-add all slots
-
-        masterVolume = data.masterVolume;
-        musicVolume = data.musicVolume;
-        SFXVolume = data.SFXVolume;
     }
 
     #endregion
