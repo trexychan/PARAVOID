@@ -7,6 +7,7 @@ TagManager:
   - InteractText
   - jumpy
   - Collectible
+  - SceneTransition
   layers:
   - Default
   - TransparentFX

@@ -26,8 +26,14 @@ public class Interactable : MonoBehaviour
     }
     void OnTriggerEnter(Collider collider)
     {
-        promptText.SetActive(true);
-        playerInRange = true;
+        if (gameObject.CompareTag("SceneTransition"))
+        {
+            SwitchSite();
+        } else
+        {
+            promptText.SetActive(true);
+            playerInRange = true;
+        }
     }
 
     void OnTriggerExit(Collider collider)

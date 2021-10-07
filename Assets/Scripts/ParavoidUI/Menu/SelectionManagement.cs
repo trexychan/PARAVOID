@@ -28,7 +28,7 @@ namespace ParavoidUI
         {
             foreach (Transform child in transform)
                 if (IsObjectConsidered(child.gameObject))
-                    child.gameObject.SetActive(obj == child.gameObject? true : false);
+                    child.gameObject.SetActive(obj == child.gameObject ? true : false);
         }
 
         public void ActivateToggleComponentOnly(GameObject obj)

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using ParavoidUI;
 
 namespace DataManagement
 {   
@@ -50,13 +51,13 @@ namespace DataManagement
         }
 
         //File Saving and Loading Methods
-        public static void SerializeGameFiles(Player player)
+        public static void SerializeGameFiles(Settings settings, Player player)
         {
+            UniversalData data = new UniversalData(settings, player);
+
             BinaryFormatter formatter = new BinaryFormatter();
             string path = Application.persistentDataPath + "/universal.gameData";
             FileStream stream = new FileStream(path, FileMode.Create);
-
-            UniversalData data = new UniversalData(player);
 
             formatter.Serialize(stream, data);
             stream.Close();

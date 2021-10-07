@@ -238,7 +238,6 @@ namespace Fragsurf.Movement
             if (Input.GetKeyDown(JumpButton))
             {
                 _moveData.Buttons = _moveData.Buttons.AddFlag((int)InputButtons.Jump);
-                Debug.Log(true);
             }
             else
                 _moveData.Buttons = _moveData.Buttons.RemoveFlag((int)InputButtons.Jump);
