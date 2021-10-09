@@ -43,7 +43,7 @@ namespace DataManagement
             }
         }
 
-        public static bool doesFileExist(string slotName)
+        public static bool DoesFileExist(string slotName)
         {
             string path = Application.persistentDataPath + "/" + slotName + "." + playerDataExt;
 

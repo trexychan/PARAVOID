@@ -53,6 +53,15 @@ public class Player : MonoBehaviour
 
     #region Player Save System Methods
 
+    //This will be the default values for any new game that is started
+    public void NewPlayer(string slotName)
+    {
+        currentScene = "UITesting";
+
+        this.SavePlayer(slotName);
+        this.LoadPlayer(slotName);
+    }
+
     public void SavePlayer(string slotName)
     {
         dateAndTime = System.DateTime.Now.ToString();

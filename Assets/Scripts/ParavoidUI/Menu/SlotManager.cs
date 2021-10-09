@@ -39,10 +39,7 @@ namespace ParavoidUI
                 {
                     if (fileLimit > 0 && SaveSystem.GetPlayerFiles().Count != fileLimit) //Readds all files if limit isn't satisfied (Developer's concern only)
                     {
-                         IncinerateAllPlayerFiles();
-                    
-                        for (int i = 1; i <= fileLimit; i++)
-                            AddNewSaveFile("Save " + i, true);
+                        ReloadMissingOverwriteFiles();
                     }
                     else if (fileLimit <= 0)
                     {
@@ -291,7 +288,7 @@ namespace ParavoidUI
         public void LoadFile()
         {
             if(targetSlot != null && !targetSlot.GetComponent<SaveSlot>().isFileEmpty 
-            && SaveSystem.doesFileExist(targetSlot.GetComponent<SaveSlot>().slotName))
+            && SaveSystem.DoesFileExist(targetSlot.GetComponent<SaveSlot>().slotName))
             {
                 player.LoadPlayer(targetSlot.GetComponent<SaveSlot>().slotName);
                 //Environemtn Datat load
@@ -358,6 +355,13 @@ namespace ParavoidUI
             }
 
             saveSlots = new List<GameObject>();
+        }
+
+        private void ReloadMissingOverwriteFiles()
+        {              
+            for (int i = 1; i <= fileLimit; i++)
+                if (!SaveSystem.DoesFileExist("Save " + i))
+                    AddNewSaveFile("Save " + i, true);
         }
 
         #endregion
