@@ -22,23 +22,17 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region UniversalData
-
-    public List<string> files = new List<string>();
-
-    #endregion
-
     public void Awake() 
     {
         gameObject.name = "Player";
         currentScene = gameObject.scene.name;
         dateAndTime = System.DateTime.Now.ToString();
 
-        Debug.Log("Awake: " + (PlayerCarryOverData.playerDupe != null? 
-            PlayerCarryOverData.playerDupe.playerFileName : "Null"));
+        //Debug.Log("Awake: " + (PlayerCarryOverData.playerDupe != null? 
+            //PlayerCarryOverData.playerDupe.playerFileName : "Null"));
 
         if (PlayerCarryOverData.playerDupe != null) {
-            Debug.Log("It Ran");
+            //Debug.Log("It Ran");
             PastePlayerData(PlayerCarryOverData.playerDupe);
         } 
 
@@ -65,13 +59,6 @@ public class Player : MonoBehaviour
         playerFileName = slotName;
 
         SaveSystem.SerializePlayerData(this, slotName);
-
-        if(!files.Contains(slotName))
-        {
-            files.Add(slotName);
-
-            SaveGameFiles();
-        }
     }
 
     public void LoadPlayer(string slotName)
@@ -91,8 +78,8 @@ public class Player : MonoBehaviour
 
         //Load the scene
         PlayerCarryOverData.UpdatePlayerData(this);
-        Debug.Log("Loader: " + (PlayerCarryOverData.playerDupe != null? 
-            PlayerCarryOverData.playerDupe.playerFileName : "Null"));
+        //Debug.Log("Loader: " + (PlayerCarryOverData.playerDupe != null? 
+            //PlayerCarryOverData.playerDupe.playerFileName : "Null"));
         SceneLoader.LoadScene(currentScene);
     }
 
@@ -119,43 +106,7 @@ public class Player : MonoBehaviour
     public void DeletePlayer(string slotName)
     {
         SaveSystem.DeleteFile(slotName);
-        files.Remove(slotName);
         //Destroy(saveContent.transform.Find("SaveSlot (" + slotName + ")").gameObject); --Make a call to SlotManager
-
-        SaveGameFiles();
-    }
-
-    #endregion
-
-    #region GameFiles
-
-    public void SaveGameFiles()
-    {
-        SaveSystem.SerializeGameFiles(null, this);
-    }
-
-    public void LoadGameFiles()
-    {   
-        UniversalData data = SaveSystem.DeserializeGameFiles();
-
-        if (data == null)
-        {
-            Debug.Log("Adding Universal Data");
-            SaveGameFiles();
-            data = SaveSystem.DeserializeGameFiles();
-        }
-
-        foreach (string file in data.files)
-        {
-            if (SaveSystem.doesFileExist(file))
-                files.Add(file);
-            else
-            {
-                SaveSystem.SerializePlayerData(null, file);
-                files.Add(file);
-            }
-                
-        }
     }
 
     #endregion

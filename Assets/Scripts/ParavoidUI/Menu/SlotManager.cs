@@ -33,12 +33,11 @@ namespace ParavoidUI
             {
                 player = GameObject.Find("Player").GetComponent<Player>(); 
 
-                player.LoadGameFiles();
-                AddAllSavedSlots(player.files);
+                AddAllSavedSlots(SaveSystem.GetPlayerFiles());
 
                 if (overwriteMode) //When Overwrite mode on, potentially incinerates previously stored files
                 {
-                    if (fileLimit > 0 && player.files.Count != fileLimit) //Readds all files if limit isn't satisfied (Developer's concern only)
+                    if (fileLimit > 0 && SaveSystem.GetPlayerFiles().Count != fileLimit) //Readds all files if limit isn't satisfied (Developer's concern only)
                     {
                          IncinerateAllPlayerFiles();
                     
@@ -126,7 +125,7 @@ namespace ParavoidUI
 
         private void ResortAddNewSlotPrefab()
         {   
-            if (addNewSlotPrefab != null && fileLimit > 0 ? player.files.Count < fileLimit : true)
+            if (addNewSlotPrefab != null && fileLimit > 0 ? SaveSystem.GetPlayerFiles().Count < fileLimit : true)
             {   
                 addNewSlotPrefab.SetActive(true);
 
@@ -138,7 +137,7 @@ namespace ParavoidUI
 
                 addNewSlotPrefab = newSlot;
             }
-            else if (player.files.Count >= fileLimit)
+            else if (SaveSystem.GetPlayerFiles().Count >= fileLimit)
             {
                 addNewSlotPrefab.SetActive(false);
             }
@@ -169,7 +168,7 @@ namespace ParavoidUI
 
             windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
             windowScript.AddMethodToButtonLeft(delegate {
-                AddNewSaveFile(player.files.Count + 1 + "");
+                AddNewSaveFile(SaveSystem.GetPlayerFiles().Count + 1 + "");
                 Destroy(window);});
             
             windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
