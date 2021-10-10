@@ -174,7 +174,6 @@ namespace Fragsurf.Movement
             UpdateRotation();
             UpdateMoveData();
             _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
-
         }
         public float GetTheVelocity()
         {

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 4517213774757605605}
   - component: {fileID: 7215942144287312416}
   - component: {fileID: 7215942144287312429}
+  - component: {fileID: 8421837294553864792}
   m_Layer: 8
-  m_Name: Jumper
+  m_Name: Player
   m_TagString: jumpy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,17 +48,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TickRate: 128
-  ColliderSize: {x: 1, y: 2, z: 1}
+  ColliderSizeX: 1
+  ColliderSizeY: 2
+  ColliderSizeZ: 1
   CollisionType: 0
   viewTransform: {fileID: 8898920954468371808}
   ViewOffset: {x: 0, y: 0.5, z: 0.1}
   XSens: 50
   YSens: 50
   JumpButton: 32
+  CrouchButton: 306
   MoveLeft: 97
   MoveRight: 100
   MoveForward: 119
   MoveBack: 115
+  InteractButton: 101
   moveConfig:
     Gravity: 15.24
     Bounce: 0
@@ -94,6 +99,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8421837294553864792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517213774757605604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1e7b8a8657ceb741895bb9f9dd91391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPosition: {x: 0, y: 0, z: 0}
+  currentScene: 
+  dateAndTime: 
+  playerFileName: 
 --- !u!1 &6608813389092423971
 GameObject:
   m_ObjectHideFlags: 0
