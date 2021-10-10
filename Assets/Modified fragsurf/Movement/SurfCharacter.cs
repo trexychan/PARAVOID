@@ -57,7 +57,6 @@ namespace Fragsurf.Movement
         private float capcHeight;
         private float capcRadius;
         
-
         ///// Properties /////
         
         public bool InteractPressed { get; private set; }
