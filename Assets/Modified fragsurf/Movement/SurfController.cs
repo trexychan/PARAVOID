@@ -3,6 +3,7 @@ using Fragsurf.TraceUtil;
 
 namespace Fragsurf.Movement
 {
+   
     public class SurfController
     {
 
@@ -16,11 +17,16 @@ namespace Fragsurf.Movement
         private bool sprintOut = false;
         private float sprintCountdown = 5.0f;
         private bool crouchReduce = false;
+
+        private bool hasLocket = false;
+
+
         ///// Methods /////
 
         /// <summary>
         /// 
         /// </summary>
+        
         public void ProcessMovement(ISurfControllable surfer, MovementConfig config, float deltaTime)
         {
             // cache instead of passing around parameters
@@ -61,7 +67,7 @@ namespace Fragsurf.Movement
                     {
                         // apply movement from input
                         _surfer.MoveData.Velocity += AirInputMovement();
-                    if (_surfer.MoveData.Buttons.HasFlag((int)InputButtons.Jump)&&counter>0)
+                    if (_surfer.MoveData.Buttons.HasFlag((int)InputButtons.Jump)&&counter>0 && Locket.hasLocket == true)
                         {
                             _surfer.MoveData.Velocity = new Vector3(_surfer.MoveData.Velocity.x, 0, _surfer.MoveData.Velocity.z);
                             Jump();
