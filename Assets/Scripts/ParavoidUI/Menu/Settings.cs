@@ -41,7 +41,7 @@ namespace ParavoidUI
 
         public void ApplySettingsData()
         {
-            SaveSystem.SerializeGameFiles(this, null);
+            SaveSystem.SerializeGameFiles(this);
         }
 
         public void ReloadSettingsData()
