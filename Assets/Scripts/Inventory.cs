@@ -16,6 +16,7 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
     }
 
@@ -24,8 +25,8 @@ public class Inventory : MonoBehaviour
         GameObject item = trigger.gameObject;
         if (item.tag.Equals("Collectible"))
         {
-                item.SetActive(false);
-                inventory.Add(item);
+            item.SetActive(false);
+            inventory.Add(item);
         }
 
     }
