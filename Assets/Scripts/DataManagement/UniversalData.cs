@@ -1,18 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ParavoidUI;
 
 namespace DataManagement
 {
     [System.Serializable]
     public class UniversalData
     {
-        #region FileData (for storing all saves and time slots)
-
-        public List<string> files = new List<string>();
-
-        #endregion
-
         #region Settings Preferences (for storing data applied to settings)
 
         public float masterVolume;
@@ -21,15 +16,16 @@ namespace DataManagement
 
         #endregion
 
-        public UniversalData(Player player)
+        public UniversalData(Settings settings) //Settings is expected to not be null
         {
-            //Stores SaveFile Data
-            files = player.files;
+            #region Saving Audio Variables
 
-            //Stores Settings Preferences
-            masterVolume = player.masterVolume;
-            musicVolume = player.musicVolume;
-            SFXVolume = player.SFXVolume;
+            //Stores Audio Variables
+            this.masterVolume = settings.masterVolume.value;
+            this.musicVolume = settings.musicVolume.value;
+            this.SFXVolume =  settings.SFXVolume.value;
+
+            #endregion              
         }
     }
 }

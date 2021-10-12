@@ -16,5 +16,10 @@ namespace ParavoidUI
             if (GetComponent<Toggle>().isOn)
                 transform.parent.gameObject.GetComponent<SlotManager>().targetSlot = gameObject;
         }
+
+        public static void FormatSlot()
+        {
+
+        }
     }    
 }
