@@ -33,17 +33,13 @@ namespace ParavoidUI
             {
                 player = GameObject.Find("Player").GetComponent<Player>(); 
 
-                player.LoadGameFiles();
-                AddAllSavedSlots(player.files);
+                AddAllSavedSlots(SaveSystem.GetPlayerFiles());
 
                 if (overwriteMode) //When Overwrite mode on, potentially incinerates previously stored files
                 {
-                    if (fileLimit > 0 && player.files.Count != fileLimit) //Readds all files if limit isn't satisfied (Developer's concern only)
+                    if (fileLimit > 0 && SaveSystem.GetPlayerFiles().Count != fileLimit) //Readds all files if limit isn't satisfied (Developer's concern only)
                     {
-                         IncinerateAllPlayerFiles();
-                    
-                        for (int i = 1; i <= fileLimit; i++)
-                            AddNewSaveFile("Save " + i, true);
+                        ReloadMissingOverwriteFiles();
                     }
                     else if (fileLimit <= 0)
                     {
@@ -126,7 +122,7 @@ namespace ParavoidUI
 
         private void ResortAddNewSlotPrefab()
         {   
-            if (addNewSlotPrefab != null && fileLimit > 0 ? player.files.Count < fileLimit : true)
+            if (addNewSlotPrefab != null && fileLimit > 0 ? SaveSystem.GetPlayerFiles().Count < fileLimit : true)
             {   
                 addNewSlotPrefab.SetActive(true);
 
@@ -138,7 +134,7 @@ namespace ParavoidUI
 
                 addNewSlotPrefab = newSlot;
             }
-            else if (player.files.Count >= fileLimit)
+            else if (SaveSystem.GetPlayerFiles().Count >= fileLimit)
             {
                 addNewSlotPrefab.SetActive(false);
             }
@@ -169,7 +165,7 @@ namespace ParavoidUI
 
             windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
             windowScript.AddMethodToButtonLeft(delegate {
-                AddNewSaveFile(player.files.Count + 1 + "");
+                AddNewSaveFile(SaveSystem.GetPlayerFiles().Count + 1 + "");
                 Destroy(window);});
             
             windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
@@ -292,7 +288,7 @@ namespace ParavoidUI
         public void LoadFile()
         {
             if(targetSlot != null && !targetSlot.GetComponent<SaveSlot>().isFileEmpty 
-            && SaveSystem.doesFileExist(targetSlot.GetComponent<SaveSlot>().slotName))
+            && SaveSystem.DoesFileExist(targetSlot.GetComponent<SaveSlot>().slotName))
             {
                 player.LoadPlayer(targetSlot.GetComponent<SaveSlot>().slotName);
                 //Environemtn Datat load
@@ -359,6 +355,13 @@ namespace ParavoidUI
             }
 
             saveSlots = new List<GameObject>();
+        }
+
+        private void ReloadMissingOverwriteFiles()
+        {              
+            for (int i = 1; i <= fileLimit; i++)
+                if (!SaveSystem.DoesFileExist("Save " + i))
+                    AddNewSaveFile("Save " + i, true);
         }
 
         #endregion

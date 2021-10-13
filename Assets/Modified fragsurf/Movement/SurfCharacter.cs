@@ -57,7 +57,6 @@ namespace Fragsurf.Movement
         private float capcHeight;
         private float capcRadius;
         
-
         ///// Properties /////
         
         public bool InteractPressed { get; private set; }
@@ -174,7 +173,6 @@ namespace Fragsurf.Movement
             UpdateRotation();
             UpdateMoveData();
             _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
-
         }
         public float GetTheVelocity()
         {
