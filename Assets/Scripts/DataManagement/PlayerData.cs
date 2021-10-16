@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 namespace DataManagement
 {
@@ -11,7 +12,7 @@ namespace DataManagement
         #region FileData (for storing file specific data)
 
         public bool empty;
-        public string dateAndTime;
+        public DateTime dateAndTime;
         public string playerFileName;
 
         #endregion
@@ -40,11 +41,11 @@ namespace DataManagement
 
                 //Stores the last scene the player loaded to
                 currentScene = player.currentScene;
-            }  
+            }
             else
             {
                 empty = true;
-            }     
+            }
         }
     }
 }
