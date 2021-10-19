@@ -42,44 +42,30 @@ namespace ParavoidUI
         public void ApplySettingsData()
         {
             SaveSystem.SerializeGameFiles(this);
-            UpdateChanges();
         }
 
         public void ReloadSettingsData()
         {
             UniversalData data = SaveSystem.DeserializeGameFiles();
 
-            if (data == null)
-            {
-                SetDefaultSettings();
-                return;
-            }
-
             #region Loading Audio Variables
 
-            masterVolume.value = data.masterVolume;
+            masterVolume.value = data.masterVolume; 
             musicVolume.value = data.musicVolume;
             SFXVolume.value = data.SFXVolume;
 
             #endregion
-
-            UpdateChanges();
         }
 
         public void SetDefaultSettings()
         {
             #region Loading Default Audio Variables
 
-            masterVolume.value = 1;
+            masterVolume.value = 1; 
             musicVolume.value = 1;
             SFXVolume.value = 1;
 
             #endregion
-        }
-
-        public void UpdateChanges()
-        {
-
         }
 
 

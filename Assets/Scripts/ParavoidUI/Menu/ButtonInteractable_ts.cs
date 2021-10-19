@@ -12,11 +12,9 @@ public class ButtonInteractable_ts : MonoBehaviour
     private Button loadButt;
     private Player player;
 
-    private bool fileChange;
-
     public GameObject alertWindow;
 
-    public void Awake()
+    public void Awake() 
     {
         newGameButt = transform.Find("button_newGame").GetComponent<Button>();
         continueButt = transform.Find("button_continue").GetComponent<Button>();
@@ -33,15 +31,11 @@ public class ButtonInteractable_ts : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
 
         SetNewSaveButton();
-
-        fileChange = false;
     }
 
     public void Update()
     {
-        SetNewSaveButton();
-        SetContinueButton();
-        //SetButtonActivity();
+
     }
 
     //If any files are not empty, then the following buttons will be interactable, otherwise, they will not.
@@ -57,7 +51,7 @@ public class ButtonInteractable_ts : MonoBehaviour
                 return;
             }
         }
-
+            
         continueButt.interactable = false;
         loadButt.interactable = false;
     }
@@ -68,7 +62,7 @@ public class ButtonInteractable_ts : MonoBehaviour
 
         if (SaveSystem.GetPlayerFiles().Count <= 0)
         {
-            newGameButt.onClick.AddListener(delegate { player.NewPlayer("Save 1"); });
+            newGameButt.onClick.AddListener(delegate {player.NewPlayer("Save 1");}); 
             return;
         }
 
@@ -76,112 +70,31 @@ public class ButtonInteractable_ts : MonoBehaviour
         {
             if (SaveSystem.DeserializePlayerData(file).empty == true)
             {
-                newGameButt.onClick.AddListener(delegate { OpenStartNewGameWindow(file); });
+                newGameButt.onClick.AddListener(delegate {player.NewPlayer(file);}); 
                 return;
             }
         }
 
-        newGameButt.onClick.AddListener(delegate { OpenFilesFullWindow("File Slots are Full, please delete existing files to create new ones."); });
+        newGameButt.onClick.AddListener(delegate {OpenFilesFullWindow();});
 
     }
 
-    public void SetContinueButton()
-    {
-        string latestFile = null;
-        List<string> files = SaveSystem.GetPlayerFiles();
-
-        continueButt.onClick.RemoveAllListeners();
-
-        if (files.Count <= 0)
-        {
-            continueButt.onClick.AddListener(delegate { OpenFilesFullWindow("No Save Files to Load"); });
-            return;
-        }
-
-        latestFile = files[0];
-
-        for (int i = 1; i < files.Count - 1; i++)
-        {
-            if (SaveSystem.DeserializePlayerData(files[i]).empty == false && SaveSystem.DeserializePlayerData(latestFile).empty == false)
-            {
-                if (SaveSystem.DeserializePlayerData(files[i]).dateAndTime > SaveSystem.DeserializePlayerData(latestFile).dateAndTime)
-                {
-                    latestFile = files[i];
-                }
-            }
-            else if (SaveSystem.DeserializePlayerData(files[i]).empty == false && SaveSystem.DeserializePlayerData(latestFile).empty == true)
-            {
-                latestFile = files[i];
-            }
-
-        }
-
-        continueButt.onClick.AddListener(delegate { OpenContinueGameWindow(latestFile != null ? latestFile : "Lol"); });
-
-    }
-
-    public void OpenFilesFullWindow(string msg)
+    public void OpenFilesFullWindow()
     {
         GameObject window = Instantiate(alertWindow);
         AlertWindow windowScript = window.GetComponent<AlertWindow>();
         window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
 
-        windowScript.message.text = msg;
+        windowScript.message.text = "File Slots are Full, please delete existing files to create new ones.";
 
         windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "Ok";
         Vector3 pos = windowScript.buttonLeft.gameObject.GetComponent<RectTransform>().anchoredPosition;
         pos.x = 0;
         windowScript.buttonLeft.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
-        windowScript.AddMethodToButtonLeft(delegate
-        {
-            Destroy(window);
-        });
+        windowScript.AddMethodToButtonLeft(delegate {
+        Destroy(window);});
 
         Destroy(windowScript.buttonRight.gameObject);
-    }
-
-    public void OpenStartNewGameWindow(string fileBeingSavedIn)
-    {
-        GameObject window = Instantiate(alertWindow);
-        AlertWindow windowScript = window.GetComponent<AlertWindow>();
-        window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
-
-        windowScript.message.text = "New Game File will be created in " + fileBeingSavedIn + "\n Do you want to start a new game?";
-
-        windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "Yes";
-        windowScript.AddMethodToButtonLeft(delegate
-        {
-            player.NewPlayer(fileBeingSavedIn);
-            Destroy(window);
-        });
-
-        windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "No";
-        windowScript.AddMethodToButtonRight(delegate
-        {
-            Destroy(window);
-        });
-    }
-
-    public void OpenContinueGameWindow(string fileToLoad)
-    {
-        GameObject window = Instantiate(alertWindow);
-        AlertWindow windowScript = window.GetComponent<AlertWindow>();
-        window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
-
-        windowScript.message.text = "Load this file " + fileToLoad + "?";
-
-        windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "Yes";
-        windowScript.AddMethodToButtonLeft(delegate
-        {
-            player.LoadPlayer(fileToLoad);
-            Destroy(window);
-        });
-
-        windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "No";
-        windowScript.AddMethodToButtonRight(delegate
-        {
-            Destroy(window);
-        });
     }
 
 
