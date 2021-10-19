@@ -1020,7 +1020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   promptText: {fileID: 1266868662}
-  dest_scene: AlexTutorial
+  dest_scene: SaraTutorialMaster
   dest_pos: {x: -10, y: 2, z: 18}
 --- !u!1001 &999173146
 PrefabInstance:
