@@ -3,7 +3,22 @@ guid: d1073c42d0079214ab9f69de64911c00
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CounterTop
+    second: {fileID: 2100000, guid: 49b45369abf7e124790294a34beeeaa1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: KitchenWood
+    second: {fileID: 2100000, guid: a1d0e2c6a3bf55f4ebd48b6a776f6ffc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SinkMetal
+    second: {fileID: 2100000, guid: 6a47d3c047b15df48b19ab506f6370cf, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
