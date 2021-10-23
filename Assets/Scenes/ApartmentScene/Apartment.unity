@@ -1139,7 +1139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1050642386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1793,7 +1793,7 @@ PrefabInstance:
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.88
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
@@ -1803,27 +1803,27 @@ PrefabInstance:
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.95
+      value: 2.21
       objectReference: {fileID: 0}
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.2702326
       objectReference: {fileID: 0}
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.96279514
       objectReference: {fileID: 0}
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
@@ -1833,7 +1833,7 @@ PrefabInstance:
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 148.644
       objectReference: {fileID: 0}
     - target: {fileID: 4517213774757605605, guid: f4fb1bc40aa5df242b214fd4d72770ab,
         type: 3}
