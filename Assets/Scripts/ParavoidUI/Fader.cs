@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace ParavoidUI
 {
-   public class Fader : MonoBehaviour
+    public class Fader : MonoBehaviour
     {
         //private Image screen;
         private bool isFaded;
@@ -34,18 +34,24 @@ namespace ParavoidUI
                         if (child.gameObject.activeInHierarchy)
                         {
                             Debug.Log("Deactive: " + child.gameObject.name);
+                            Time.timeScale = 1f;
+                            Cursor.lockState = CursorLockMode.Confined;
+                            Cursor.visible = false;
                             child.gameObject.SetActive(false);
                         }
                         else
                         {
                             Debug.Log("Active: " + child.gameObject.name);
+                            Time.timeScale = 0f;
+                            Cursor.lockState = CursorLockMode.None;
+                            Cursor.visible = true;
                             child.gameObject.SetActive(true);
                         }
 
                         break;
                     }
                 }
-               
+
             }
         }
 
@@ -66,14 +72,14 @@ namespace ParavoidUI
 
         public void ToggleFade()
         {
-            if(!isFaded)
+            if (!isFaded)
             {
-                isFaded = false; 
+                isFaded = false;
                 UnFadeScreen();
-            } 
+            }
             else
                 FadeScreenTo(0.4f);
         }
-    } 
+    }
 }
 
