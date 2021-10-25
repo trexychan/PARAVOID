@@ -11,10 +11,11 @@ public class Interactable : MonoBehaviour
     public Vector3 dest_pos;
     SurfCharacter player;
     private bool playerInRange = false;
-    
+
     void Awake()
     {
         player = FindObjectOfType<SurfCharacter>();
+        promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
     }
 
     void Start()
@@ -29,7 +30,8 @@ public class Interactable : MonoBehaviour
         if (gameObject.CompareTag("SceneTransition"))
         {
             SwitchSite();
-        } else
+        }
+        else
         {
             promptText.SetActive(true);
             playerInRange = true;
