@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Alex/AlexTutorial.unity
     guid: 339800484a9acee44b8651cae8f095df
   - enabled: 1
-    path: Assets/Scenes/Level1Master.unity
+    path: Assets/Scenes/CityLevel.unity
     guid: 1ed91a953633d7145bc47297081baac7
   - enabled: 1
     path: Assets/Scenes/HouseMaze/MazeScene.unity
