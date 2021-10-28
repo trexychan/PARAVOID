@@ -8,6 +8,7 @@ TagManager:
   - jumpy
   - Collectible
   - SceneTransition
+  - Timmy
   layers:
   - Default
   - TransparentFX
