@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: sisterwalls
+  m_Name: sisfloor
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _METALLICGLOSSMAP _NORMALMAP _PARALLAXMAP
   m_LightmapFlags: 4
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: d3ae06682135aa842a342fde7eb5f11c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9cdcca71eec966f4fa33e3c329fc266f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -37,22 +37,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.67, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e7d4d8a4a7e901b41a2152b5bb2d8185, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 28226e5d6e7a4a044b6783f068a2297d, type: 3}
+        m_Scale: {x: 0.67, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: b68c205ef6f45dc458e16c4cf0f8f42a, type: 3}
+        m_Texture: {fileID: 2800000, guid: af41dac22903bb742bf58552a2d0fa7e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 044e0573e12481943947c7fde1ff83b4, type: 3}
+        m_Texture: {fileID: 2800000, guid: 543813e4333d0bc4982acd7331df8c08, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 74c51e2c80c44974681eb1253fb0b92e, type: 3}
+        m_Texture: {fileID: 2800000, guid: f2a31454d0f1570488965244dc2022f0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
