@@ -20,37 +20,24 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] GameObject parent;
 
-    //private int _g;
-
-    //public int G
-    //{
-    //    get
-    //    {
-    //        return g;
-    //    }
-    //    set
-    //    {
-    //        _g = value;
-    //    }
-    //}
-
     /**
-     * Including this as a list in the WaypointNode class rather
-     * than in WaypointBehaviour class should make things easier
-     * to read and more organized in general. Otherwise we're
-     * iterating through every node 
+     * Store legal nodes for the path with their G-Values as a Dictionary
      */
-    private ArrayList _nodeList;
+    private Dictionary<GameObject, float> _nodeMap;
 
-    public ArrayList NodeList
+    /// <summary>
+    /// Access the NodeMap as a C# Property, read-only outside of this
+    /// class.
+    /// </summary>
+    public Dictionary<GameObject, float> NodeMap
     {
         get
         {
-            return _nodeList;
+            return _nodeMap;
         }
         private set
         {
-            _nodeList = value;
+            _nodeMap = value;
         }
     }
 
@@ -59,8 +46,13 @@ public class WaypointNode : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        NodeList = new ArrayList();
+        NodeMap = new Dictionary<GameObject, float>();
         ConnectNodes();
+        Debug.Log($"Current Node: {this.gameObject.name}");
+        foreach (GameObject node in NodeMap.Keys)
+        {
+            Debug.Log($"Waypoint: {node.name}\nG Value: {NodeMap[node]}");
+        }
     }
 
     /// <summary>
@@ -77,15 +69,17 @@ public class WaypointNode : MonoBehaviour
             if (!child.gameObject.Equals(this.gameObject))
             {
                 // If raycast doesn't hit something between waypoints, add Node to list
-                if (!Physics.Raycast(this.gameObject.transform.position,     // Start position of raycast
-                    (child.position - this.gameObject.transform.position),  // Direction of raycast
-                    80f))                                                   // Max distance of raycast
+                if (!Physics.Raycast(this.gameObject.transform.position,                        // Start position of raycast
+                    (child.position - this.gameObject.transform.position),                      // Direction of raycast
+                    (child.position - this.gameObject.transform.position).magnitude - 1f,       // Max distance of raycast
+                    ~LayerMask.GetMask("Timmy")                                                 // Ignore Timmy in the raycast
+                    ))  
                 {
                     Debug.DrawRay(this.gameObject.transform.position,
                         child.position - this.gameObject.transform.position,
                         color: Color.green,
                         duration: Mathf.Infinity);
-                    NodeList.Add(child.gameObject);
+                    NodeMap.Add(child.gameObject, (child.position - this.gameObject.transform.position).magnitude);
                 }
                 else
                 {
