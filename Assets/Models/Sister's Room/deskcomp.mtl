@@ -1,0 +1,39 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v3.1.202510665)
+
+newmtl WhiteMouse
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl Computer
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl KeyboardWhite
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl Screen
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl ComputerBlack
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl Glass
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl DeskLeg
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl ChairSilber
+kd 0.8 0.8 0.8
+illum 1
+
+newmtl ChairBlack
+kd 0.8 0.8 0.8
+illum 1
+
