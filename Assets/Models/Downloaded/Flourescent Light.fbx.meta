@@ -3,7 +3,37 @@ guid: b3568cfc7b2c87c4a851f8d1929c2963
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cord
+    second: {fileID: 2100000, guid: 6e73f716c7b92de4faaca5a8fdeb20d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Diffuser
+    second: {fileID: 2100000, guid: 04db58689a17beb438b59772d03474f9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fixture
+    second: {fileID: 2100000, guid: e898a078f52ed4f488aec08f39e5bef3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal Sockets
+    second: {fileID: 2100000, guid: ebc04d2d485527b43a6cc24bf5df22f9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plug
+    second: {fileID: 2100000, guid: afc64abb98943704a8af4db6bb09739c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White Glass
+    second: {fileID: 2100000, guid: f8556494c227c994ea101425884a9154, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
