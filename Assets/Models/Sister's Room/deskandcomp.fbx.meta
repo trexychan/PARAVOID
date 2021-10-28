@@ -3,7 +3,52 @@ guid: 9627ed216e8708643b6b869933aebf46
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChairBlack
+    second: {fileID: 2100000, guid: c4c3667d6c0285943aec54f04dd1b733, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChairSilber
+    second: {fileID: 2100000, guid: 068a9a575e9cbe549bec2aa4477382bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Computer
+    second: {fileID: 2100000, guid: 6b86c6503994a3e4db3190159fd6a8de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ComputerBlack
+    second: {fileID: 2100000, guid: 82b5746147377e345a64167ebaa768c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DeskLeg
+    second: {fileID: 2100000, guid: 4deda77a374b92240985d81aeb68a250, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: a03e622585471e648a25b0de4367caf3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: KeyboardWhite
+    second: {fileID: 2100000, guid: be3be9e533266984eb9c5d64b92a2266, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen
+    second: {fileID: 2100000, guid: 3ab5e2f3a7169f243997e9d3085f5769, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WhiteMouse
+    second: {fileID: 2100000, guid: 1d619572c8ca88d47bd5c3451540fead, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
