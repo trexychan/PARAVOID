@@ -33,8 +33,13 @@ namespace Fragsurf.Movement
         [Header("Input Settings")]
         public float XSens = 50;
         public float YSens = 50;
-        
-        public PlayerControls playerControls;
+        public KeyCode JumpButton = KeyCode.LeftShift;
+        public KeyCode CrouchButton = KeyCode.LeftControl;
+        public KeyCode MoveLeft = KeyCode.A;
+        public KeyCode MoveRight = KeyCode.D;
+        public KeyCode MoveForward = KeyCode.W;
+        public KeyCode MoveBack = KeyCode.S;
+        public KeyCode InteractButton = KeyCode.E;
 
         [Header("Movement Config")]
         [SerializeField]
@@ -53,31 +58,7 @@ namespace Fragsurf.Movement
         private float capcRadius;
         
         ///// Properties /////
-        void OnEnable()
-        {
-            playerControls.Enable();
-        }    
-
-        void OnDisable()
-        {
-            playerControls.Disable();
-        }
-
-        public Vector2 getPlayerMoveVector()
-        {
-            return playerControls.Player.Move.ReadValue<Vector2>();
-        }
-
-        public Vector2 getMouseDeltaVector()
-        {
-            return playerControls.Player.Look.ReadValue<Vector2>();
-        }
-
-        public bool PlayerJumped()
-        {
-            return playerControls.Player.Jump.triggered;
-        }
-
+        
         public bool InteractPressed { get; private set; }
         
         public MoveType MoveType
@@ -130,7 +111,6 @@ namespace Fragsurf.Movement
 
         private void Awake()
         {
-            playerControls = new PlayerControls();
             Application.targetFrameRate = 144;
             QualitySettings.vSyncCount = 1;
 
@@ -223,8 +203,13 @@ namespace Fragsurf.Movement
 
         private void UpdateMoveData()
         {
-            
-            InteractPressed = playerControls.Player.Interact.triggered;
+            var moveLeft = Input.GetKey(MoveLeft);
+            var moveRight = Input.GetKey(MoveRight);
+            var moveFwd = Input.GetKey(MoveForward);
+            var moveBack = Input.GetKey(MoveBack);
+            var jump = Input.GetKey(JumpButton);
+            var crouch = Input.GetKey(CrouchButton);
+            InteractPressed = Input.GetKeyDown(InteractButton);
 
             //Shit Variables for the Shit Crouch mechanic
             var capc = (CapsuleCollider)_collider;
@@ -234,28 +219,28 @@ namespace Fragsurf.Movement
             Vector3 stepRayUpper = new Vector3(transform.position.x, (transform.position.y)-capcHeight/3, transform.position.z);
             
 
-            if (getPlayerMoveVector().x == 0)
+            if (!moveLeft && !moveRight)
                 _moveData.SideMove = 0;
-            else if (getPlayerMoveVector().x < 0)
+            else if (moveLeft)
                 _moveData.SideMove = -MoveConfig.Accel;
-            else if (getPlayerMoveVector().x > 0)
+            else if (moveRight)
                 _moveData.SideMove = MoveConfig.Accel;
 
-            if (getPlayerMoveVector().y == 0)
+            if (!moveFwd && !moveBack)
                 _moveData.ForwardMove = 0;
-            else if (getPlayerMoveVector().y > 0)
+            else if (moveFwd)
                 _moveData.ForwardMove = MoveConfig.Accel;
-            else if (getPlayerMoveVector().x < 0)
+            else if (moveBack)
                 _moveData.ForwardMove = -MoveConfig.Accel;
 
-            if (PlayerJumped())
+            if (Input.GetKeyDown(JumpButton))
             {
                 _moveData.Buttons = _moveData.Buttons.AddFlag((int)InputButtons.Jump);
             }
             else
                 _moveData.Buttons = _moveData.Buttons.RemoveFlag((int)InputButtons.Jump);
 
-            if (playerControls.Player.Crouch.triggered)
+            if (crouch)
             {
                 capc.height = ColliderSizeY / 2;
                 
@@ -290,8 +275,8 @@ namespace Fragsurf.Movement
         }
         private void UpdateRotation()
         {
-            float mx = (getMouseDeltaVector().x * XSens * .02f);
-            float my = getMouseDeltaVector().y * YSens * .02f;
+            float mx = (Input.GetAxis("Mouse X") * XSens * .02f);
+            float my = Input.GetAxis("Mouse Y") * YSens * .02f;
             var rot = _angles + new Vector3(-my, mx, 0f);
             rot.x = Mathf.Clamp(rot.x, -85f, 85f);
             _angles = rot;

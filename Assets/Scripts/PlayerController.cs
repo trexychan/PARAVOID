@@ -64,7 +64,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        
+        if (playerControls.Player.Sprint.triggered)
+        {
+            ToggleSprint();
+        }
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, layerMask);
         if (isGrounded && playerVelocity.y <= 0)
         {
