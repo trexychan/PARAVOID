@@ -26,7 +26,7 @@ public class WaypointNode : MonoBehaviour
     private Dictionary<GameObject, float> _nodeMap;
 
     /// <summary>
-    /// Access the NodeMap as a C# Property, read-only outside of this
+    /// Access the NodeMap as a C# Property. Read-only outside of this
     /// class.
     /// </summary>
     public Dictionary<GameObject, float> NodeMap
@@ -41,9 +41,7 @@ public class WaypointNode : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    
     private void Awake()
     {
         NodeMap = new Dictionary<GameObject, float>();
@@ -71,8 +69,7 @@ public class WaypointNode : MonoBehaviour
                 // If raycast doesn't hit something between waypoints, add Node to list
                 if (!Physics.Raycast(this.gameObject.transform.position,                        // Start position of raycast
                     (child.position - this.gameObject.transform.position),                      // Direction of raycast
-                    (child.position - this.gameObject.transform.position).magnitude - 1f,       // Max distance of raycast
-                    ~LayerMask.GetMask("Timmy")                                                 // Ignore Timmy in the raycast
+                    (child.position - this.gameObject.transform.position).magnitude - 1f        // Max distance of raycast
                     ))  
                 {
                     Debug.DrawRay(this.gameObject.transform.position,
