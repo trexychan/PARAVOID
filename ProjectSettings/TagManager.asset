@@ -9,6 +9,8 @@ TagManager:
   - Collectible
   - SceneTransition
   - locket
+  - Timmy
+  - Cup
   layers:
   - Default
   - TransparentFX
