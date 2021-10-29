@@ -28,7 +28,10 @@ public class ButtonBehavior : MonoBehaviour
 
         backButt.onClick.AddListener(delegate
         {
-
+            transform.parent.gameObject.SetActive(false);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+            Time.timeScale = 1;
         });
     }
 

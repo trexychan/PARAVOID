@@ -21,6 +21,7 @@ namespace DataManagement
 
         public string currentScene; //Stores what scene level player will load back to
         public float[] currentPosition = new float[3]; //Stores player postion in scene level
+        public float[] currentRotation = new float[4];
 
         #endregion
 
@@ -38,6 +39,12 @@ namespace DataManagement
                 currentPosition[0] = player.currentPosition.x;
                 currentPosition[1] = player.currentPosition.y;
                 currentPosition[2] = player.currentPosition.z;
+
+                //Stores player current rotation in currentlevel
+                currentRotation[0] = player.currentRotation.x;
+                currentRotation[1] = player.currentRotation.y;
+                currentRotation[2] = player.currentRotation.z;
+                currentRotation[3] = player.currentRotation.w;
 
                 //Stores the last scene the player loaded to
                 currentScene = player.currentScene;

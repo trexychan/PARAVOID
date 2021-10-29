@@ -95,12 +95,13 @@ public class ButtonInteractable_ts : MonoBehaviour
         if (files.Count <= 0)
         {
             continueButt.onClick.AddListener(delegate { OpenFilesFullWindow("No Save Files to Load"); });
+            continueButt.gameObject.transform.Find("SubText").GetComponent<Text>().text = "";
             return;
         }
 
         latestFile = files[0];
 
-        for (int i = 1; i < files.Count - 1; i++)
+        for (int i = 0; i < files.Count - 1; i++)
         {
             if (SaveSystem.DeserializePlayerData(files[i]).empty == false && SaveSystem.DeserializePlayerData(latestFile).empty == false)
             {
@@ -113,10 +114,12 @@ public class ButtonInteractable_ts : MonoBehaviour
             {
                 latestFile = files[i];
             }
-
         }
 
+        //latestFile = null; --- hold this
+
         continueButt.onClick.AddListener(delegate { OpenContinueGameWindow(latestFile != null ? latestFile : "Lol"); });
+        continueButt.gameObject.transform.Find("SubText").GetComponent<Text>().text = latestFile != null ? latestFile : "";
 
     }
 
@@ -125,6 +128,10 @@ public class ButtonInteractable_ts : MonoBehaviour
         GameObject window = Instantiate(alertWindow);
         AlertWindow windowScript = window.GetComponent<AlertWindow>();
         window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
+
+        RectTransform rectTransform = window.GetComponent<RectTransform>();
+        rectTransform.offsetMin = new Vector2(530.5799f, 269.3063f);
+        rectTransform.offsetMax = new Vector2(-530.5799f, -429.3063f);
 
         windowScript.message.text = msg;
 
@@ -145,6 +152,10 @@ public class ButtonInteractable_ts : MonoBehaviour
         GameObject window = Instantiate(alertWindow);
         AlertWindow windowScript = window.GetComponent<AlertWindow>();
         window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
+
+        RectTransform rectTransform = window.GetComponent<RectTransform>();
+        rectTransform.offsetMin = new Vector2(530.5799f, 269.3063f);
+        rectTransform.offsetMax = new Vector2(-530.5799f, -429.3063f);
 
         windowScript.message.text = "New Game File will be created in " + fileBeingSavedIn + "\n Do you want to start a new game?";
 
@@ -168,7 +179,11 @@ public class ButtonInteractable_ts : MonoBehaviour
         AlertWindow windowScript = window.GetComponent<AlertWindow>();
         window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
 
-        windowScript.message.text = "Load this file " + fileToLoad + "?";
+        RectTransform rectTransform = window.GetComponent<RectTransform>();
+        rectTransform.offsetMin = new Vector2(530.5799f, 269.3063f);
+        rectTransform.offsetMax = new Vector2(-530.5799f, -429.3063f);
+
+        windowScript.message.text = "Continue from " + fileToLoad + "?";
 
         windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "Yes";
         windowScript.AddMethodToButtonLeft(delegate

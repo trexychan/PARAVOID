@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     #region PlayerData
 
     public Vector3 currentPosition;
+    public Quaternion currentRotation;
     public string currentScene;
     public DateTime dateAndTime;
     public string playerFileName;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
     public void Update()
     {
         currentPosition = transform.localPosition; //Intended to track the player position
+        currentRotation = transform.localRotation;
 
         if (currentScene != gameObject.scene.name
             && gameObject.scene.name != "DontDestroyOnLoad")
@@ -60,8 +62,8 @@ public class Player : MonoBehaviour
     public void NewPlayer(string slotName)
     {
         currentScene = "Apartment";
-
-        currentPosition = new Vector3(-0.88F, 0.518F, 0.95F);
+        currentPosition = new Vector3(-0.6234398F, 0.9919997F, 0.7313685F);
+        currentRotation = transform.localRotation;
 
         this.SavePlayer(slotName);
         this.LoadPlayer(slotName);
@@ -89,6 +91,8 @@ public class Player : MonoBehaviour
 
         //Load specific objects, entities, and player positions and states
         transform.localPosition = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
+        Debug.Log(data.currentRotation[0] + ", " + data.currentRotation[1] + ", " + data.currentRotation[2] + ", " + data.currentRotation[3] + ", ");
+        transform.localRotation = new Quaternion(data.currentRotation[0], data.currentRotation[1], data.currentRotation[2], data.currentRotation[3]);
 
         //Load the scene
         PlayerCarryOverData.UpdatePlayerData(this);
@@ -110,6 +114,8 @@ public class Player : MonoBehaviour
 
         //Load specific objects, entities, and player positions and states
         transform.position = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
+
+        transform.rotation = new Quaternion(data.currentRotation[0], data.currentRotation[1], data.currentRotation[2], data.currentRotation[3]);
     }
 
     public void ErasePlayer(string slotName)

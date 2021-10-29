@@ -38,6 +38,7 @@ namespace ParavoidUI
                             Cursor.lockState = CursorLockMode.Confined;
                             Cursor.visible = false;
                             child.gameObject.SetActive(false);
+                            transform.Find("MenuPanelV2").Find("MenuTabs").gameObject.SetActive(false);
                         }
                         else
                         {
