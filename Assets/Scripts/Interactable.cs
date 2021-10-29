@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using ParavoidUI;
 using UnityEngine.SceneManagement;
 using Fragsurf.Movement;
 
@@ -58,12 +60,13 @@ public class Interactable : MonoBehaviour
         else if (playerInRange && player.InteractPressed && gameObject.CompareTag("Cup"))
         {
             // picked up cup!
-            
-
+            GameObject.Find("DialougeText").GetComponent<TextProducer>()
+            .RunTextFor("It's late... I should go to bed.", Effect.Type, 0.04f, 8f, false);
             //change scenetransition to broken apartment
 
             promptText.SetActive(false);
             gameObject.SetActive(false);
         }
     }
+
 }
