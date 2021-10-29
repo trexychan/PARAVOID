@@ -8,6 +8,7 @@ TagManager:
   - jumpy
   - Collectible
   - SceneTransition
+  - locket
   - Timmy
   - Cup
   layers:
@@ -21,7 +22,7 @@ TagManager:
   - 
   - Player
   - Obstacle
-  - 
+  - PostProcessing
   - 
   - 
   - 
