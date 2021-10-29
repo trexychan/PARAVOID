@@ -49,9 +49,19 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && player.InteractPressed)
+        if (playerInRange && player.InteractPressed && gameObject.CompareTag("InteractableSceneTransition"))
         {
             SwitchSite();
+        }
+        else if (playerInRange && player.InteractPressed && gameObject.CompareTag("Cup"))
+        {
+            // picked up cup!
+            
+
+            //change scenetransition to broken apartment
+
+
+            gameObject.SetActive(false);
         }
     }
 }

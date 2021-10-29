@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ApartmentScene/AptChapter2.unity
     guid: 798c999f847273c4d8f628bea1de3a2f
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/KitchenLevelMaster.unity
+    guid: 0248f8ba3fe6e36429007b2c06d0d93e
   m_configObjects: {}
