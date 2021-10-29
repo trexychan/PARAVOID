@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     //This will be the default values for any new game that is started
     public void NewPlayer(string slotName)
     {
-        currentScene = "Apartment";
+        currentScene = "ApartmentLevelMaster";
         currentPosition = new Vector3(-0.6234398F, 0.9919997F, 0.7313685F);
         currentRotation = transform.localRotation;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace DataManagement
         #region FileData (for storing file specific data)
 
         public bool empty;
-        public string dateAndTime;
+        public DateTime dateAndTime;
         public string playerFileName;
 
         #endregion

@@ -62,7 +62,7 @@ public class Interactable : MonoBehaviour
 
             //change scenetransition to broken apartment
 
-
+            promptText.SetActive(false);
             gameObject.SetActive(false);
         }
     }
