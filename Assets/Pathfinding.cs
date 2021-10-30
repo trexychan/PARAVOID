@@ -7,8 +7,8 @@ using UnityEngine.AI;
 public class Pathfinding : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
-    public GameObject[] waypoints;
-    int currWaypoint;
+    public GameObject waypoints;
+    private WaypointNode goal;
 
 
     // Start is called before the first frame update
@@ -45,5 +45,50 @@ public class Pathfinding : MonoBehaviour
         }
 
         navMeshAgent.SetDestination(waypoints[currWaypoint].transform.position);
+    }
+
+    void Astar(WaypointNode start)
+    {
+        HashSet<WaypointNode> closed = new HashSet<WaypointNode>();
+        PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>();
+        open.Enqueue(start, 0);
+        WaypointNode curr = start;
+
+        while (!isGoal(curr) && open.Count > 0)
+        {
+            // mark current node as visited
+            closed.Add(current);
+
+            // add neighbors to open queue, ranked by cost (g + h)
+            foreach (WaypointNode node in curr.NodeMap)
+            {
+                // run heuristic function
+                float h = heuristic(node);
+                open.Enqueue(node, NodeMap[node] + h);
+            }
+
+            open.Dequeue();
+
+            curr = open.Dequeue();
+        }
+
+        if isGoal(curr) {
+            //reconstruct solution
+            // double check how to do this fo rmoving goal
+        }
+        else
+        {
+            // switch back to random nav
+        }
+
+    }
+
+    void setGoal(WaypointNode targ) { goal = targ; }
+
+    bool isGoal(WaypointNode targ) { return targ == goal; }
+
+    float heuristic(WaypointNode node)
+    {
+        return 0f;
     }
 }
