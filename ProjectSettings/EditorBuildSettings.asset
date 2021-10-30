@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ApartmentScene/Apartment.unity
-    guid: 97f4c7373f931da41a891f5ec7b24368
+    path: Assets/Scenes/MASTERGAMESCENES/ApartmentLevelMaster.unity
+    guid: 7bce8d1be28d0d447b267ee99b91dc28
   - enabled: 1
     path: Assets/Scenes/Alex/AlexTutorial.unity
     guid: 339800484a9acee44b8651cae8f095df
@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MASTERGAMESCENES/KitchenLevelMaster.unity
     guid: 0248f8ba3fe6e36429007b2c06d0d93e
+  - enabled: 1
+    path: Assets/Scenes/TitleScene.unity
+    guid: 14947cd41d4eca64eae6eaec1ac08f04
   m_configObjects: {}
