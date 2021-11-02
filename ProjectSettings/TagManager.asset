@@ -11,6 +11,7 @@ TagManager:
   - locket
   - Timmy
   - Cup
+  - InteractableSceneTransition
   layers:
   - Default
   - TransparentFX

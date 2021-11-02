@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using ParavoidUI;
 
 namespace DataManagement
-{   
+{
     public static class SaveSystem
     {
         private static string playerDataExt = "playerdata";
@@ -57,27 +57,27 @@ namespace DataManagement
         {
             string path = Application.persistentDataPath + "/" + slotName + "." + playerDataExt;
             if (File.Exists(path))
-                File.Delete(path);      
+                File.Delete(path);
         }
 
         public static List<string> GetPlayerFiles()
         {
             var filesInDir = Directory
                 .GetFiles(Application.persistentDataPath, "*." + playerDataExt, SearchOption.TopDirectoryOnly);
-            
+
             List<string> files = new List<string>();
 
-            
+
             //Debug.Log(filesInDir.Length);
 
-            for (int i = 0 ; i < filesInDir.Length ; i++)
+            for (int i = 0; i < filesInDir.Length; i++)
                 files.Add(Path.GetFileNameWithoutExtension(filesInDir[i]));
 
             return files;
         }
 
         //Settings Saving and Loading
-        public static void SerializeGameFiles(Settings settings) 
+        public static void SerializeGameFiles(Settings settings)
         {
             UniversalData data = new UniversalData(settings);
 
@@ -106,5 +106,5 @@ namespace DataManagement
                 return null;
             }
         }
-    } 
+    }
 }
