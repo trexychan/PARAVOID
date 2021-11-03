@@ -52,6 +52,7 @@ namespace ParavoidUI
             if (data == null)
             {
                 SetDefaultSettings();
+                SaveSystem.SerializeGameFiles(this);
                 return;
             }
 

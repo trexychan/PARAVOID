@@ -12,7 +12,7 @@ public class ButtonInteractable_ts : MonoBehaviour
     private Button loadButt;
     private Player player;
 
-    private bool fileChange;
+    private int currentEmptyFiles;
 
     public GameObject alertWindow;
 
@@ -21,6 +21,7 @@ public class ButtonInteractable_ts : MonoBehaviour
         newGameButt = transform.Find("button_newGame").GetComponent<Button>();
         continueButt = transform.Find("button_continue").GetComponent<Button>();
         loadButt = transform.Find("button_load").GetComponent<Button>();
+        currentEmptyFiles = -1;
 
         SetButtonActivity();
 
@@ -33,15 +34,16 @@ public class ButtonInteractable_ts : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
 
         SetNewSaveButton();
-
-        fileChange = false;
     }
 
     public void Update()
     {
-        SetNewSaveButton();
-        SetContinueButton();
-        //SetButtonActivity();
+        if (FilesChanged())
+        {
+            SetNewSaveButton();
+            SetContinueButton();
+            SetButtonActivity();
+        }
     }
 
     //If any files are not empty, then the following buttons will be interactable, otherwise, they will not.
@@ -74,7 +76,7 @@ public class ButtonInteractable_ts : MonoBehaviour
 
         foreach (string file in SaveSystem.GetPlayerFiles())
         {
-            if (SaveSystem.DeserializePlayerData(file).empty == true)
+            if (SaveSystem.DeserializePlayerData(file).empty)
             {
                 newGameButt.onClick.AddListener(delegate { OpenStartNewGameWindow(file); });
                 return;
@@ -99,20 +101,14 @@ public class ButtonInteractable_ts : MonoBehaviour
             return;
         }
 
-        latestFile = files[0];
-
-        for (int i = 0; i < files.Count - 1; i++)
+        for (int i = 0; i < files.Count; i++)
         {
-            if (SaveSystem.DeserializePlayerData(files[i]).empty == false && SaveSystem.DeserializePlayerData(latestFile).empty == false)
+            if (!SaveSystem.DeserializePlayerData(files[i]).empty)
             {
-                if (SaveSystem.DeserializePlayerData(files[i]).dateAndTime > SaveSystem.DeserializePlayerData(latestFile).dateAndTime)
+                if (latestFile == null || SaveSystem.DeserializePlayerData(files[i]).dateAndTime > SaveSystem.DeserializePlayerData(latestFile).dateAndTime)
                 {
                     latestFile = files[i];
                 }
-            }
-            else if (SaveSystem.DeserializePlayerData(files[i]).empty == false && SaveSystem.DeserializePlayerData(latestFile).empty == true)
-            {
-                latestFile = files[i];
             }
         }
 
@@ -197,6 +193,26 @@ public class ButtonInteractable_ts : MonoBehaviour
         {
             Destroy(window);
         });
+    }
+
+    private bool FilesChanged()
+    {
+        List<string> files = SaveSystem.GetPlayerFiles();
+        int filesChanged = 0;
+
+        foreach (string file in files)
+        {
+            if (SaveSystem.DeserializePlayerData(file).empty)
+            {
+                filesChanged++;
+            }
+        }
+
+        bool changed = filesChanged != currentEmptyFiles;
+
+        currentEmptyFiles = filesChanged;
+
+        return changed;
     }
 
 
