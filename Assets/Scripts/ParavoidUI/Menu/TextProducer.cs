@@ -33,6 +33,11 @@ namespace ParavoidUI
             }
         }
 
+        /**
+        * Used to manually Revert text with a given effect of some effect amount
+        * @param effect
+        * @param effectAmount
+        */
         public void RevertText(Effect effect, float effectAmount)
         {
             switch (effect)
@@ -111,7 +116,6 @@ namespace ParavoidUI
             }
 
         }
-
 
         #endregion
 

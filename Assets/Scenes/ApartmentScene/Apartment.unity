@@ -874,10 +874,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 808747411}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b62b402810085f4c9042f3ac391d4da, type: 3}
+  m_Script: {fileID: 11500000, guid: b7c3146ae6694044b88492163af2ea3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialougeText: {fileID: 0}
+  effect: 1
+  effectAmount: 0.03
+  dialogue:
+  - Hello My name is Henery
+  - Is that a big balloon?
+  - Oh no it is!!!!!!
+  dialogueLength:
+  - 4
+  - 4
+  - 4
+  timeBeforeDialogue:
+  - 2
+  - 5
+  - 5
 --- !u!4 &808747413
 Transform:
   m_ObjectHideFlags: 0
