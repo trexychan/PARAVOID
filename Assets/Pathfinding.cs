@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Paravoid.DataStructures;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Pathfinding : MonoBehaviour
@@ -9,6 +11,7 @@ public class Pathfinding : MonoBehaviour
     NavMeshAgent navMeshAgent;
     public GameObject waypoints;
     private WaypointNode goal;
+    private int currWaypoint;
 
 
     // Start is called before the first frame update
@@ -60,11 +63,11 @@ public class Pathfinding : MonoBehaviour
             closed.Add(current);
 
             // add neighbors to open queue, ranked by cost (g + h)
-            foreach (WaypointNode node in curr.NodeMap)
+            foreach (GameObject node in curr.NodeMap.Keys)
             {
                 // run heuristic function
                 float h = heuristic(node);
-                open.Enqueue(node, NodeMap[node] + h);
+                open.Enqueue(node, curr.NodeMap[node.gameObject] + h);
             }
 
             open.Dequeue();
@@ -72,7 +75,8 @@ public class Pathfinding : MonoBehaviour
             curr = open.Dequeue();
         }
 
-        if isGoal(curr) {
+        if (isGoal(curr))
+        {
             //reconstruct solution
             // double check how to do this fo rmoving goal
         }
