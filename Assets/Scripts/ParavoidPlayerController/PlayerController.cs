@@ -16,32 +16,28 @@ public class PlayerController : MonoBehaviour
     //Primary Controls
     public PlayerControls playerControls;
     public Transform groundCheck;
-    public bool isGrounded;
+    [SerializeField] private bool isGrounded;
     public float playerSpeed = 2.0f;
     public float sensitivity;
-    public float jumpHeight = 2.0f;
+    public float jumpForce = 7.5f;
     public float gravityValue = -9.18f;
     public float jumpTimeWindow = 0.1f;
     private Vector3 moveDir;
     private Vector2 moveVect;
     [SerializeField] private Vector2 smoothInputVelocity;
     [SerializeField] private float smoothInputSpeed;
-    public LayerMask whatIsGround;
+    [SerializeField] private LayerMask whatIsGround;
     
     //Secondary Mechanics    
-    public bool doubleJumpUnlocked = false;
-    public bool hasDoubleJumped;
-    public bool hasJumpedOnce;
+    [SerializeField] private bool doubleJumpUnlocked = false;
+    [SerializeField] private bool hasDoubleJumped;
+    [SerializeField] private bool hasJumpedOnce;
 
     private void Awake()
     {
         playerControls = new PlayerControls();
         playerCamera = PlayerCamera.singleton;
         rb = gameObject.GetComponent<Rigidbody>();
-        if (rb)
-        {
-            Debug.Log("Rigidbody found!");
-        }
     }
 
     void OnEnable()
@@ -68,10 +64,13 @@ public class PlayerController : MonoBehaviour
     {
         return playerControls.Player.Jump.triggered;
     }
-
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
+    }
     void Update()
     {
-
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, whatIsGround);
         if (isGrounded && playerVelocity.y <= 0)
         {
@@ -123,8 +122,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        playerVelocity.y = 0f;
-        playerVelocity.y += Mathf.Sqrt(jumpHeight/2 * -3.0f * gravityValue);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         // if (!isGrounded && hasJumpedOnce && canJump())
         // {
         //     Debug.Log("Double Jump");

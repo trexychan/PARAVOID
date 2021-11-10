@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5114779137858305189}
   m_Layer: 8
   m_Name: ParavoidPlayer
-  m_TagString: jumpy
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   gravityValue: -9.18
   jumpTimeWindow: 0.1
   smoothInputVelocity: {x: 0, y: 0}
-  smoothInputSpeed: 0
+  smoothInputSpeed: 0.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 0
