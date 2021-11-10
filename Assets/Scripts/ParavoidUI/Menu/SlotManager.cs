@@ -196,21 +196,29 @@ namespace ParavoidUI
 
         public void OpenLoadFileWindow()
         {
-            GameObject window = Instantiate(alertWindow);
-            AlertWindow windowScript = window.GetComponent<AlertWindow>();
-            windowScript.message.text = "Are you sure you want to load File: "
-            + targetSlot.GetComponent<SaveSlot>().slotName + "?";
+            if (!targetSlot.GetComponent<SaveSlot>().isFileEmpty)
+            {
+                GameObject window = Instantiate(alertWindow);
+                AlertWindow windowScript = window.GetComponent<AlertWindow>();
+                windowScript.message.text = "Are you sure you want to load File: "
+                + targetSlot.GetComponent<SaveSlot>().slotName + "?";
 
-            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
-            windowScript.AddMethodToButtonLeft(delegate {
-                LoadFile();
-                Destroy(window);});
-            
-            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
-             windowScript.AddMethodToButtonRight(delegate {
-                Destroy(window);});
+                windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
 
-            window.transform.SetParent(GameObject.Find("Save").transform, false);
+                windowScript.AddMethodToButtonLeft(delegate
+                {
+                    LoadFile();
+                    Destroy(window);
+                });
+
+                windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+                windowScript.AddMethodToButtonRight(delegate
+                {
+                    Destroy(window);
+                });
+
+                window.transform.SetParent(GameObject.Find("Save").transform, false);
+            }
         }
 
         public void OpenEraseFileWindow()

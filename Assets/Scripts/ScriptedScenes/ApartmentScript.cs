@@ -8,12 +8,17 @@ public class ApartmentScript : MonoBehaviour
     public GameObject dialougeText;
     public void Awake()
     {
-        dialougeText = GameObject.Find("DialougeText");
+        dialougeText = GameObject.Find("DialogueText");
         //dialougeText.GetComponent<TextProducer>().RemoveText();
-        StartCoroutine(ScriptedData());
+        StartCoroutine(writeText());
     }
 
-    private IEnumerator ScriptedData()
+    void Update()
+    {
+        
+    }
+
+    private IEnumerator writeText()
     {
         yield return new WaitForSeconds(1f);
         
