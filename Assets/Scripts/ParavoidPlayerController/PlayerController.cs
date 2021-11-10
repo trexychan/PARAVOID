@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class PlayerController : MonoBehaviour
     public float gravityValue = -9.18f;
     public float jumpTimeWindow = 0.1f;
     private Vector3 moveDir;
+    private Vector2 moveVect;
+    [SerializeField] private Vector2 smoothInputVelocity;
+    [SerializeField] private float smoothInputSpeed;
     public LayerMask whatIsGround;
     
     //Secondary Mechanics    
@@ -33,6 +37,11 @@ public class PlayerController : MonoBehaviour
     {
         playerControls = new PlayerControls();
         playerCamera = PlayerCamera.singleton;
+        rb = gameObject.GetComponent<Rigidbody>();
+        if (rb)
+        {
+            Debug.Log("Rigidbody found!");
+        }
     }
 
     void OnEnable()
@@ -62,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, whatIsGround);
         if (isGrounded && playerVelocity.y <= 0)
         {
@@ -72,9 +82,14 @@ public class PlayerController : MonoBehaviour
         }
 
         HandleMouseMovement();
-        HandlePlayerMovement();
+        HandleMoveInput();
         UpdateJumpWindow();
         
+    }
+
+    private void FixedUpdate()
+    {
+        HandlePlayerMovement();
     }
 
     private void UpdateJumpWindow()
@@ -83,19 +98,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void HandlePlayerMovement()
+    private void HandleMoveInput()
     {
-        Vector3 newMoveDir;
-        newMoveDir = new Vector3(getPlayerMoveVector().x, getPlayerMoveVector().y, 0);
-        if ((newMoveDir - moveDir).sqrMagnitude < 0.01f)
-        {
-            moveDir = Vector3.Lerp(moveDir, newMoveDir, Time.deltaTime / 0.01f);
-        }
-        else
-        {
-            moveDir = newMoveDir;
-        }
-        Vector3 move = moveDir.x * transform.right + transform.forward * moveDir.y;
+        Vector2 newMoveVect;
+        newMoveVect = new Vector2(getPlayerMoveVector().x, getPlayerMoveVector().y);
+        
+        moveVect = Vector2.SmoothDamp(moveVect, newMoveVect, ref smoothInputVelocity, smoothInputSpeed);
+                
+        moveDir = (transform.forward * moveVect.y + transform.right * moveVect.x) * playerSpeed;
 
         if (PlayerJumped() && canJump())
         {
@@ -106,23 +116,30 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private void HandlePlayerMovement()
+    {
+        rb.velocity = new Vector3(moveDir.x, rb.velocity.y, moveDir.z);
+    }
+
     private void Jump()
     {
-        if (!isGrounded && hasJumpedOnce && canJump())
-        {
-            Debug.Log("Double Jump");
-            playerVelocity.y = 0f;
-            playerVelocity.y += Mathf.Sqrt(jumpHeight/2 * -3.0f * gravityValue);
-            hasJumpedOnce = true;
-            hasDoubleJumped = true;  
-        } else if ((isGrounded || jumpTimeWindow > 0) && !hasJumpedOnce)
-        {
-            Debug.Log("Single Jump");
-            playerVelocity.y = 0f;
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-            hasDoubleJumped = false;
-            hasJumpedOnce = true;
-        }
+        playerVelocity.y = 0f;
+        playerVelocity.y += Mathf.Sqrt(jumpHeight/2 * -3.0f * gravityValue);
+        // if (!isGrounded && hasJumpedOnce && canJump())
+        // {
+        //     Debug.Log("Double Jump");
+        //     playerVelocity.y = 0f;
+        //     playerVelocity.y += Mathf.Sqrt(jumpHeight/2 * -3.0f * gravityValue);
+        //     hasJumpedOnce = true;
+        //     hasDoubleJumped = true;  
+        // } else if ((isGrounded || jumpTimeWindow > 0) && !hasJumpedOnce)
+        // {
+        //     Debug.Log("Single Jump");
+        //     playerVelocity.y = 0f;
+        //     playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+        //     hasDoubleJumped = false;
+        //     hasJumpedOnce = true;
+        // }
         
     }
 
