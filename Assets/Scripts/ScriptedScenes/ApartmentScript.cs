@@ -13,6 +13,11 @@ public class ApartmentScript : MonoBehaviour
         StartCoroutine(writeText());
     }
 
+    void Update()
+    {
+        
+    }
+
     private IEnumerator writeText()
     {
         yield return new WaitForSeconds(1f);
