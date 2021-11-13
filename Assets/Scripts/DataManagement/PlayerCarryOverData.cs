@@ -9,6 +9,7 @@ public static class PlayerCarryOverData
     public static void UpdatePlayerData(Player player)
     {
         playerDupe = player;
+        playerDupe.name = "PlayerDupe";
         MonoBehaviour.DontDestroyOnLoad(playerDupe);
 
         //Destroys all irrelevant componenets
