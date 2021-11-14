@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public PlayerControls playerControls;
     public Transform groundCheck;
     [SerializeField] private bool isGrounded;
+    [SerializeField] private bool isOnMovingPlatform;
     public float playerSpeed = 2.0f;
     public float sensitivity;
     public float jumpForce = 7.5f;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 smoothInputVelocity;
     [SerializeField] private float smoothInputSpeed;
     [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private float airAcceleration;
     
     //Secondary Mechanics    
     [SerializeField] private bool doubleJumpUnlocked = false;
@@ -72,9 +74,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, whatIsGround);
-        if (isGrounded && playerVelocity.y <= 0)
+        isOnMovingPlatform = Physics.CheckSphere(groundCheck.position, 0.1f, 1 << 11);
+        if (isGrounded && rb.velocity.y <= 0)
         {
-            playerVelocity.y = 0;
             hasJumpedOnce = false;
             hasDoubleJumped = false;
             jumpTimeWindow = 0.1f;
@@ -110,8 +112,6 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
-
-        playerVelocity.y += gravityValue * Time.deltaTime;
         
     }
 
@@ -123,21 +123,21 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-        // if (!isGrounded && hasJumpedOnce && canJump())
-        // {
-        //     Debug.Log("Double Jump");
-        //     playerVelocity.y = 0f;
-        //     playerVelocity.y += Mathf.Sqrt(jumpHeight/2 * -3.0f * gravityValue);
-        //     hasJumpedOnce = true;
-        //     hasDoubleJumped = true;  
-        // } else if ((isGrounded || jumpTimeWindow > 0) && !hasJumpedOnce)
-        // {
-        //     Debug.Log("Single Jump");
-        //     playerVelocity.y = 0f;
-        //     playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        //     hasDoubleJumped = false;
-        //     hasJumpedOnce = true;
-        // }
+        if (!isGrounded && hasJumpedOnce && canJump())
+        {
+            Debug.Log("Double Jump");
+            rb.velocity = Vector3.zero;
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            hasJumpedOnce = true;
+            hasDoubleJumped = true;  
+        } else if ((isGrounded || jumpTimeWindow > 0) && !hasJumpedOnce)
+        {
+            Debug.Log("Single Jump");
+            rb.velocity = Vector3.zero;
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            hasDoubleJumped = false;
+            hasJumpedOnce = true;
+        }
         
     }
 
@@ -178,4 +178,6 @@ public class PlayerController : MonoBehaviour
     public void EnableDoubleJump() {
         doubleJumpUnlocked = true;
     }
+
+    
 }
