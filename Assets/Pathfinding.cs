@@ -20,6 +20,10 @@ public class Pathfinding : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         currWaypoint = -1;
         SetNextWaypoint();
+        foreach (Transform waypoint in waypoints.transform)
+        {
+            Debug.Log($"Timmy's waypoint: {waypoint.gameObject.name}");
+        }
     }
 
     // Update is called once per frame
