@@ -19,7 +19,7 @@ public class Pathfinding : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         currWaypoint = -1;
-        setNextWaypoint();
+        SetNextWaypoint();
     }
 
     // Update is called once per frame
@@ -27,18 +27,18 @@ public class Pathfinding : MonoBehaviour
     {
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance == 0)
         {
-            setNextWaypoint();
+            SetNextWaypoint();
         }
     }
 
-    private void setNextWaypoint()
+    private void SetNextWaypoint()
     {
-        if (waypoints.GetComponentsInChildren<GameObject>().Length == 0)
+        if (waypoints.transform.childCount == 0)
         {
             Debug.LogWarning("No waypoints found");
         }
 
-        if (currWaypoint >= waypoints.GetComponentsInChildren<GameObject>().Length)
+        if (currWaypoint >= waypoints.transform.childCount)
         {
             currWaypoint = -1;
         }
