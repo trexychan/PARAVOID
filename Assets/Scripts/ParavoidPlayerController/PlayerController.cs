@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //Objects
+    public static PlayerController singleton;
     [SerializeField] private PlayerCamera playerCamera;
     [SerializeField] private Rigidbody rb;
    
@@ -15,20 +16,19 @@ public class PlayerController : MonoBehaviour
 
     //Primary Controls
     public PlayerControls playerControls;
-    public Transform groundCheck;
+    [SerializeField] private Transform groundCheck;
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isOnMovingPlatform;
     public float playerSpeed = 2.0f;
     public float sensitivity;
     public float jumpForce = 7.5f;
-    public float gravityValue = -9.18f;
+    public float airAcceleration = 1.0f;
     public float jumpTimeWindow = 0.1f;
     private Vector3 moveDir;
     private Vector2 moveVect;
     [SerializeField] private Vector2 smoothInputVelocity;
     [SerializeField] private float smoothInputSpeed;
     [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private float airAcceleration;
     
     //Secondary Mechanics    
     [SerializeField] private bool doubleJumpUnlocked = false;
@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        singleton = this;
         playerControls = new PlayerControls();
         playerCamera = PlayerCamera.singleton;
         rb = gameObject.GetComponent<Rigidbody>();
@@ -105,7 +106,8 @@ public class PlayerController : MonoBehaviour
         newMoveVect = new Vector2(getPlayerMoveVector().x, getPlayerMoveVector().y);
         
         moveVect = Vector2.SmoothDamp(moveVect, newMoveVect, ref smoothInputVelocity, smoothInputSpeed);
-                
+
+
         moveDir = (transform.forward * moveVect.y + transform.right * moveVect.x) * playerSpeed;
 
         if (PlayerJumped() && canJump())
