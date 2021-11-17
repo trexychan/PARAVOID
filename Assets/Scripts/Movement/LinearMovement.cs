@@ -65,6 +65,23 @@ public class LinearMovement : MonoBehaviour {
     
 
     }
+
+    //Logic to have player actually stick to the moving platform
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.transform.parent = transform;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.transform.parent = null;
+        }
+    }
     
 
 }

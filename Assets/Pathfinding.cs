@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Paravoid.DataStructures;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Pathfinding : MonoBehaviour
@@ -9,6 +11,7 @@ public class Pathfinding : MonoBehaviour
     NavMeshAgent navMeshAgent;
     public GameObject waypoints;
     private WaypointNode goal;
+    private int currWaypoint;
 
 
     // Start is called before the first frame update
@@ -16,7 +19,14 @@ public class Pathfinding : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         currWaypoint = -1;
-        setNextWaypoint();
+        SetNextWaypoint();
+        foreach (Transform waypoint in waypoints.transform)
+        {
+            Debug.Log($"Timmy's waypoint: {waypoint.gameObject.name}");
+        }
+        // these is important
+        //navMeshAgent.stoppingDistance
+        //navMeshAgent.SetDestination()
     }
 
     // Update is called once per frame
@@ -24,18 +34,18 @@ public class Pathfinding : MonoBehaviour
     {
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance == 0)
         {
-            setNextWaypoint();
+            SetNextWaypoint();
         }
     }
 
-    private void setNextWaypoint()
+    private void SetNextWaypoint()
     {
-        if (waypoints.Length == 0)
+        if (waypoints.transform.childCount == 0)
         {
             Debug.LogWarning("No waypoints found");
         }
 
-        if (currWaypoint >= waypoints.Length)
+        if (currWaypoint >= waypoints.transform.childCount)
         {
             currWaypoint = -1;
         }
@@ -44,7 +54,7 @@ public class Pathfinding : MonoBehaviour
             currWaypoint++;
         }
 
-        navMeshAgent.SetDestination(waypoints[currWaypoint].transform.position);
+        navMeshAgent.SetDestination(waypoints.GetComponentInChildren<WaypointNode>().transform.position);
     }
 
     void Astar(WaypointNode start)
@@ -54,17 +64,17 @@ public class Pathfinding : MonoBehaviour
         open.Enqueue(start, 0);
         WaypointNode curr = start;
 
-        while (!isGoal(curr) && open.Count > 0)
+        while (!IsGoal(curr) && open.Count > 0)
         {
             // mark current node as visited
-            closed.Add(current);
+            closed.Add(curr);
 
             // add neighbors to open queue, ranked by cost (g + h)
-            foreach (WaypointNode node in curr.NodeMap)
+            foreach (GameObject node in curr.NodeMap.Keys)
             {
                 // run heuristic function
-                float h = heuristic(node);
-                open.Enqueue(node, NodeMap[node] + h);
+                float h = Heuristic(node.GetComponent<WaypointNode>());
+                open.Enqueue(node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject] + h);
             }
 
             open.Dequeue();
@@ -72,23 +82,31 @@ public class Pathfinding : MonoBehaviour
             curr = open.Dequeue();
         }
 
-        if isGoal(curr) {
+        if (IsGoal(curr))
+        {
             //reconstruct solution
             // double check how to do this fo rmoving goal
+            ReconstructPath(closed, curr);
         }
         else
         {
             // switch back to random nav
+
         }
 
     }
 
-    void setGoal(WaypointNode targ) { goal = targ; }
+    void SetGoal(WaypointNode targ) { goal = targ; }
 
-    bool isGoal(WaypointNode targ) { return targ == goal; }
+    bool IsGoal(WaypointNode targ) { return targ == goal; }
 
-    float heuristic(WaypointNode node)
+    float Heuristic(WaypointNode node)
     {
         return 0f;
+    }
+
+    void ReconstructPath(HashSet<WaypointNode> cameFrom, WaypointNode curr)
+    {
+
     }
 }

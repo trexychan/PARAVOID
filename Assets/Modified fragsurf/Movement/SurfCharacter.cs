@@ -56,16 +56,16 @@ namespace Fragsurf.Movement
         //shit variables for shit step up ability
         private float capcHeight;
         private float capcRadius;
-        
+
         ///// Properties /////
-        
+
         public bool InteractPressed { get; private set; }
-        
+
         public MoveType MoveType
         {
             get { return MoveType.Walk; }
         }
-        
+
         public MovementConfig MoveConfig
         {
             get { return moveConfig; }
@@ -169,10 +169,13 @@ namespace Fragsurf.Movement
 
         private void Update()
         {
-            UpdateTestBinds();
-            UpdateRotation();
-            UpdateMoveData();
-            _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
+            if (Time.timeScale != 0f)
+            {
+                UpdateTestBinds();
+                UpdateRotation();
+                UpdateMoveData();
+                _controller.ProcessMovement(this, moveConfig, Time.fixedDeltaTime);
+            }
         }
         public float GetTheVelocity()
         {
@@ -197,7 +200,6 @@ namespace Fragsurf.Movement
 
         private void FixedUpdate()
         {
-
             transform.position = MoveData.Origin;
         }
 
@@ -215,9 +217,9 @@ namespace Fragsurf.Movement
             var capc = (CapsuleCollider)_collider;
             Vector3 up = transform.TransformDirection(Vector3.up);
 
-            Vector3 stepRayLower = new Vector3(transform.position.x, (transform.position.y)-(capcHeight/2), transform.position.z);;
-            Vector3 stepRayUpper = new Vector3(transform.position.x, (transform.position.y)-capcHeight/3, transform.position.z);
-            
+            Vector3 stepRayLower = new Vector3(transform.position.x, (transform.position.y) - (capcHeight / 2), transform.position.z); ;
+            Vector3 stepRayUpper = new Vector3(transform.position.x, (transform.position.y) - capcHeight / 3, transform.position.z);
+
 
             if (!moveLeft && !moveRight)
                 _moveData.SideMove = 0;
@@ -243,11 +245,12 @@ namespace Fragsurf.Movement
             if (crouch)
             {
                 capc.height = ColliderSizeY / 2;
-                
+
             }
             else
             {
-                if (!Physics.Raycast(transform.position, up, capc.height/2)) {
+                if (!Physics.Raycast(transform.position, up, capc.height / 2))
+                {
                     if (capc.height < ColliderSizeY - (ColliderSizeY / 100.0f))
                         capc.height = Mathf.Lerp(capc.height, ColliderSizeY, Time.deltaTime * 8f);
                     else
@@ -255,10 +258,12 @@ namespace Fragsurf.Movement
                 }
             }
 
-            if (Physics.Raycast(stepRayLower, transform.TransformDirection(Vector3.forward), capcRadius*1.1f)) {
-                
-                if (!Physics.Raycast(stepRayUpper, transform.TransformDirection(Vector3.forward), capcRadius*1.1f)){
-                    
+            if (Physics.Raycast(stepRayLower, transform.TransformDirection(Vector3.forward), capcRadius * 1.1f))
+            {
+
+                if (!Physics.Raycast(stepRayUpper, transform.TransformDirection(Vector3.forward), capcRadius * 1.1f))
+                {
+
                     MoveData.Origin += new Vector3(0, 0.1f, 0);
                 }
             }
@@ -280,7 +285,6 @@ namespace Fragsurf.Movement
             var rot = _angles + new Vector3(-my, mx, 0f);
             rot.x = Mathf.Clamp(rot.x, -85f, 85f);
             _angles = rot;
-
         }
 
         /// <summary>
@@ -297,16 +301,16 @@ namespace Fragsurf.Movement
             return Mathf.Min(angle, to);
         }
 
-/*        private void stepUp(){
-            Debug.Log("test1");
-            if (Physics.Raycast(stepRayLower, transform.TransformDirection(Vector3.forward), capcRadius*2)) {
-                Debug.Log("test2");
-                if (!Physics.Raycast(stepRayUpper, transform.TransformDirection(Vector3.forward), capcRadius)){
-                    Debug.Log("test3");
-                    MoveData.Origin += new Vector3(0, 0.1f, 0);
-                }
-            }
-        }*/
+        /*        private void stepUp(){
+                    Debug.Log("test1");
+                    if (Physics.Raycast(stepRayLower, transform.TransformDirection(Vector3.forward), capcRadius*2)) {
+                        Debug.Log("test2");
+                        if (!Physics.Raycast(stepRayUpper, transform.TransformDirection(Vector3.forward), capcRadius)){
+                            Debug.Log("test3");
+                            MoveData.Origin += new Vector3(0, 0.1f, 0);
+                        }
+                    }
+                }*/
 
     }
 }
