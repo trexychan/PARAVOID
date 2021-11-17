@@ -194,6 +194,18 @@ namespace Paravoid.DataStructures
         {
             return size == 0;
         }
+
+        public bool Contains(TElement element)
+        {
+            for (int i = 1; i <= size; i++)
+            {
+                if (backingArray[i].Equals(element))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }
