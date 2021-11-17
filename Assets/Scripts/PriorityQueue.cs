@@ -185,6 +185,10 @@ namespace Paravoid.DataStructures
             return removed;
         }
 
+        /// <summary>
+        /// Gets the element in the Priority Queue with the lowest priority measurement.
+        /// </summary>
+        /// <returns>The element with the lowest priority in the Priority Queue</returns>
         public TElement GetMinPriorityElement()
         {
             return this.backingArray[1].Element;
@@ -195,16 +199,57 @@ namespace Paravoid.DataStructures
             return size == 0;
         }
 
+        /// <summary>
+        /// Checks if the Priority Queue contains the given element.
+        /// </summary>
+        /// <param name="element">The element to search for in the Priority Queue</param>
+        /// <returns>true if the element exists, false if otherwise</returns>
         public bool Contains(TElement element)
         {
             for (int i = 1; i <= size; i++)
             {
-                if (backingArray[i].Equals(element))
+                if (backingArray[i].Element.Equals(element))
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Used to remove a particular value from the Priority Queue
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns>The element removed from the Priority Queue</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if the element is not found in the Priority Queue</exception>
+        public TElement Remove(TElement element)
+        {
+            int i = 0;
+            for (int j = 1; j < size; j++)
+            {
+                if (backingArray[j].Element.Equals(element))
+                {
+                    i = j;
+                    break;
+                }
+            }
+            if (i == 0)
+            {
+                throw new KeyNotFoundException("Element does not exist, cannot be removed from the Priority Queue!");
+            }
+            else
+            {
+                TElement temp = backingArray[i].Element;
+                backingArray[i] = null;
+                for (int j = i; j < size; j++)
+                {
+                    backingArray[j] = backingArray[j + 1];
+                }
+                size--;
+                BuildHeap();
+                return temp;
+            }
+
         }
     }
 
