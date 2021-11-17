@@ -20,6 +20,21 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] GameObject parent;
 
+    // parent node
+    private WaypointNode parentNode;
+
+    public WaypointNode ParentNode
+    {
+        get
+        {
+            return parentNode;
+        }
+        set
+        {
+            parentNode = value;
+        }
+    }
+
     /**
      * Store legal nodes for the path with their G-Values as a Dictionary
      */

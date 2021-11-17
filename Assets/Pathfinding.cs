@@ -59,13 +59,18 @@ public class Pathfinding : MonoBehaviour
 
     void Astar(WaypointNode start)
     {
-        HashSet<WaypointNode> closed = new HashSet<WaypointNode>();
-        PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>();
+        HashSet<WaypointNode> closed = new HashSet<WaypointNode>(); // Start CLOSED as empty set
+
+        PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>(); // OPEN, PQ containing START
         open.Enqueue(start, 0);
+
         WaypointNode curr = start;
 
-        while (!IsGoal(curr) && open.Count > 0)
+        while (!IsGoal(curr) && open.Count > 0) // while lowest rank in OPEN is not the GOAL
         {
+            // current = remove lowest rank item from OPEN
+            // dequeue from open. if that is goal
+
             // mark current node as visited
             closed.Add(curr);
 
@@ -84,7 +89,7 @@ public class Pathfinding : MonoBehaviour
 
         if (IsGoal(curr))
         {
-            //reconstruct solution
+            // reconstruct solution
             // double check how to do this fo rmoving goal
             ReconstructPath(closed, curr);
         }
@@ -93,6 +98,54 @@ public class Pathfinding : MonoBehaviour
             // switch back to random nav
 
         }
+
+    }
+
+    /// <summary>
+    /// Implements the A* Pathfinding algorithm to determine a path from the monster to the player.
+    /// 
+    /// Based on pseudocode explanation from "Amit's Thoughts on Pathfinding":
+    /// http://theory.stanford.edu/~amitp/GameProgramming/ImplementationNotes.html
+    /// </summary>
+    /// <param name="start">Starting node in the algorithm</param>
+    void AStar2(WaypointNode start)
+    {
+        PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>();
+        open.Enqueue(start, 0);
+        HashSet<WaypointNode> closed = new HashSet<WaypointNode>();
+        while (!open.GetMinPriorityElement().Equals(goal)) // while lowest rank in OPEN is not the GOAL
+        {
+            WaypointNode current = open.Dequeue();
+            closed.Add(current);
+            foreach (GameObject neighbor in current.NodeMap.Keys)
+            {
+                float cost = Heuristic(current);
+
+                // if neighbor in OPEN and cost less than g(neighbor)
+                if (open.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
+                {
+                    // Remove neighbor from OPEN, because new path is better
+                    open.Remove(neighbor.GetComponent<WaypointNode>());
+                }
+
+                // if neighbor in CLOSED and cost less than g(neighbor)
+                if (closed.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
+                {
+                    // remove neighbor from closed
+                    closed.Remove(neighbor.GetComponent<WaypointNode>());
+                }
+                if (!open.Contains(neighbor.GetComponent<WaypointNode>()) && !closed.Contains(neighbor.GetComponent<WaypointNode>()))
+                {
+                    // set g(neighbor) to cost
+                    // add neighbor to OPEN
+                    // set priority queue rank to g(neighbor) + h(neighbor)
+                    float rank = current.NodeMap[neighbor]; // g(neighbor)
+                    open.Enqueue(neighbor.GetComponent<WaypointNode>(), rank + Heuristic(neighbor.GetComponent<WaypointNode>()));
+                    // set neighbor's parent to current (confused about this part tbh)
+                }
+            }
+        }
+        // reconstruct reverse path from goal to start by following parent pointers (also confused about this)
 
     }
 
@@ -107,6 +160,10 @@ public class Pathfinding : MonoBehaviour
 
     void ReconstructPath(HashSet<WaypointNode> cameFrom, WaypointNode curr)
     {
+        WaypointNode totalPath = curr;
+        while (cameFrom.Contains(curr))
+        {
 
+        }
     }
 }
