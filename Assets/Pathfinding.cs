@@ -24,6 +24,9 @@ public class Pathfinding : MonoBehaviour
         {
             Debug.Log($"Timmy's waypoint: {waypoint.gameObject.name}");
         }
+        // these is important
+        //navMeshAgent.stoppingDistance
+        //navMeshAgent.SetDestination()
     }
 
     // Update is called once per frame
@@ -83,10 +86,12 @@ public class Pathfinding : MonoBehaviour
         {
             //reconstruct solution
             // double check how to do this fo rmoving goal
+            ReconstructPath(closed, curr);
         }
         else
         {
             // switch back to random nav
+
         }
 
     }
@@ -98,5 +103,10 @@ public class Pathfinding : MonoBehaviour
     float Heuristic(WaypointNode node)
     {
         return 0f;
+    }
+
+    void ReconstructPath(HashSet<WaypointNode> cameFrom, WaypointNode curr)
+    {
+
     }
 }
