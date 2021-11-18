@@ -23,7 +23,9 @@ public class PlayerController : MonoBehaviour
     public float sensitivity;
     public float jumpForce = 7.5f;
     public float airAcceleration = 1.0f;
-    public float jumpTimeWindow = 0.1f;
+    private float jumpTimeWindow = 0.2f;
+    private float jumpBufferTime = 0.2f;
+    private float jumpBufferCounter;
     private Vector3 moveDir;
     private Vector2 moveVect;
     [SerializeField] private Vector2 smoothInputVelocity;
@@ -76,17 +78,26 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, whatIsGround);
         isOnMovingPlatform = Physics.CheckSphere(groundCheck.position, 0.1f, 1 << 11);
-        if (isGrounded && rb.velocity.y <= 0)
+        if (isGrounded)
         {
             hasJumpedOnce = false;
             hasDoubleJumped = false;
-            jumpTimeWindow = 0.1f;
+            jumpTimeWindow = 0.2f;
+        }
+        else
+        {
+            UpdateJumpWindow();
+        }
+
+        if (PlayerJumped())
+        {
+            jumpBufferCounter = jumpBufferTime;
+        } else {
+            jumpBufferCounter -= Time.deltaTime;
         }
 
         HandleMouseMovement();
-        HandleMoveInput();
-        UpdateJumpWindow();
-        
+        HandleMoveInput();        
     }
 
     private void FixedUpdate()
@@ -110,7 +121,7 @@ public class PlayerController : MonoBehaviour
 
         moveDir = (transform.forward * moveVect.y + transform.right * moveVect.x) * playerSpeed;
 
-        if (PlayerJumped() && canJump())
+        if (jumpBufferCounter > 0f && canJump())
         {
             Jump();
         }
@@ -132,14 +143,16 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
             hasJumpedOnce = true;
             hasDoubleJumped = true;  
-        } else if ((isGrounded || jumpTimeWindow > 0) && !hasJumpedOnce)
+        } else if (jumpTimeWindow > 0f)
         {
             Debug.Log("Single Jump");
             rb.velocity = Vector3.zero;
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-            hasDoubleJumped = false;
+            jumpTimeWindow = 0f;
             hasJumpedOnce = true;
         }
+
+        jumpBufferCounter = 0f;
         
     }
 
@@ -165,7 +178,7 @@ public class PlayerController : MonoBehaviour
 
     private bool canJump()
     {
-        if (isGrounded)
+        if (isGrounded || jumpTimeWindow > 0)
         {
             hasJumpedOnce = false;
             return true;
