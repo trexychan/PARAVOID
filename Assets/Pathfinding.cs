@@ -113,6 +113,7 @@ public class Pathfinding : MonoBehaviour
         PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>();
         open.Enqueue(start, 0);
         HashSet<WaypointNode> closed = new HashSet<WaypointNode>();
+        Stack<WaypointNode> reconstructedPathStack = new Stack<WaypointNode>();
         while (!open.GetMinPriorityElement().Equals(goal)) // while lowest rank in OPEN is not the GOAL
         {
             WaypointNode current = open.Dequeue();
@@ -142,11 +143,17 @@ public class Pathfinding : MonoBehaviour
                     float rank = current.NodeMap[neighbor]; // g(neighbor)
                     open.Enqueue(neighbor.GetComponent<WaypointNode>(), rank + Heuristic(neighbor.GetComponent<WaypointNode>()));
                     // set neighbor's parent to current (confused about this part tbh)
+                    neighbor.GetComponent<WaypointNode>().ParentNode = current;
                 }
             }
         }
-        // reconstruct reverse path from goal to start by following parent pointers (also confused about this)
-
+        // reconstruct reverse path from goal to start by following parent pointers
+        WaypointNode reversePathNode = goal;
+        while (reversePathNode != null)
+        {
+            reconstructedPathStack.Push(reversePathNode);
+            reversePathNode = reversePathNode.ParentNode;
+        }
     }
 
     void SetGoal(WaypointNode targ) { goal = targ; }
