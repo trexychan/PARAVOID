@@ -12,18 +12,30 @@ public class Pathfinding : MonoBehaviour
     public GameObject waypoints;
     private WaypointNode goal;
     private int currWaypoint;
+    private List<WaypointNode> path;
+
+    // start point must be manually passed in through the inspector based on where Timmy spawns
+    public WaypointNode startPoint;
 
 
     // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        currWaypoint = -1;
-        SetNextWaypoint();
-        foreach (Transform waypoint in waypoints.transform)
+
+        // this is just to start things off, Timmy will stay by the nearest waypoint at spawn until A* gives him a path to get to
+        if (path.Count == 0)
         {
-            Debug.Log($"Timmy's waypoint: {waypoint.gameObject.name}");
+            path = new List<WaypointNode>();
+            path.Add(startPoint);
         }
+
+        //currWaypoint = -1;
+        ////SetNextWaypoint();
+        //foreach (Transform waypoint in waypoints.transform)
+        //{
+        //    Debug.Log($"Timmy's waypoint: {waypoint.gameObject.name}");
+        //}
         // these is important
         //navMeshAgent.stoppingDistance
         //navMeshAgent.SetDestination()
@@ -36,25 +48,37 @@ public class Pathfinding : MonoBehaviour
         {
             SetNextWaypoint();
         }
+        // TODO: set goal to nearest waypoint to player; figure out where this should be calculated, here or in another script
+        Astar(path[currWaypoint]);
     }
 
     private void SetNextWaypoint()
     {
-        if (waypoints.transform.childCount == 0)
+        if (currWaypoint >= path.Count)
         {
-            Debug.LogWarning("No waypoints found");
+            return;
         }
 
-        if (currWaypoint >= waypoints.transform.childCount)
+        navMeshAgent.SetDestination(path[currWaypoint].transform.position);
+        currWaypoint++;
+
+
+
+        /*if (waypoints.transform.childcount == 0)
         {
-            currWaypoint = -1;
+            debug.logwarning("no waypoints found");
+        }
+
+        if (currwaypoint >= waypoints.transform.childcount)
+        {
+            currwaypoint = -1;
         }
         else
         {
-            currWaypoint++;
+            currwaypoint++;
         }
 
-        navMeshAgent.SetDestination(waypoints.GetComponentInChildren<WaypointNode>().transform.position);
+        navmeshagent.setdestination(waypoints.getcomponentinchildren<waypointnode>().transform.position);*/
     }
 
     void Astar(WaypointNode start)
@@ -72,110 +96,59 @@ public class Pathfinding : MonoBehaviour
 
             if (IsGoal(curr))
             {
-                // TODO: need to set goal parent here for reconstruction
+                List<WaypointNode> new_path = ReconstructPath(start, curr);
+                if (new_path != path)
+                {
+                    currWaypoint = 0;
+                }
+                path = new_path;
                 break;
             }
 
             // add neighbors to open queue, ranked by cost (g + h)
             foreach (GameObject node in curr.NodeMap.Keys)
             {
-                Debug.Log(node.GetComponent<WaypointNode>());
+                //Debug.Log(node.GetComponent<WaypointNode>());
                 // run heuristic function
-                //float h = Heuristic(curr, node.GetComponent<WaypointNode>());
+                float h = Heuristic(curr, node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject]);
 
-                // TODO: need to set node parent here for reconstruction
-
-                //open.Enqueue(node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject] + h);
+                node.GetComponent<WaypointNode>().ParentNode = curr;
+                
+                open.Enqueue(node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject] + h);
             }
 
             // mark current node as visited
             closed.Add(curr);
-            //curr = open.Dequeue();
         }
-
-        // reconstruct solution
-        // double check how to do this fo rmoving goal
-        ReconstructPath(closed, curr);
-
     }
 
-    /// <summary>
-    /// Implements the A* Pathfinding algorithm to determine a path from the monster to the player.
-    /// 
-    /// Based on pseudocode explanation from "Amit's Thoughts on Pathfinding":
-    /// http://theory.stanford.edu/~amitp/GameProgramming/ImplementationNotes.html
-    /// </summary>
-    /// <param name="start">Starting node in the algorithm</param>
 
-    // void AStar2(WaypointNode start)
-    // {
-    //     PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>();
-    //     open.Enqueue(start, 0);
-    //     HashSet<WaypointNode> closed = new HashSet<WaypointNode>();
-    //     Stack<WaypointNode> reconstructedPathStack = new Stack<WaypointNode>();
-    //     while (!open.GetMinPriorityElement().Equals(goal)) // while lowest rank in OPEN is not the GOAL
-    //     {
-    //         WaypointNode current = open.Dequeue();
-    //         closed.Add(current);
-    //         foreach (GameObject neighbor in current.NodeMap.Keys)
-    //         {
-    //             float cost = Heuristic(current);
-
-    //             // if neighbor in OPEN and cost less than g(neighbor)
-    //             if (open.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
-    //             {
-    //                 // Remove neighbor from OPEN, because new path is better
-    //                 open.Remove(neighbor.GetComponent<WaypointNode>());
-    //             }
-
-    //             // if neighbor in CLOSED and cost less than g(neighbor)
-    //             if (closed.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
-    //             {
-    //                 // remove neighbor from closed
-    //                 closed.Remove(neighbor.GetComponent<WaypointNode>());
-    //             }
-    //             if (!open.Contains(neighbor.GetComponent<WaypointNode>()) && !closed.Contains(neighbor.GetComponent<WaypointNode>()))
-    //             {
-    //                 // set g(neighbor) to cost
-    //                 current.NodeMap.Add(neighbor, cost);
-    //                 // add neighbor to OPEN
-    //                 // set priority queue rank to g(neighbor) + h(neighbor)
-    //                 float rank = current.NodeMap[neighbor]; // g(neighbor)
-    //                 open.Enqueue(neighbor.GetComponent<WaypointNode>(), rank + Heuristic(neighbor.GetComponent<WaypointNode>()));
-    //                 // set neighbor's parent to current (confused about this part tbh)
-    //                 neighbor.GetComponent<WaypointNode>().ParentNode = current;
-    //             }
-    //         }
-    //     }
-    //     // reconstruct reverse path from goal to start by following parent pointers
-    //     WaypointNode reversePathNode = goal;
-    //     while (reversePathNode != null)
-    //     {
-    //         reconstructedPathStack.Push(reversePathNode);
-    //         reversePathNode = reversePathNode.ParentNode;
-    //     }
-    // }
-
-
-    void SetGoal(WaypointNode targ) { goal = targ; }
+    public void SetGoal(WaypointNode targ) { goal = targ; }
 
     bool IsGoal(WaypointNode targ) { return targ == goal; }
 
-    public int Heuristic(WaypointNode parent, WaypointNode node)
+    /*WaypointNode FindGoal(GameObject targ)
     {
-        //Vector3 direction = child.transform.position - parent.transform.position;
-        Vector3 direction = Vector3.zero;
+        
+    }*/
 
-        // TODO: Cap raycast length at node, otherwise will get walls past target
-        return Physics.RaycastAll(parent.transform.position, direction).Length;
+    public int Heuristic(WaypointNode parent, WaypointNode node, float max_dist)
+    {
+        Vector3 direction = node.transform.position - parent.transform.position;
+
+        return Physics.RaycastAll(parent.transform.position, direction, max_dist).Length;
     }
 
-    void ReconstructPath(HashSet<WaypointNode> cameFrom, WaypointNode curr)
+    List<WaypointNode> ReconstructPath(WaypointNode start, WaypointNode end)
     {
-        WaypointNode totalPath = curr;
-        while (cameFrom.Contains(curr))
+        List<WaypointNode> total_path = new List<WaypointNode>();
+        WaypointNode curr = end;
+        while (curr != start)
         {
-
+            total_path.Add(curr);
+            curr = curr.ParentNode;
         }
+
+        return total_path;
     }
 }
