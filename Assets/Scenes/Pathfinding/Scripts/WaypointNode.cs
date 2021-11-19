@@ -20,6 +20,24 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] GameObject parent;
 
+    // parent node
+    private WaypointNode parentNode;
+
+    /// <summary>
+    /// Stores the parent node of this node. Useful in reverse reconstruction.
+    /// </summary>
+    public WaypointNode ParentNode
+    {
+        get
+        {
+            return parentNode;
+        }
+        set
+        {
+            parentNode = value;
+        }
+    }
+
     /**
      * Store legal nodes for the path with their G-Values as a Dictionary
      */
