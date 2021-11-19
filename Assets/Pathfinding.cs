@@ -66,38 +66,36 @@ public class Pathfinding : MonoBehaviour
 
         WaypointNode curr = start;
 
-        while (!IsGoal(curr) && open.Count > 0) // while lowest rank in OPEN is not the GOAL
+        while (open.Count > 0) // while lowest rank in OPEN is not the GOAL
         {
-            // current = remove lowest rank item from OPEN
-            // dequeue from open. if that is goal
+            curr = open.Dequeue();
 
-            // mark current node as visited
-            closed.Add(curr);
+            if (IsGoal(curr))
+            {
+                // TODO: need to set goal parent here for reconstruction
+                break;
+            }
 
             // add neighbors to open queue, ranked by cost (g + h)
             foreach (GameObject node in curr.NodeMap.Keys)
             {
+                Debug.Log(node.GetComponent<WaypointNode>());
                 // run heuristic function
-                float h = Heuristic(node.GetComponent<WaypointNode>());
-                open.Enqueue(node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject] + h);
+                //float h = Heuristic(curr, node.GetComponent<WaypointNode>());
+
+                // TODO: need to set node parent here for reconstruction
+
+                //open.Enqueue(node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject] + h);
             }
 
-            open.Dequeue();
-
-            curr = open.Dequeue();
+            // mark current node as visited
+            closed.Add(curr);
+            //curr = open.Dequeue();
         }
 
-        if (IsGoal(curr))
-        {
-            // reconstruct solution
-            // double check how to do this fo rmoving goal
-            ReconstructPath(closed, curr);
-        }
-        else
-        {
-            // switch back to random nav
-
-        }
+        // reconstruct solution
+        // double check how to do this fo rmoving goal
+        ReconstructPath(closed, curr);
 
     }
 
@@ -108,54 +106,58 @@ public class Pathfinding : MonoBehaviour
     /// http://theory.stanford.edu/~amitp/GameProgramming/ImplementationNotes.html
     /// </summary>
     /// <param name="start">Starting node in the algorithm</param>
-    void AStar2(WaypointNode start)
-    {
-        PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>();
-        open.Enqueue(start, 0);
-        HashSet<WaypointNode> closed = new HashSet<WaypointNode>();
-        while (!open.GetMinPriorityElement().Equals(goal)) // while lowest rank in OPEN is not the GOAL
-        {
-            WaypointNode current = open.Dequeue();
-            closed.Add(current);
-            foreach (GameObject neighbor in current.NodeMap.Keys)
-            {
-                float cost = Heuristic(current);
+    //void AStar2(WaypointNode start)
+    //{
+    //    PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>();
+    //    open.Enqueue(start, 0);
+    //    HashSet<WaypointNode> closed = new HashSet<WaypointNode>();
+    //    while (!open.GetMinPriorityElement().Equals(goal)) // while lowest rank in OPEN is not the GOAL
+    //    {
+    //        WaypointNode current = open.Dequeue();
+    //        closed.Add(current);
+    //        foreach (GameObject neighbor in current.NodeMap.Keys)
+    //        {
+    //            float cost = Heuristic(current);
 
-                // if neighbor in OPEN and cost less than g(neighbor)
-                if (open.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
-                {
-                    // Remove neighbor from OPEN, because new path is better
-                    open.Remove(neighbor.GetComponent<WaypointNode>());
-                }
+    //            // if neighbor in OPEN and cost less than g(neighbor)
+    //            if (open.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
+    //            {
+    //                // Remove neighbor from OPEN, because new path is better
+    //                open.Remove(neighbor.GetComponent<WaypointNode>());
+    //            }
 
-                // if neighbor in CLOSED and cost less than g(neighbor)
-                if (closed.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
-                {
-                    // remove neighbor from closed
-                    closed.Remove(neighbor.GetComponent<WaypointNode>());
-                }
-                if (!open.Contains(neighbor.GetComponent<WaypointNode>()) && !closed.Contains(neighbor.GetComponent<WaypointNode>()))
-                {
-                    // set g(neighbor) to cost
-                    // add neighbor to OPEN
-                    // set priority queue rank to g(neighbor) + h(neighbor)
-                    float rank = current.NodeMap[neighbor]; // g(neighbor)
-                    open.Enqueue(neighbor.GetComponent<WaypointNode>(), rank + Heuristic(neighbor.GetComponent<WaypointNode>()));
-                    // set neighbor's parent to current (confused about this part tbh)
-                }
-            }
-        }
-        // reconstruct reverse path from goal to start by following parent pointers (also confused about this)
+    //            // if neighbor in CLOSED and cost less than g(neighbor)
+    //            if (closed.Contains(neighbor.GetComponent<WaypointNode>()) && cost < current.NodeMap[neighbor])
+    //            {
+    //                // remove neighbor from closed
+    //                closed.Remove(neighbor.GetComponent<WaypointNode>());
+    //            }
+    //            if (!open.Contains(neighbor.GetComponent<WaypointNode>()) && !closed.Contains(neighbor.GetComponent<WaypointNode>()))
+    //            {
+    //                // set g(neighbor) to cost
+    //                // add neighbor to OPEN
+    //                // set priority queue rank to g(neighbor) + h(neighbor)
+    //                float rank = current.NodeMap[neighbor]; // g(neighbor)
+    //                open.Enqueue(neighbor.GetComponent<WaypointNode>(), rank + Heuristic(neighbor.GetComponent<WaypointNode>()));
+    //                // set neighbor's parent to current (confused about this part tbh)
+    //            }
+    //        }
+    //    }
+    //    // reconstruct reverse path from goal to start by following parent pointers (also confused about this)
 
-    }
+    //}
 
     void SetGoal(WaypointNode targ) { goal = targ; }
 
     bool IsGoal(WaypointNode targ) { return targ == goal; }
 
-    float Heuristic(WaypointNode node)
+    public int Heuristic(WaypointNode parent, WaypointNode node)
     {
-        return 0f;
+        //Vector3 direction = child.transform.position - parent.transform.position;
+        Vector3 direction = Vector3.zero;
+
+        // TODO: Cap raycast length at node, otherwise will get walls past target
+        return Physics.RaycastAll(parent.transform.position, direction).Length;
     }
 
     void ReconstructPath(HashSet<WaypointNode> cameFrom, WaypointNode curr)
