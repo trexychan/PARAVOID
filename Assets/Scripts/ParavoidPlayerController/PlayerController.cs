@@ -45,6 +45,13 @@ public class PlayerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
     }
 
+    public bool IsMoving()
+    {
+        return moveVect != Vector2.zero;
+    }
+
+    public bool IsGrounded() { return isGrounded; }
+
     void OnEnable()
     {
         playerControls.Enable();
