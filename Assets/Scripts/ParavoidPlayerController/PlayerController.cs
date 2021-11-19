@@ -102,7 +102,6 @@ public class PlayerController : MonoBehaviour
         } else {
             jumpBufferCounter -= Time.deltaTime;
         }
-
         HandleMouseMovement();
         HandleMoveInput();        
     }

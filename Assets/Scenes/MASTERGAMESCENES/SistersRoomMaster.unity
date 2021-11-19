@@ -17610,6 +17610,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3708530533065193140, guid: 43d0add5c12ede44e871afee04b4382f,
         type: 3}
+      propertyPath: playerSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3708530533065193140, guid: 43d0add5c12ede44e871afee04b4382f,
+        type: 3}
       propertyPath: doubleJumpUnlocked
       value: 1
       objectReference: {fileID: 0}
