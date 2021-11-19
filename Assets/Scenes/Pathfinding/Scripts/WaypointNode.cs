@@ -23,6 +23,9 @@ public class WaypointNode : MonoBehaviour
     // parent node
     private WaypointNode parentNode;
 
+    /// <summary>
+    /// Stores the parent node of this node. Useful in reverse reconstruction.
+    /// </summary>
     public WaypointNode ParentNode
     {
         get
