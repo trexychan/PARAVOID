@@ -138,6 +138,7 @@ public class Pathfinding : MonoBehaviour
                 if (!open.Contains(neighbor.GetComponent<WaypointNode>()) && !closed.Contains(neighbor.GetComponent<WaypointNode>()))
                 {
                     // set g(neighbor) to cost
+                    current.NodeMap.Add(neighbor, cost);
                     // add neighbor to OPEN
                     // set priority queue rank to g(neighbor) + h(neighbor)
                     float rank = current.NodeMap[neighbor]; // g(neighbor)
