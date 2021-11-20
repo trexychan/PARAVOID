@@ -13,6 +13,7 @@ namespace Paravoid.DataStructures
     /// <typeparam name="TPriority"></typeparam>
     public class PriorityQueue<TElement, TPriority> where TPriority : IComparable<TPriority>
     {
+
         /// <summary>
         /// Used to hold entries into the Priority Queue.
         /// </summary>

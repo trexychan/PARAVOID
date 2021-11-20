@@ -84,17 +84,16 @@ MonoBehaviour:
   rb: {fileID: 0}
   groundCheck: {fileID: 3232379457170990883}
   isGrounded: 0
-  playerSpeed: 6
+  isOnMovingPlatform: 0
+  playerSpeed: 3
   sensitivity: 0.01
   jumpForce: 5
-  gravityValue: -9.18
-  jumpTimeWindow: 0.1
+  airAcceleration: 0
   smoothInputVelocity: {x: 0, y: 0}
   smoothInputSpeed: 0.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1591
-  airAcceleration: 0
   doubleJumpUnlocked: 0
   hasDoubleJumped: 0
   hasJumpedOnce: 0
@@ -108,7 +107,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 2b1c9598575891541b911453c15d2742, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -155,6 +154,7 @@ GameObject:
   - component: {fileID: 8898920955714772705}
   - component: {fileID: 6507773454818311299}
   - component: {fileID: 7330009660854265241}
+  - component: {fileID: 1891705492}
   m_Layer: 8
   m_Name: Camera
   m_TagString: Untagged
@@ -301,3 +301,18 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &1891705492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898920955714772711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdcd06815c47d30489f70df42db56a48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frustumSettings:
+    baseSettings: {fileID: 0}
+    qualitySettings: {fileID: 0}
