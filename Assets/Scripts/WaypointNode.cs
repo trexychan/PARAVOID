@@ -96,21 +96,64 @@ public class WaypointNode : MonoBehaviour
                         duration: Mathf.Infinity);
                     NodeMap.Add(child.gameObject, (child.position - this.gameObject.transform.position).magnitude);
                 }
-                else
-                {
-                    Debug.DrawRay(this.gameObject.transform.position,
-                        child.position - this.gameObject.transform.position,
-                        color: Color.red,
-                        duration: Mathf.Infinity);
-                }
+                //else
+                //{
+                //    Debug.DrawRay(this.gameObject.transform.position,
+                //        child.position - this.gameObject.transform.position,
+                //        color: Color.red,
+                //        duration: Mathf.Infinity);
+                //}
             }
         }
 
     }
 
+    /// <summary>
+    /// Uses a raycast to detect if the player is within the trigger distance
+    /// for a node, defined as within halfway between that node and the next
+    /// node that it is connected to.
+    /// </summary>
+    /// <returns>Whether the player was hit by a raycast</returns>
+    private bool DidRaycastHitPlayer()
+    {
+        /**
+         * There's two problems I can think of with this approach:
+         *   1) The literal edge cases (i.e. the player literally being on the edges of the maze path/on the wall
+         *      Possible solution: make the nodes themselves larger in size s.t. they can't really ignore the player
+         *   // 2) What if the raycast hits the monster? How do we make sure the wait a minute...
+         *   Scrap number 2, the monster already has ignore raycast tag on it.
+         */
+        GameObject player = GameObject.FindWithTag("Player");
+        foreach (GameObject waypoint in NodeMap.Keys)
+        {
+            if (Physics.Raycast(this.gameObject.transform.position,                                             // Start position of raycast
+                    (waypoint.transform.position - this.gameObject.transform.position),                         // Direction of raycast
+                    ((waypoint.transform.position - this.gameObject.transform.position).magnitude - 1f) / 2     // Max distance of raycast
+                    ))
+            {
+                Debug.LogWarning($"Player is within trigger distance of {this.gameObject.name}");
+                Debug.DrawLine(player.transform.position, this.gameObject.transform.position, Color.magenta, Time.deltaTime * 5);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Activated when a collider enters the trigger.
+    /// </summary>
+    /// <param name="other">Collider that enters the trigger.</param>
+    //private void OnTriggerEnter(Collider collider)
+    //{
+    //    if (collider.gameObject.tag.Equals("Player"))
+    //    {
+    //        Debug.DrawLine(collider.transform.position, this.gameObject.transform.position, Color.magenta, Time.deltaTime * 5);
+    //    }
+    //}
+
     // Update is called once per frame
     void Update()
     {
-        
+        DidRaycastHitPlayer();
     }
 }
