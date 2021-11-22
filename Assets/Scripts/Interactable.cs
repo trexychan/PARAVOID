@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using ParavoidUI;
 using UnityEngine.SceneManagement;
 using Fragsurf.Movement;
 
@@ -9,13 +11,15 @@ public class Interactable : MonoBehaviour
     public GameObject promptText;
     public string dest_scene;
     public Vector3 dest_pos;
-    SurfCharacter player;
+    private PlayerController player;
+    private TextProducer dialogue_text;
     private bool playerInRange = false;
 
     void Awake()
     {
-        player = FindObjectOfType<SurfCharacter>();
+        player = PlayerController.singleton;
         promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
+        dialogue_text = GameObject.Find("DialogueText").GetComponent<TextProducer>();
     }
 
     void Start()
@@ -51,9 +55,47 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && player.InteractPressed)
+        if (playerInRange && player.playerControls.Player.Interact.triggered)
+        {
+            switch (gameObject.tag)
+            {
+                case "InteractableSceneTransition":
+                    SwitchSite();
+                    break;
+                case "Cup":
+                    CupInteractEvent();
+                    break;
+                case "locket":
+                    LocketInteractEvent();
+                    break;
+            }
+        }
+        if (playerInRange && player.playerControls.Player.Interact.triggered && gameObject.CompareTag("InteractableSceneTransition"))
         {
             SwitchSite();
         }
+        else if (playerInRange && player.playerControls.Player.Interact.triggered && gameObject.CompareTag("Cup"))
+        {
+            CupInteractEvent();
+        }
     }
+
+    private void CupInteractEvent()
+    {
+        // picked up cup!
+            dialogue_text.RunTextFor("It's late... I should go to bed.", Effect.Type, 0.04f, 8f, false);
+            //change scenetransition to broken apartment
+            GameObject doortransition = GameObject.Find("BedroomDoor").transform.Find("DoorTransition").gameObject;
+            Debug.Log(doortransition);
+            doortransition.SetActive(true);
+            promptText.SetActive(false);
+
+            gameObject.SetActive(false);
+    }
+
+    private void LocketInteractEvent()
+    {
+        
+    }
+
 }

@@ -8,6 +8,11 @@ TagManager:
   - jumpy
   - Collectible
   - SceneTransition
+  - locket
+  - Timmy
+  - Cup
+  - InteractableSceneTransition
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
@@ -19,8 +24,8 @@ TagManager:
   - 
   - Player
   - Obstacle
-  - 
-  - 
+  - PostProcessing
+  - MovingPlatform
   - 
   - 
   - 

@@ -10,18 +10,24 @@ public class ApartmentScript : MonoBehaviour
     {
         dialougeText = GameObject.Find("DialogueText");
         //dialougeText.GetComponent<TextProducer>().RemoveText();
-
         StartCoroutine(writeText());
+    }
+
+    void Update()
+    {
+        
     }
 
     private IEnumerator writeText()
     {
+        yield return new WaitForSeconds(1f);
+        
         dialougeText.GetComponent<TextProducer>()
-        .RunText("Hello My name is bob nice to meet ya!", Effect.Type, 0.05f);
+        .RunTextFor("My throat is so dry...", Effect.Type, 0.04f, 4f, false);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
 
         dialougeText.GetComponent<TextProducer>()
-        .RunTextFor("Hello My name is bob nice to meet ya!", Effect.Type, 0.05f, 10f, true);
+        .RunTextFor("I need a glass of water from the kitchen...", Effect.Type, 0.04f, 8f, false);
     }
 }
