@@ -21,9 +21,11 @@ public class ClockCounter : MonoBehaviour
         filling = GetComponent<Image>();
         timeTrack = transform.Find("Text").GetComponent<Text>();
         filling.fillAmount = 1;
-        filling.enabled = false;
 
-        RunTimer(30f, Type.None);
+        filling.enabled = false;
+        timeTrack.text = "";
+
+        RunTimer(120f, Type.None);
     }
 
     // Update is called once per frame
@@ -41,15 +43,18 @@ public class ClockCounter : MonoBehaviour
     private IEnumerator Counter(float seconds, float delayTick)
     {
         float timeLeft = seconds;
+        string fmt = "00";
+
         while (timeLeft > 0)
         {
             yield return new WaitForSeconds(delayTick);
-
-            timeTrack.text = ((int)timeLeft).ToString();
-            filling.fillAmount = timeLeft / seconds;
-
             timeLeft -= delayTick;
+
+            timeTrack.text = ((int)(timeLeft / 60f)).ToString() + ":" + ((int)(timeLeft % 60f)).ToString(fmt);
+            filling.fillAmount = timeLeft / seconds;
         }
+
+        timeTrack.text = "";
         filling.enabled = false;
     }
 }
