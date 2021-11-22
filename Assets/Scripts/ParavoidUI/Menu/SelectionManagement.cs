@@ -19,11 +19,11 @@ namespace ParavoidUI
 
         public void Awake()
         {
-            if(initialToggles.Length > 0)
+            if (initialToggles.Length > 0)
                 foreach (Toggle toggle in initialToggles)
                     toggle.isOn = true;
         }
-    
+
         public void ActivateGameObjectOnly(GameObject obj)
         {
             foreach (Transform child in transform)
@@ -37,19 +37,19 @@ namespace ParavoidUI
             {
                 try
                 {
-                    child.gameObject.GetComponent<Toggle>().SetIsOnWithoutNotify(obj == child.gameObject ? true : false); 
+                    child.gameObject.GetComponent<Toggle>().SetIsOnWithoutNotify(obj == child.gameObject ? true : false);
                 }
                 catch (System.Exception)
                 {
                     //To just overthrow GameObjects that don't have toggle componenet
                 }
             }
-                
+
         }
 
         private bool IsObjectConsidered(GameObject obj)
         {
-            if(considerdObjects != null && considerdObjects.Length > 0)
+            if (considerdObjects != null && considerdObjects.Length > 0)
             {
                 foreach (GameObject considerdObject in considerdObjects)
                     if (considerdObject == obj)
@@ -64,7 +64,7 @@ namespace ParavoidUI
         private void DeactivateGameObject(GameObject obj)
         {
             obj.SetActive(false);
-        }   
+        }
 
     }
 }

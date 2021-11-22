@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using DataManagement;
 using ParavoidUI;
 
+[DisallowMultipleComponent]
 public class Player : MonoBehaviour
 {
     /** Notes For this Script:
@@ -21,6 +22,9 @@ public class Player : MonoBehaviour
     public string currentScene;
     public DateTime dateAndTime;
     public string playerFileName;
+
+    public byte keys = 0;
+    public byte memories = 0;
 
     #endregion
 
@@ -84,6 +88,9 @@ public class Player : MonoBehaviour
         //Load Data
         currentScene = data.currentScene;
         Debug.Log(currentScene);
+
+        keys = data.keys;
+        memories = data.memories;
 
         //Load File Data
         dateAndTime = data.dateAndTime;
