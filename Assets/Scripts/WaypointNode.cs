@@ -20,6 +20,7 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] GameObject parent;
 
+
     // parent node
     private WaypointNode parentNode;
 
@@ -148,6 +149,7 @@ public class WaypointNode : MonoBehaviour
         if (collider.gameObject.tag.Equals("Player"))
         {
             Debug.Log($"{this.gameObject.name} has collided with {collider.gameObject.name}");
+            Paravoid.Pathfinding.Pathfinding.SetGoal(this);
         }
     }
 

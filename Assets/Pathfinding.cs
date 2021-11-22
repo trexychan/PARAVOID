@@ -12,13 +12,12 @@ namespace Paravoid.Pathfinding
     {
         NavMeshAgent navMeshAgent;
         public GameObject waypoints;
-        private WaypointNode goal;
+        private static WaypointNode goal;
         private int currWaypoint;
         private List<WaypointNode> path;
 
         // start point must be manually passed in through the inspector based on where Timmy spawns
         public WaypointNode startPoint;
-
 
         // Start is called before the first frame update
         void Start()
@@ -26,13 +25,16 @@ namespace Paravoid.Pathfinding
             navMeshAgent = GetComponent<NavMeshAgent>();
 
             // this is just to start things off, Timmy will stay by the nearest waypoint at spawn until A* gives him a path to get to
-            if (path.Count == 0)
-            {
-                path = new List<WaypointNode>();
-                path.Add(startPoint);
-            }
+            //if (path.Count == 0)
+            //{
+            //    path = new List<WaypointNode>();
+            //    path.Add(startPoint);
+            //}
 
-            //currWaypoint = -1;
+            path = new List<WaypointNode>();
+            path.Add(startPoint);
+
+            currWaypoint = 0;
             ////SetNextWaypoint();
             //foreach (Transform waypoint in waypoints.transform)
             //{
@@ -125,7 +127,7 @@ namespace Paravoid.Pathfinding
         }
 
 
-        public void SetGoal(WaypointNode targ) { goal = targ; }
+        public static void SetGoal(WaypointNode targ) { goal = targ; }
 
         bool IsGoal(WaypointNode targ) { return targ == goal; }
 
