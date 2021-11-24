@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     public DateTime dateAndTime;
     public string playerFileName;
 
+    public byte keys;
+    public byte memories;
     #endregion
 
     public void Awake()
@@ -53,7 +55,7 @@ public class Player : MonoBehaviour
         {
             currentScene = gameObject.scene.name;
         }
-
+      
     }
 
     #region Player Save System Methods

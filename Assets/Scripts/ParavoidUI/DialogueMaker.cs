@@ -17,7 +17,7 @@ namespace ParavoidUI
         public float effectAmount;
 
         public string[] dialogue;
-        public float[] dialogueLength;
+        public float[] dialogueDisplayDuration;
         public float[] timeBeforeDialogue;
 
         public void Awake()
@@ -25,7 +25,7 @@ namespace ParavoidUI
             dialogueText = GameObject.Find("DialogueText");
             dialogueProducer = dialogueText.GetComponent<TextProducer>();
 
-            if (dialogue.Length != dialogueLength.Length || dialogue.Length != timeBeforeDialogue.Length)
+            if (dialogue.Length != dialogueDisplayDuration.Length || dialogue.Length != timeBeforeDialogue.Length)
             {
                 Debug.LogError("Please Make sure that the number of dialogue match their length and there are one less time between each dialogue");
             }
@@ -41,7 +41,7 @@ namespace ParavoidUI
             for (int i = 0; i < dialogue.Length; i++)
             {
                 yield return new WaitForSeconds(timeBeforeDialogue[i]);
-                dialogueProducer.RunTextFor(dialogue[i], effect, effectAmount, dialogueLength[i], false);
+                dialogueProducer.RunTextFor(dialogue[i], effect, effectAmount, dialogueDisplayDuration[i], false);
             }
         }
     }
