@@ -143,7 +143,7 @@ namespace Paravoid.DataStructures
         private void Resize()
         {
             PriorityQueueEntry[] temp = new PriorityQueueEntry[this.backingArray.Length * 2];
-            for (int i = 1; i <= this.backingArray.Length; i++)
+            for (int i = 1; i <= size; i++)
             {
                 temp[i] = this.backingArray[i];
             }
