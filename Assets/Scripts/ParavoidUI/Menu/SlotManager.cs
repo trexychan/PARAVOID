@@ -161,7 +161,6 @@ namespace ParavoidUI
                 {
                     addNewSlotPrefab.SetActive(false);
                 }
-            }
         }
 
         public void AddAllSavedSlots(List<string> files)
