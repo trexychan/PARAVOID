@@ -13,6 +13,7 @@ namespace ParavoidUI
         public GameObject addNewSlotPrefab;
         public Player player;
         public SelectionManagement selectManager;
+        public GameObject lineDivider;
 
         //windows
         public GameObject createNewFileWindow;
@@ -24,6 +25,7 @@ namespace ParavoidUI
         //SlotManager Settings
         public int fileLimit = 0;
         public bool overwriteMode = false;
+        public bool savingMode;
 
         public void Awake()
         {
@@ -96,6 +98,13 @@ namespace ParavoidUI
                 return;
             }
 
+            if (saveSlots.Count > 0)
+            {
+                GameObject divider = Instantiate(lineDivider);
+                divider.name = "divider" + saveSlots.Count;
+                divider.transform.SetParent(transform, false);
+            }
+
             //saveSlot
             GameObject newSlot = Instantiate(saveSlotPrefab);
             newSlot.name = FormatSlotInspectorName(slotName);
@@ -108,6 +117,7 @@ namespace ParavoidUI
             newSlot.GetComponent<Toggle>().onValueChanged.AddListener(delegate {
                 selectManager.ActivateToggleComponentOnly(newSlot);
             });
+
             saveSlots.Add(newSlot);
 
             ResortAddNewSlotPrefab();
@@ -115,28 +125,42 @@ namespace ParavoidUI
 
         public void RemoveExsistingSlot(string slotName)
         {
-            Destroy(transform.Find(FormatSlotInspectorName(slotName)).gameObject);
+            for (int i = 0; i < saveSlots.Count; i++)
+            {
+                if (saveSlots[i].name == FormatSlotInspectorName(slotName))
+                {
+                    Destroy(transform.Find(FormatSlotInspectorName(slotName)).gameObject);
 
-            ResortAddNewSlotPrefab();
+                    if (i > 0)
+                    {
+                        Destroy(transform.Find("divider" + i).gameObject);
+                    }
+
+                    ResortAddNewSlotPrefab();
+
+                    break;
+                }
+            }
         }
 
         private void ResortAddNewSlotPrefab()
-        {   
-            if (addNewSlotPrefab != null && fileLimit > 0 ? SaveSystem.GetPlayerFiles().Count < fileLimit : true)
-            {   
-                addNewSlotPrefab.SetActive(true);
+        {
+              if (addNewSlotPrefab != null && fileLimit > 0 ? SaveSystem.GetPlayerFiles().Count < fileLimit : true)
+              {   
+                    addNewSlotPrefab.SetActive(true);
 
-                GameObject newSlot = Instantiate(addNewSlotPrefab);
-                newSlot.transform.SetParent(transform, false);
-                newSlot.name = "AddSlot";
+                    GameObject newSlot = Instantiate(addNewSlotPrefab);
+                    newSlot.transform.SetParent(transform, false);
+                    newSlot.name = "AddSlot";
 
-                Destroy(addNewSlotPrefab);
+                    Destroy(addNewSlotPrefab);
 
-                addNewSlotPrefab = newSlot;
-            }
-            else if (SaveSystem.GetPlayerFiles().Count >= fileLimit)
-            {
-                addNewSlotPrefab.SetActive(false);
+                    addNewSlotPrefab = newSlot;
+                }
+                else if (SaveSystem.GetPlayerFiles().Count >= fileLimit)
+                {
+                    addNewSlotPrefab.SetActive(false);
+                }
             }
         }
 
@@ -145,6 +169,15 @@ namespace ParavoidUI
             if (files != null) 
                 foreach (string file in files)
                     AddNewSlot(file);
+        }
+
+        public void ToggleSlotData(bool Saving)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.name.Contains("SaveSlot"))
+                    child.gameObject.GetComponent<SaveSlot>().saving = Saving;
+            }
         }
 
         #endregion
