@@ -24,21 +24,8 @@ public class Pathfinding : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
 
         // this is just to start things off, Timmy will stay by the nearest waypoint at spawn until A* gives him a path to get to
-        if (path.Count == 0)
-        {
-            path = new List<WaypointNode>();
-            path.Add(startPoint);
-        }
-
-        //currWaypoint = -1;
-        ////SetNextWaypoint();
-        //foreach (Transform waypoint in waypoints.transform)
-        //{
-        //    Debug.Log($"Timmy's waypoint: {waypoint.gameObject.name}");
-        //}
-        // these is important
-        //navMeshAgent.stoppingDistance
-        //navMeshAgent.SetDestination()
+        path = new List<WaypointNode>();
+        path.Add(startPoint);
     }
 
     // Update is called once per frame
@@ -61,24 +48,10 @@ public class Pathfinding : MonoBehaviour
 
         navMeshAgent.SetDestination(path[currWaypoint].transform.position);
         currWaypoint++;
-
-
-
-        /*if (waypoints.transform.childcount == 0)
+        if (currWaypoint >= path.Count)
         {
-            debug.logwarning("no waypoints found");
+            currWaypoint = 0;
         }
-
-        if (currwaypoint >= waypoints.transform.childcount)
-        {
-            currwaypoint = -1;
-        }
-        else
-        {
-            currwaypoint++;
-        }
-
-        navmeshagent.setdestination(waypoints.getcomponentinchildren<waypointnode>().transform.position);*/
     }
 
     void Astar(WaypointNode start)
