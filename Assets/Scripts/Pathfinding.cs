@@ -10,7 +10,7 @@ public class Pathfinding : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
     public GameObject waypoints;
-    private WaypointNode goal;
+    [SerializeField] private WaypointNode goal;
     private int currWaypoint;
     private List<WaypointNode> path;
 
@@ -60,12 +60,31 @@ public class Pathfinding : MonoBehaviour
 
         PriorityQueue<WaypointNode, float> open = new PriorityQueue<WaypointNode, float>(); // OPEN, PQ containing START
         open.Enqueue(start, 0);
+        Debug.Log("Start point added to Priority Queue!");
+
 
         WaypointNode curr = start;
 
+        Debug.Log($"Number of nodes in open priority queue: {open.Count}");
         while (open.Count > 0) // while lowest rank in OPEN is not the GOAL
         {
+            string debugString = "[";
+            foreach (WaypointNode pqNode in open.Values())
+            {
+                debugString += pqNode.name + ", ";
+            }
+            debugString += "]";
+            Debug.Log($"Nodes in Open Priority Queue: {debugString}");
+
             curr = open.Dequeue();
+
+            debugString = "[";
+            foreach (WaypointNode pqNode in open.Values())
+            {
+                debugString += pqNode.name + ", ";
+            }
+            debugString += "]";
+            Debug.Log($"Nodes in Open Priority Queue after Dequeueing: {debugString}");
 
             if (IsGoal(curr))
             {
@@ -75,19 +94,26 @@ public class Pathfinding : MonoBehaviour
                     currWaypoint = 0;
                 }
                 path = new_path;
+                Debug.Log("Breaking from A* while loop!");
                 break;
             }
 
+            Debug.Log("Made it to Astar foreach loop");
             // add neighbors to open queue, ranked by cost (g + h)
+            if (curr.NodeMap.Keys.Count == 0)
+            {
+                Debug.LogError("curr's NodeMap is empty!");
+            }
             foreach (GameObject node in curr.NodeMap.Keys)
             {
-                //Debug.Log(node.GetComponent<WaypointNode>());
+                Debug.Log($"Curr's nodemap has node: {node.name}");
                 // run heuristic function
                 float h = Heuristic(curr, node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject]);
 
                 node.GetComponent<WaypointNode>().ParentNode = curr;
-                
+
                 open.Enqueue(node.GetComponent<WaypointNode>(), curr.NodeMap[node.gameObject] + h);
+                Debug.Log($"{node.GetComponent<WaypointNode>().gameObject.name} enqueued to priority queue.");
             }
 
             // mark current node as visited

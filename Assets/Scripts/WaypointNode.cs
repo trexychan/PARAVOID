@@ -20,6 +20,8 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] GameObject parent;
 
+    [SerializeField] private bool isTriggered;
+    [SerializeField] private Pathfinding pf;
 
     // parent node
     private WaypointNode parentNode;
@@ -97,48 +99,10 @@ public class WaypointNode : MonoBehaviour
                         duration: Mathf.Infinity);
                     NodeMap.Add(child.gameObject, (child.position - this.gameObject.transform.position).magnitude);
                 }
-                //else
-                //{
-                //    Debug.DrawRay(this.gameObject.transform.position,
-                //        child.position - this.gameObject.transform.position,
-                //        color: Color.red,
-                //        duration: Mathf.Infinity);
-                //}
             }
         }
 
     }
-
-    /// <summary>
-    /// Uses a raycast to detect if the player is within the trigger distance
-    /// for a node, defined as within halfway between that node and the next
-    /// node that it is connected to.
-    /// </summary>
-    /// <returns>Whether the player was hit by a raycast</returns>
-    //private bool DidRaycastHitPlayer()
-    //{
-    //    /**
-    //     * There's two problems I can think of with this approach:
-    //     *   1) The literal edge cases (i.e. the player literally being on the edges of the maze path/on the wall
-    //     *      Possible solution: make the nodes themselves larger in size s.t. they can't really ignore the player
-    //     *   // 2) What if the raycast hits the monster? How do we make sure the wait a minute...
-    //     *   Scrap number 2, the monster already has ignore raycast tag on it.
-    //     */
-    //    GameObject player = GameObject.FindWithTag("Player");
-    //    foreach (GameObject waypoint in NodeMap.Keys)
-    //    {
-    //        if (Physics.Raycast(this.gameObject.transform.position,                                             // Start position of raycast
-    //                (waypoint.transform.position - this.gameObject.transform.position),                         // Direction of raycast
-    //                ((waypoint.transform.position - this.gameObject.transform.position).magnitude - 1f) / 2     // Max distance of raycast
-    //                ))
-    //        {
-    //            Debug.LogWarning($"Player is within trigger distance of {this.gameObject.name}");
-    //            Debug.DrawLine(player.transform.position, this.gameObject.transform.position, Color.magenta, Time.deltaTime * 5);
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
 
     /// <summary>
     /// Activated when a collider enters the trigger.
@@ -148,8 +112,35 @@ public class WaypointNode : MonoBehaviour
     {
         if (collider.gameObject.tag.Equals("Player"))
         {
-            Debug.Log($"{this.gameObject.name} has collided with {collider.gameObject.name}");
-            Paravoid.Pathfinding.Pathfinding.SetGoal(this);
+            Debug.Log($"{collider.gameObject.name} has collided with {this.gameObject.name}");
+            pf.SetGoal(this);
+            isTriggered = true;
+        }
+    }
+
+    /// <summary>
+    /// Activated when a collider stays in the trigger and does not leave.
+    /// </summary>
+    /// <param name="collider">Collider that stays in the trigger.</param>
+    private void OnTriggerStay(Collider collider)
+    {
+        if (collider.gameObject.tag.Equals("Player"))
+        {
+            isTriggered = true;
+        }
+    }
+
+    /// <summary>
+    /// Activated when a collider leaves the trigger.
+    /// </summary>
+    /// <param name="collider">Collider that leaves the trigger.</param>
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.tag.Equals("Player"))
+        {
+            Debug.Log($"{collider.gameObject.name} has exited from collider {this.gameObject.name}");
+            //parent.GetComponent<>().SetGoal(this);
+            isTriggered = false;
         }
     }
 

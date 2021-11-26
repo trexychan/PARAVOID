@@ -222,6 +222,16 @@ namespace Paravoid.DataStructures
             return false;
         }
 
+        public TElement[] Values()
+        {
+            TElement[] values = new TElement[size];
+            for (int i = 0; i < size; i++)
+            {
+                values[i] = backingArray[i + 1].Element;
+            }
+            return values;
+        }
+
         /// <summary>
         /// Used to remove a particular value from the Priority Queue
         /// </summary>
