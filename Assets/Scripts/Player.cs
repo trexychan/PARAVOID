@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     */
 
     #region PlayerData
-
     public Vector3 currentPosition;
     public Quaternion currentRotation;
     public string currentScene;
@@ -26,11 +25,31 @@ public class Player : MonoBehaviour
     public byte memories;
     #endregion
 
+    #region PlayerState
+    private byte hp;
+    public bool death = false;
+    public DeathScript deathScript;
+    public byte HP
+    {
+        get { return hp; }
+
+        set
+        {
+            hp = value;
+            death = hp <= 0 ? true : false;
+            if (death) { deathScript.ActivateDeathPanel("You have been\nconsumed by the void"); }
+        }
+    }
+
+    #endregion
+
     public void Awake()
     {
         gameObject.name = "Player";
         currentScene = gameObject.scene.name;
         dateAndTime = System.DateTime.Now;
+        deathScript = GameObject.Find("VisualCanvas").transform.Find("DeathPanel").GetComponent<DeathScript>();
+        HP = 3;
 
         //Debug.Log("Awake: " + (PlayerCarryOverData.playerDupe != null? 
         //PlayerCarryOverData.playerDupe.playerFileName : "Null"));
@@ -55,7 +74,6 @@ public class Player : MonoBehaviour
         {
             currentScene = gameObject.scene.name;
         }
-      
     }
 
     #region Player Save System Methods

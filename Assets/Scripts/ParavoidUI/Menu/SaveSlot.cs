@@ -11,6 +11,7 @@ namespace ParavoidUI
         public string slotName;
         public bool isFileEmpty = true;
         public bool saving;
+        public bool oldSystem;
         private Player player;
         private Text slotText;
         private SlotManager slotManager;
@@ -24,9 +25,12 @@ namespace ParavoidUI
             player = GameObject.Find("Player").GetComponent<Player>();
             slotText = transform.Find("Text").GetComponent<Text>();
 
-            saveSlotButt = transform.Find("Buttons").Find("button_saveSlot").gameObject;
-            loadSlotButt = transform.Find("Buttons").Find("button_loadSlot").gameObject;
-            eraseSlotButt = transform.Find("Buttons").Find("button_eraseSlot").gameObject;
+            if (!oldSystem)
+            {
+                saveSlotButt = transform.Find("Buttons").Find("button_saveSlot").gameObject;
+                loadSlotButt = transform.Find("Buttons").Find("button_loadSlot").gameObject;
+                eraseSlotButt = transform.Find("Buttons").Find("button_eraseSlot").gameObject;
+            }
         }
 
         public void Start()
@@ -36,7 +40,13 @@ namespace ParavoidUI
 
         public void Update()
         {
-            if (GetComponent<Toggle>().isOn)
+            if (oldSystem && GetComponent<Toggle>().isOn)
+            {
+                slotManager.targetSlot = gameObject;
+                return;
+            }
+
+            if (!oldSystem && GetComponent<Toggle>().isOn)
             {
                 slotManager.targetSlot = gameObject;
                 eraseSlotButt.SetActive(true);
@@ -52,7 +62,7 @@ namespace ParavoidUI
                     loadSlotButt.SetActive(true);
                 }
             }
-            else
+            else if (!oldSystem)
             {
                 saveSlotButt.SetActive(false);
                 loadSlotButt.SetActive(false);
