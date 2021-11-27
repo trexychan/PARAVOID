@@ -215,25 +215,28 @@ namespace ParavoidUI
 
         public void OpenSaveFileWindow()
         {
-            GameObject window = Instantiate(alertWindow);
-            AlertWindow windowScript = window.GetComponent<AlertWindow>();
-            windowScript.message.text = "Are sure you want to overwrite Save data for File: "
-            + targetSlot.GetComponent<SaveSlot>().slotName + "?";
-
-            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
-            windowScript.AddMethodToButtonLeft(delegate
+            if (targetSlot != null)
             {
-                SaveFile();
-                Destroy(window);
-            });
+                GameObject window = Instantiate(alertWindow);
+                AlertWindow windowScript = window.GetComponent<AlertWindow>();
+                windowScript.message.text = "Are sure you want to overwrite Save data for File: "
+                + targetSlot.GetComponent<SaveSlot>().slotName + "?";
 
-            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
-            windowScript.AddMethodToButtonRight(delegate
-            {
-                Destroy(window);
-            });
+                windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+                windowScript.AddMethodToButtonLeft(delegate
+                {
+                    SaveFile();
+                    Destroy(window);
+                });
 
-            window.transform.SetParent(GameObject.Find("Save").transform, false);
+                windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+                windowScript.AddMethodToButtonRight(delegate
+                {
+                    Destroy(window);
+                });
+
+                window.transform.SetParent(GameObject.Find("Save").transform, false);
+            }
         }
 
         public void OpenLoadFileWindow()
