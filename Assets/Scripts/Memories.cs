@@ -7,7 +7,7 @@ public class Memories : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameObject.SetActive(false);
-        other.gameObject.GetComponent<Player>().memories += 1;
-        Debug.Log(other.gameObject.GetComponent<Player>().memories);
+        other.gameObject.GetComponent<Player>().Memories += 1;
+        Debug.Log(other.gameObject.GetComponent<Player>().Memories);
     }
 }

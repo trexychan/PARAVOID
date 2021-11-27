@@ -12,6 +12,7 @@ public class ClockCounter : MonoBehaviour
     }
     public Image filling;
     public Text timeTrack;
+    public float timeLeft;
     public bool clockStart;
 
 
@@ -25,7 +26,7 @@ public class ClockCounter : MonoBehaviour
         filling.enabled = false;
         timeTrack.text = "";
 
-        RunTimer(120f, Type.None);
+        //RunTimer(10f, Type.None);
     }
 
     // Update is called once per frame
@@ -42,7 +43,7 @@ public class ClockCounter : MonoBehaviour
 
     private IEnumerator Counter(float seconds, float delayTick)
     {
-        float timeLeft = seconds;
+        timeLeft = seconds;
         string fmt = "00";
 
         while (timeLeft > 0)
