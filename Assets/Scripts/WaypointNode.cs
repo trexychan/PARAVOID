@@ -20,6 +20,9 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] GameObject parent;
 
+    [SerializeField] private bool isTriggered;
+    [SerializeField] private Pathfinding pf;
+
     // parent node
     private WaypointNode parentNode;
 
@@ -96,21 +99,54 @@ public class WaypointNode : MonoBehaviour
                         duration: Mathf.Infinity);
                     NodeMap.Add(child.gameObject, (child.position - this.gameObject.transform.position).magnitude);
                 }
-                else
-                {
-                    Debug.DrawRay(this.gameObject.transform.position,
-                        child.position - this.gameObject.transform.position,
-                        color: Color.red,
-                        duration: Mathf.Infinity);
-                }
             }
         }
 
     }
 
+    /// <summary>
+    /// Activated when a collider enters the trigger.
+    /// </summary>
+    /// <param name="other">Collider that enters the trigger.</param>
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.tag.Equals("Player"))
+        {
+            Debug.Log($"{collider.gameObject.name} has collided with {this.gameObject.name}");
+            pf.SetGoal(this);
+            isTriggered = true;
+        }
+    }
+
+    /// <summary>
+    /// Activated when a collider stays in the trigger and does not leave.
+    /// </summary>
+    /// <param name="collider">Collider that stays in the trigger.</param>
+    private void OnTriggerStay(Collider collider)
+    {
+        if (collider.gameObject.tag.Equals("Player"))
+        {
+            isTriggered = true;
+        }
+    }
+
+    /// <summary>
+    /// Activated when a collider leaves the trigger.
+    /// </summary>
+    /// <param name="collider">Collider that leaves the trigger.</param>
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.tag.Equals("Player"))
+        {
+            Debug.Log($"{collider.gameObject.name} has exited from collider {this.gameObject.name}");
+            //parent.GetComponent<>().SetGoal(this);
+            isTriggered = false;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        //DidRaycastHitPlayer();
     }
 }

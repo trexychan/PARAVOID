@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Paravoid.DataStructures
 {
@@ -143,7 +144,11 @@ namespace Paravoid.DataStructures
         private void Resize()
         {
             PriorityQueueEntry[] temp = new PriorityQueueEntry[this.backingArray.Length * 2];
-            for (int i = 1; i <= this.backingArray.Length; i++)
+            Debug.Log("backing length:");
+            Debug.Log(this.backingArray.Length);
+            Debug.Log("size:");
+            Debug.Log(size);
+            for (int i = 1; i < this.backingArray.Length; i++)
             {
                 temp[i] = this.backingArray[i];
             }
@@ -160,7 +165,7 @@ namespace Paravoid.DataStructures
         public void Enqueue(TElement element, TPriority priority)
         {
             PriorityQueueEntry entry = new PriorityQueueEntry(element, priority);
-            if (size + 1 == backingArray.Length)
+            if (size + 1 >= backingArray.Length)
             {
                 Resize();
             }
@@ -215,6 +220,16 @@ namespace Paravoid.DataStructures
                 }
             }
             return false;
+        }
+
+        public TElement[] Values()
+        {
+            TElement[] values = new TElement[size];
+            for (int i = 0; i < size; i++)
+            {
+                values[i] = backingArray[i + 1].Element;
+            }
+            return values;
         }
 
         /// <summary>
