@@ -27,5 +27,16 @@ public class DoorUnlockCondition : MonoBehaviour
             SceneLoader.LoadScene("mall"); //Please put an actual scene in there
             gameObject.SetActive(false);
         }
+        else if (clockMode)
+        {
+            GameObject.Find("DialogueText").GetComponent<TextProducer>().RunTextFor(
+                    "Elevator hasn't arrived", Effect.Type, 0.04f, 4f, true);
+        }
+        else if (!clockMode)
+        {
+            GameObject.Find("DialogueText").GetComponent<TextProducer>().RunTextFor(
+                    "Need " + (4 - player.keys).ToString() + " key" + (player.keys != 3 ? "s" : "") + " to open", Effect.Type, 0.04f, 4f, true);
+        }
+
     }
 }

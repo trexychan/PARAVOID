@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 namespace DataManagement
 {
@@ -39,7 +39,7 @@ namespace DataManagement
                 playerFileName = player.playerFileName;
 
                 keys = player.keys;
-                memories = player.memories;
+                memories = player.Memories;
 
                 //Stores player current position in currentlevel
                 currentPosition[0] = player.currentPosition.x;
@@ -54,11 +54,11 @@ namespace DataManagement
 
                 //Stores the last scene the player loaded to
                 currentScene = player.currentScene;
-            }  
+            }
             else
             {
                 empty = true;
-            }     
+            }
         }
     }
 }

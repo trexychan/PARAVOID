@@ -26,7 +26,7 @@ public class ClockCounter : MonoBehaviour
         filling.enabled = false;
         timeTrack.text = "";
 
-        RunTimer(10f, Type.None);
+        //RunTimer(10f, Type.None);
     }
 
     // Update is called once per frame

@@ -22,7 +22,21 @@ public class Player : MonoBehaviour
     public string playerFileName;
 
     public byte keys;
-    public byte memories;
+    private byte memories;
+    public byte Memories
+    {
+        get { return memories; }
+
+        set
+        {
+            memories = value;
+            if (memories >= 3)
+            {
+                GameObject.Find("DialogueText").GetComponent<TextProducer>().RunTextFor(
+                    "All Memories Collected", Effect.Type, 0.04f, 10f, true);
+            }
+        }
+    }
     #endregion
 
     #region PlayerState
@@ -37,7 +51,7 @@ public class Player : MonoBehaviour
         {
             hp = value;
             death = hp <= 0 ? true : false;
-            if (death) { deathScript.ActivateDeathPanel("You have been\nconsumed by the void"); }
+            if (death) { deathScript.ActivateDeathPanel("You have been\nconsumed by the void."); }
         }
     }
 
