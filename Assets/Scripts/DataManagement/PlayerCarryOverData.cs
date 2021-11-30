@@ -8,6 +8,11 @@ public static class PlayerCarryOverData
 
     public static void UpdatePlayerData(Player player)
     {
+        if (GameObject.Find("PlayerDupe") != null)
+        {
+            MonoBehaviour.Destroy(GameObject.Find("PlayerDupe"));
+        }
+
         playerDupe = player;
         playerDupe.name = "PlayerDupe";
         MonoBehaviour.DontDestroyOnLoad(playerDupe);
