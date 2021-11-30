@@ -21,17 +21,23 @@ public class AudioManager : MonoBehaviour
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        s.source.Play();
+        if (s != null)
+        {
+            s.source.Play();
+        }
     }
     public void Play(int element)
     {
         Sound s = sounds[element];
-        s.source.Play();
+        if (s != null)
+        {
+            s.source.Play();
+        }
     }
 
     void Start()
     {
         Play("WONDERWALL");
-        
+
     }
 }

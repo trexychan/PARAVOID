@@ -25,17 +25,7 @@ public class Player : MonoBehaviour
     private byte memories;
     public byte Memories
     {
-        get { return memories; }
-
-        set
-        {
-            memories = value;
-            if (memories >= 3)
-            {
-                GameObject.Find("DialogueText").GetComponent<TextProducer>().RunTextFor(
-                    "All Memories Collected", Effect.Type, 0.04f, 10f, true);
-            }
-        }
+        get; set;
     }
     #endregion
 
