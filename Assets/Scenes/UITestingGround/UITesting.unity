@@ -190,6 +190,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: KeyCollection (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2076015877145519447, guid: 2d15af273dd464346be69f18a2c420d0,
+        type: 3}
+      propertyPath: a
+      value: 
+      objectReference: {fileID: 1332401284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d15af273dd464346be69f18a2c420d0, type: 3}
 --- !u!1001 &39175153
@@ -586,6 +591,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: KeyCollection (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2076015877145519447, guid: 2d15af273dd464346be69f18a2c420d0,
+        type: 3}
+      propertyPath: a
+      value: 
+      objectReference: {fileID: 1332401284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d15af273dd464346be69f18a2c420d0, type: 3}
 --- !u!1001 &726027588
@@ -655,8 +665,63 @@ PrefabInstance:
       propertyPath: m_Name
       value: KeyCollection (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2076015877145519447, guid: 2d15af273dd464346be69f18a2c420d0,
+        type: 3}
+      propertyPath: a
+      value: 
+      objectReference: {fileID: 1332401284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d15af273dd464346be69f18a2c420d0, type: 3}
+--- !u!1 &1332401283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1332401285}
+  - component: {fileID: 1332401284}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1332401284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332401283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f988a3fca380e124f9a4afc37ac424c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - clip: {fileID: 8300000, guid: 6d1d9dfa74b6a2b4bbe0bcba41dbebc5, type: 3}
+    pitch: 1.26
+    volume: 1
+    name: KeyPickup
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &1332401285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332401283}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9735621, y: 2.7154264, z: 0.83118117}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2045095348
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1428,6 +1493,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: KeyCollection
       objectReference: {fileID: 0}
+    - target: {fileID: 2076015877145519447, guid: 2d15af273dd464346be69f18a2c420d0,
+        type: 3}
+      propertyPath: a
+      value: 
+      objectReference: {fileID: 1332401284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d15af273dd464346be69f18a2c420d0, type: 3}
 --- !u!1001 &9202483512026204118
