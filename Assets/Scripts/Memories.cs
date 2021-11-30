@@ -44,6 +44,7 @@ public class Memories : MonoBehaviour
         audioManager.Play("thoomp");
         StartCoroutine(fadeThisShit(1f, 10f));
         yield return new WaitForSeconds(2f);
+
         switch (memory)
         {
             case MemoryType.One:
@@ -78,6 +79,7 @@ public class Memories : MonoBehaviour
                 dialogue.ReplaceText("I miss her.", Effect.Type, 0.15f);
                 yield return new WaitForSeconds(6f);
                 break;
+
             case MemoryType.Two:
                 dialogue.ReplaceText("I remember keeping a rat in this.", Effect.Type, 0.045f);
                 yield return new WaitForSeconds(3f);
@@ -95,26 +97,37 @@ public class Memories : MonoBehaviour
                 yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("But that was years later.", Effect.Type, 0.09f);
                 yield return new WaitForSeconds(3f);
-                dialogue.ReplaceText("Strange enough", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(2f);
+                dialogue.ReplaceText("Strange enough", Effect.Type, 0.07f);
+                yield return new WaitForSeconds(3f);
                 dialogue.RunText(", I do remember seeing it recently", Effect.Type, 0.045f);
                 yield return new WaitForSeconds(3f);
                 dialogue.RunText("--the rat, I mean.", Effect.Type, 0.045f);
                 yield return new WaitForSeconds(2f);
-                dialogue.ReplaceText("When was that?", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(2f);
+                dialogue.ReplaceText("When was that?", Effect.Type, 0.06f);
+                yield return new WaitForSeconds(3f);
                 dialogue.ReplaceText("Where?", Effect.Type, 0.3f);
                 yield return new WaitForSeconds(6f);
-                
-                StartCoroutine(fadeThisShit(0f, 10f));
                 break;
+
             case MemoryType.Three:
-                StartCoroutine(fadeThisShit(1f, 10f));
-                dialogue.ReplaceTextFor(">Wo", Effect.Type, 0.06f, 10f, true);
-                yield return new WaitForSeconds(10f);
-                
+                dialogue.ReplaceText("We played so many games on this.", Effect.Type, 0.05f);
+                yield return new WaitForSeconds(4f);
+                dialogue.ReplaceText("It was so fun", Effect.Type, 0.05f);
+                yield return new WaitForSeconds(2f);
+                dialogue.RunText(", back before we fought all the time.", Effect.Type, 0.05f);
+                yield return new WaitForSeconds(4f);
+                dialogue.ReplaceText("I beat her in Street Fighter", Effect.Type, 0.06f);
+                yield return new WaitForSeconds(3f);
+                dialogue.RunText(" but June beat me in Mario Kart.", Effect.Type, 0.06f);
+                yield return new WaitForSeconds(3f);
+                dialogue.ReplaceText("She was the better driver after all", Effect.Type, 0.07f);
+                yield return new WaitForSeconds(2.5f);
+                dialogue.RunText("...", Effect.Type, 0.2f);
+                yield return new WaitForSeconds(5f);
+
                 break;
         }
+
         dialogue.ReplaceText("", Effect.None, 1f);
         StartCoroutine(fadeThisShit(0f, 10f));
         audioManager.Play("thoomp");
