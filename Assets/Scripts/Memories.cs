@@ -42,11 +42,11 @@ public class Memories : MonoBehaviour
     private IEnumerator ActivateMemory()
     {
         audioManager.Play("thoomp");
+        StartCoroutine(fadeThisShit(1f, 10f));
+        yield return new WaitForSeconds(2f);
         switch (memory)
         {
             case MemoryType.One:
-                StartCoroutine(fadeThisShit(1f, 10f));
-                yield return new WaitForSeconds(2f);
                 dialogue.ReplaceText("A small kiosk sold small niche things like this.", Effect.Type, 0.045f);
                 yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("It sounded so pretty when June played it for me.", Effect.Type, 0.045f);
@@ -77,44 +77,46 @@ public class Memories : MonoBehaviour
                 yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("I miss her.", Effect.Type, 0.15f);
                 yield return new WaitForSeconds(6f);
-                dialogue.ReplaceText("", Effect.None, 1f);
-                StartCoroutine(fadeThisShit(0f, 10f));
                 break;
             case MemoryType.Two:
-                StartCoroutine(fadeThisShit(1f, 10f));
-                yield return new WaitForSeconds(2f);
                 dialogue.ReplaceText("I remember keeping a rat in this.", Effect.Type, 0.045f);
                 yield return new WaitForSeconds(4f);
-                dialogue.ReplaceText("I thought it was a hamster when I found it, near our old place", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(2.8f);
-                dialogue.RunText(", unwell.", Effect.Type, 0.07f);
-                yield return new WaitForSeconds(1.5f);
-                dialogue.ReplaceText("June helped...", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(1f);
-                dialogue.RunText(" she told me it's a rat", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(1.5f);
-                dialogue.RunText(", I said it's a hamster", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(1.5f);
-                dialogue.RunText(", I guess she just went along.", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(1.5f);
-                dialogue.ReplaceText("It disappeared one day. June went off as well, but that was years later.", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(5f);
-                dialogue.ReplaceText("Strange enough, I do remember seeing it recently--the rat, I mean.", Effect.Type, 0.045f);
+                dialogue.ReplaceText("I thought it was a unwell hamster when I found it", Effect.Type, 0.045f);
                 yield return new WaitForSeconds(4f);
+                dialogue.ReplaceText("June told me it was a rat.", Effect.Type, 0.045f);
+                yield return new WaitForSeconds(1.5f);
+                dialogue.RunText("I said it was a hamster.", Effect.Type, 0.045f);
+                yield return new WaitForSeconds(1.5f);
+                dialogue.RunText("I guess she just went along.", Effect.Type, 0.045f);
+                yield return new WaitForSeconds(1.5f);
+                dialogue.ReplaceText("It disappeared one day.", Effect.Type, 0.045f);
+                yield return new WaitForSeconds(2f);
+                dialogue.RunText(" June went off as well", Effect.Type, 0.09f);
+                yield return new WaitForSeconds(3f);
+                dialogue.RunText("But that was years later.", Effect.Type, 0.09f);
+                yield return new WaitForSeconds(3f);
+                dialogue.ReplaceText("Strange enough", Effect.Type, 0.045f);
+                yield return new WaitForSeconds(1f);
+                dialogue.RunText(", I do remember seeing it recently", Effect.Type, 0.045f);
+                yield return new WaitForSeconds(2f);
+                dialogue.RunText("--the rat, I mean.", Effect.Type, 0.045f);
+                yield return new WaitForSeconds(2f);
                 dialogue.ReplaceText("When was that?", Effect.Type, 0.045f);
                 yield return new WaitForSeconds(2f);
-                dialogue.ReplaceText("Where?", Effect.Type, 0.08f);
-                yield return new WaitForSeconds(2f);
-                dialogue.ReplaceText("", Effect.None, 1f);
+                dialogue.ReplaceText("Where?", Effect.Type, 0.3f);
+                yield return new WaitForSeconds(6f);
+                
                 StartCoroutine(fadeThisShit(0f, 10f));
                 break;
             case MemoryType.Three:
                 StartCoroutine(fadeThisShit(1f, 10f));
                 dialogue.ReplaceTextFor(">Wo", Effect.Type, 0.06f, 10f, true);
                 yield return new WaitForSeconds(10f);
-                StartCoroutine(fadeThisShit(0f, 10f));
+                
                 break;
         }
+        dialogue.ReplaceText("", Effect.None, 1f);
+        StartCoroutine(fadeThisShit(0f, 10f));
         audioManager.Play("thoomp");
     }
 

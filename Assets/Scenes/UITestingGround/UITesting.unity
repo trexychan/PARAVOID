@@ -3335,8 +3335,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1552095903744115683}
   - component: {fileID: 2216324813284284763}
-  - component: {fileID: 2216324813284284762}
   - component: {fileID: 2216324813284284764}
+  - component: {fileID: 2216324813284284762}
   m_Layer: 0
   m_Name: HamsterCage
   m_TagString: Untagged
@@ -3353,12 +3353,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2216324813284284761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9db4eead572fee54a87bdacd790fc8f0, type: 3}
+  m_Script: {fileID: 11500000, guid: f988a3fca380e124f9a4afc37ac424c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  promptText: {fileID: 0}
-  dest_scene: 
-  dest_pos: {x: 0, y: 0, z: 0}
+  sounds:
+  - clip: {fileID: 8300000, guid: 232812ba8379951438294c25e3174bf3, type: 3}
+    pitch: 1
+    volume: 0.915
+    name: thoomp
+    loop: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 232812ba8379951438294c25e3174bf3, type: 3}
+    pitch: 1
+    volume: 1
+    name: thoomp
+    loop: 0
+    source: {fileID: 0}
 --- !u!114 &2216324813284284763
 MonoBehaviour:
   m_ObjectHideFlags: 0
