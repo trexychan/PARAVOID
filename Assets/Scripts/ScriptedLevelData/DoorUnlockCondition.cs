@@ -29,12 +29,12 @@ public class DoorUnlockCondition : MonoBehaviour
         }
         else if (clockMode)
         {
-            GameObject.Find("DialogueText").GetComponent<TextProducer>().RunTextFor(
+            GameObject.Find("DialogueText").GetComponent<TextProducer>().ReplaceTextFor(
                     "Elevator hasn't arrived", Effect.Type, 0.04f, 4f, true);
         }
         else if (!clockMode)
         {
-            GameObject.Find("DialogueText").GetComponent<TextProducer>().RunTextFor(
+            GameObject.Find("DialogueText").GetComponent<TextProducer>().ReplaceTextFor(
                     "Need " + (4 - player.keys).ToString() + " key" + (player.keys != 3 ? "s" : "") + " to open", Effect.Type, 0.04f, 4f, true);
         }
 

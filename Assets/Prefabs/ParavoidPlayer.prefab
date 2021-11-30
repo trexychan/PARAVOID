@@ -85,7 +85,7 @@ MonoBehaviour:
   groundCheck: {fileID: 3232379457170990883}
   isGrounded: 0
   isOnMovingPlatform: 0
-  playerSpeed: 3
+  playerSpeed: 6
   sensitivity: 0.01
   jumpForce: 5
   airAcceleration: 0
@@ -154,7 +154,6 @@ GameObject:
   - component: {fileID: 8898920955714772705}
   - component: {fileID: 6507773454818311299}
   - component: {fileID: 7330009660854265241}
-  - component: {fileID: 1891705492}
   m_Layer: 8
   m_Name: Camera
   m_TagString: Untagged
@@ -240,7 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 4517213774757605605}
-  mouseSensitivity: 1
+  mouseSensitivity: 2
 --- !u!114 &7330009660854265241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,18 +300,3 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
---- !u!114 &1891705492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8898920955714772711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdcd06815c47d30489f70df42db56a48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frustumSettings:
-    baseSettings: {fileID: 0}
-    qualitySettings: {fileID: 0}

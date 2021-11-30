@@ -12,6 +12,7 @@ namespace ParavoidUI
     public class TextProducer : MonoBehaviour
     {
         public Text textBox;
+        public AudioSource typeSound;
 
         public void Awake()
         {
@@ -82,6 +83,20 @@ namespace ParavoidUI
             }
         }
 
+        public void ReplaceText(string text, Effect effect, float effectAmount)
+        {
+            StopAllCoroutines();
+            RevertText(Effect.None, 0f);
+            RunText(text, effect, effectAmount);
+        }
+
+        public void ReplaceTextFor(string text, Effect effect, float effectAmount, float sec, bool revert)
+        {
+            StopAllCoroutines();
+            RevertText(Effect.None, 0f);
+            RunTextFor(text, effect, effectAmount, sec, revert);
+        }
+
         private IEnumerator TimedText(float time)
         {
             yield return new WaitForSeconds(time);
@@ -102,6 +117,7 @@ namespace ParavoidUI
             for (int i = 0; i < text.Length; i++)
             {
                 textBox.text += text.Substring(i, 1);
+                typeSound.Play();
                 yield return new WaitForSeconds(delay);
             }
 
@@ -112,6 +128,7 @@ namespace ParavoidUI
             while (textBox.text.Length > 0)
             {
                 textBox.text = textBox.text.Remove(textBox.text.Length - 1);
+                typeSound.Play();
                 yield return new WaitForSeconds(delay);
             }
 

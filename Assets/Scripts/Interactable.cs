@@ -70,14 +70,6 @@ public class Interactable : MonoBehaviour
                     break;
             }
         }
-        if (playerInRange && player.playerControls.Player.Interact.triggered && gameObject.CompareTag("InteractableSceneTransition"))
-        {
-            SwitchSite();
-        }
-        else if (playerInRange && player.playerControls.Player.Interact.triggered && gameObject.CompareTag("Cup"))
-        {
-            CupInteractEvent();
-        }
     }
 
     private void CupInteractEvent()

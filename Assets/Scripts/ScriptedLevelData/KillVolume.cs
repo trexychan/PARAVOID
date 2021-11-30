@@ -7,5 +7,6 @@ public class KillVolume : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         collider.GetComponent<Player>().HP = 0;
+        Destroy(gameObject);
     }
 }
