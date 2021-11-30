@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 namespace DataManagement
 {
@@ -23,6 +23,9 @@ namespace DataManagement
         public float[] currentPosition = new float[3]; //Stores player postion in scene level
         public float[] currentRotation = new float[4];
 
+        public byte keys;
+        public byte memories;
+
         #endregion
 
         public PlayerData(Player player)
@@ -34,6 +37,9 @@ namespace DataManagement
                 //Stores File specifc data
                 dateAndTime = player.dateAndTime;
                 playerFileName = player.playerFileName;
+
+                keys = player.keys;
+                memories = player.Memories;
 
                 //Stores player current position in currentlevel
                 currentPosition[0] = player.currentPosition.x;
@@ -48,11 +54,11 @@ namespace DataManagement
 
                 //Stores the last scene the player loaded to
                 currentScene = player.currentScene;
-            }  
+            }
             else
             {
                 empty = true;
-            }     
+            }
         }
     }
 }

@@ -10,11 +10,14 @@ namespace ParavoidUI
         //private Image screen;
         private bool isFaded;
 
+        private Player player;
+
         public KeyCode ToggleMenuPanel = KeyCode.Escape;
 
         public void Awake()
         {
             //screen = GetComponent<Image>();
+            player = GameObject.Find("Player").GetComponent<Player>();
             UnFadeScreen();
         }
 
@@ -25,7 +28,7 @@ namespace ParavoidUI
 
         public void UpdateGeneralInput()
         {
-            if (Input.GetKeyDown(ToggleMenuPanel))
+            if (Input.GetKeyDown(ToggleMenuPanel) && !player.death)
             {
                 foreach (Transform child in transform)
                 {

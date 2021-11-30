@@ -13,6 +13,7 @@ namespace ParavoidUI
         public GameObject addNewSlotPrefab;
         public Player player;
         public SelectionManagement selectManager;
+        public GameObject lineDivider;
 
         //windows
         public GameObject createNewFileWindow;
@@ -24,6 +25,8 @@ namespace ParavoidUI
         //SlotManager Settings
         public int fileLimit = 0;
         public bool overwriteMode = false;
+        public bool savingMode;
+        public bool includeDivider;
 
         public void Awake()
         {
@@ -31,7 +34,7 @@ namespace ParavoidUI
             //Auto assigns player if their exisists a player GameObject in scene
             try
             {
-                player = GameObject.Find("Player").GetComponent<Player>(); 
+                player = GameObject.Find("Player").GetComponent<Player>();
 
                 AddAllSavedSlots(SaveSystem.GetPlayerFiles());
 
@@ -45,14 +48,14 @@ namespace ParavoidUI
                     {
                         Debug.LogError("Error: Attempting to utlize overwrite mode requires a valid file limit > 0");
                     }
-                   
+
                 }
             }
             catch (NullReferenceException ex)
             {
-                Debug.LogError(ex); 
-                Debug.LogError("Error: SlotManager's player variable has not been assigned a value \n[No GameObject nammed \"Player\" found to auto assign variable]"); 
-            }                              
+                Debug.LogError(ex);
+                Debug.LogError("Error: SlotManager's player variable has not been assigned a value \n[No GameObject nammed \"Player\" found to auto assign variable]");
+            }
         }
 
         #region SlotManger methods
@@ -61,7 +64,7 @@ namespace ParavoidUI
         {
             //Checks if saveslot name already exsists
             foreach (GameObject slot in saveSlots)
-                if(slot.GetComponent<SaveSlot>().slotName == slotName)
+                if (slot.GetComponent<SaveSlot>().slotName == slotName)
                     return;
 
             player.SavePlayer(slotName);
@@ -73,7 +76,7 @@ namespace ParavoidUI
         {
             //Checks if saveslot name already exsists
             foreach (GameObject slot in saveSlots)
-                if(slot.GetComponent<SaveSlot>().slotName == slotName)
+                if (slot.GetComponent<SaveSlot>().slotName == slotName)
                     return;
 
             player.SavePlayer(slotName);
@@ -96,18 +99,27 @@ namespace ParavoidUI
                 return;
             }
 
+            if (saveSlots.Count > 0 && includeDivider)
+            {
+                GameObject divider = Instantiate(lineDivider);
+                divider.name = "divider" + saveSlots.Count;
+                divider.transform.SetParent(transform, false);
+            }
+
             //saveSlot
             GameObject newSlot = Instantiate(saveSlotPrefab);
             newSlot.name = FormatSlotInspectorName(slotName);
             newSlot.transform.SetParent(transform, false);
             newSlot.GetComponent<SaveSlot>().slotName = slotName;
-            newSlot.transform.Find("Text").GetComponent<Text>().text = 
+            newSlot.transform.Find("Text").GetComponent<Text>().text =
             !data.empty ? ("FILE: " + slotName + "\nLAST PLAYED: " + data.dateAndTime)
             : ("EMPTY FILE: " + slotName);
             newSlot.GetComponent<SaveSlot>().isFileEmpty = data.empty ? true : false;
-            newSlot.GetComponent<Toggle>().onValueChanged.AddListener(delegate {
+            newSlot.GetComponent<Toggle>().onValueChanged.AddListener(delegate
+            {
                 selectManager.ActivateToggleComponentOnly(newSlot);
             });
+
             saveSlots.Add(newSlot);
 
             ResortAddNewSlotPrefab();
@@ -115,15 +127,28 @@ namespace ParavoidUI
 
         public void RemoveExsistingSlot(string slotName)
         {
-            Destroy(transform.Find(FormatSlotInspectorName(slotName)).gameObject);
+            for (int i = 0; i < saveSlots.Count; i++)
+            {
+                if (saveSlots[i].name == FormatSlotInspectorName(slotName))
+                {
+                    Destroy(transform.Find(FormatSlotInspectorName(slotName)).gameObject);
 
-            ResortAddNewSlotPrefab();
+                    if (i > 0)
+                    {
+                        Destroy(transform.Find("divider" + i).gameObject);
+                    }
+
+                    ResortAddNewSlotPrefab();
+
+                    break;
+                }
+            }
         }
 
         private void ResortAddNewSlotPrefab()
-        {   
+        {
             if (addNewSlotPrefab != null && fileLimit > 0 ? SaveSystem.GetPlayerFiles().Count < fileLimit : true)
-            {   
+            {
                 addNewSlotPrefab.SetActive(true);
 
                 GameObject newSlot = Instantiate(addNewSlotPrefab);
@@ -142,9 +167,18 @@ namespace ParavoidUI
 
         public void AddAllSavedSlots(List<string> files)
         {
-            if (files != null) 
+            if (files != null)
                 foreach (string file in files)
                     AddNewSlot(file);
+        }
+
+        public void ToggleSlotData(bool Saving)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.name.Contains("SaveSlot"))
+                    child.gameObject.GetComponent<SaveSlot>().saving = Saving;
+            }
         }
 
         #endregion
@@ -164,34 +198,45 @@ namespace ParavoidUI
             windowScript.message.text = "Create new File?";
 
             windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
-            windowScript.AddMethodToButtonLeft(delegate {
+            windowScript.AddMethodToButtonLeft(delegate
+            {
                 AddNewSaveFile(SaveSystem.GetPlayerFiles().Count + 1 + "");
-                Destroy(window);});
-            
+                Destroy(window);
+            });
+
             windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
-             windowScript.AddMethodToButtonRight(delegate {
-                Destroy(window);});
-            
+            windowScript.AddMethodToButtonRight(delegate
+            {
+                Destroy(window);
+            });
+
             window.transform.SetParent(GameObject.Find("Save").transform, false);
         }
 
         public void OpenSaveFileWindow()
         {
-            GameObject window = Instantiate(alertWindow);
-            AlertWindow windowScript = window.GetComponent<AlertWindow>();
-            windowScript.message.text = "Are sure you want to overwrite Save data for File: "
-            + targetSlot.GetComponent<SaveSlot>().slotName + "?";
+            if (targetSlot != null)
+            {
+                GameObject window = Instantiate(alertWindow);
+                AlertWindow windowScript = window.GetComponent<AlertWindow>();
+                windowScript.message.text = "Are sure you want to overwrite Save data for File: "
+                + targetSlot.GetComponent<SaveSlot>().slotName + "?";
 
-            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
-            windowScript.AddMethodToButtonLeft(delegate {
-                SaveFile();
-                Destroy(window);});
-            
-            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
-             windowScript.AddMethodToButtonRight(delegate {
-                Destroy(window);});
+                windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+                windowScript.AddMethodToButtonLeft(delegate
+                {
+                    SaveFile();
+                    Destroy(window);
+                });
 
-            window.transform.SetParent(GameObject.Find("Save").transform, false);
+                windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+                windowScript.AddMethodToButtonRight(delegate
+                {
+                    Destroy(window);
+                });
+
+                window.transform.SetParent(GameObject.Find("Save").transform, false);
+            }
         }
 
         public void OpenLoadFileWindow()
@@ -225,18 +270,22 @@ namespace ParavoidUI
         {
             GameObject window = Instantiate(alertWindow);
             AlertWindow windowScript = window.GetComponent<AlertWindow>();
-            
+
             windowScript.message.text = "Are you sure you want to erase File: "
             + targetSlot.GetComponent<SaveSlot>().slotName + "?";
 
             windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
-            windowScript.AddMethodToButtonLeft(delegate {
+            windowScript.AddMethodToButtonLeft(delegate
+            {
                 EraseFile();
-                Destroy(window);});
-            
+                Destroy(window);
+            });
+
             windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
-             windowScript.AddMethodToButtonRight(delegate {
-                Destroy(window);});
+            windowScript.AddMethodToButtonRight(delegate
+            {
+                Destroy(window);
+            });
 
             window.transform.SetParent(GameObject.Find("Save").transform, false);
         }
@@ -255,8 +304,10 @@ namespace ParavoidUI
                 Vector3 pos = windowScript.buttonLeft.gameObject.GetComponent<RectTransform>().anchoredPosition;
                 pos.x = 0;
                 windowScript.buttonLeft.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
-                windowScript.AddMethodToButtonLeft(delegate {
-                Destroy(window);});
+                windowScript.AddMethodToButtonLeft(delegate
+                {
+                    Destroy(window);
+                });
 
                 Destroy(windowScript.buttonRight.gameObject);
 
@@ -267,13 +318,17 @@ namespace ParavoidUI
             + targetSlot.GetComponent<SaveSlot>().slotName + "?";
 
             windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
-            windowScript.AddMethodToButtonLeft(delegate {
+            windowScript.AddMethodToButtonLeft(delegate
+            {
                 DeleteFile();
-                Destroy(window);});
-            
+                Destroy(window);
+            });
+
             windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
-             windowScript.AddMethodToButtonRight(delegate {
-                Destroy(window);});
+            windowScript.AddMethodToButtonRight(delegate
+            {
+                Destroy(window);
+            });
         }
 
         #endregion
@@ -282,49 +337,49 @@ namespace ParavoidUI
 
         public void SaveFile()
         {
-            if(targetSlot != null)
+            if (targetSlot != null)
             {
                 player.SavePlayer(targetSlot.GetComponent<SaveSlot>().slotName);
 
                 targetSlot.GetComponent<SaveSlot>().isFileEmpty = false;
-                
-                targetSlot.transform.Find("Text").GetComponent<Text>().text = "FILE: " 
+
+                targetSlot.transform.Find("Text").GetComponent<Text>().text = "FILE: "
                 + targetSlot.GetComponent<SaveSlot>().slotName + "\nLAST PLAYED: " + player.dateAndTime;
-            }      
+            }
         }
 
         public void LoadFile()
         {
-            if(targetSlot != null && !targetSlot.GetComponent<SaveSlot>().isFileEmpty 
+            if (targetSlot != null && !targetSlot.GetComponent<SaveSlot>().isFileEmpty
             && SaveSystem.DoesFileExist(targetSlot.GetComponent<SaveSlot>().slotName))
             {
                 player.LoadPlayer(targetSlot.GetComponent<SaveSlot>().slotName);
                 //Environemtn Datat load
-            }  
+            }
         }
 
         public void DeleteFile()
         {
-            if(targetSlot != null)
+            if (targetSlot != null)
             {
                 saveSlots.Remove(targetSlot);
                 player.DeletePlayer(targetSlot.GetComponent<SaveSlot>().slotName);
                 //Environemtn Datat Delete
                 RemoveExsistingSlot(targetSlot.GetComponent<SaveSlot>().slotName);
-            }   
+            }
         }
 
         public void EraseFile()
         {
-            if(targetSlot != null)
+            if (targetSlot != null)
             {
                 player.ErasePlayer(targetSlot.GetComponent<SaveSlot>().slotName);
                 //Environemtn Datat Delete
 
-                targetSlot.transform.Find("Text").GetComponent<Text>().text = "EMPTY FILE: " 
+                targetSlot.transform.Find("Text").GetComponent<Text>().text = "EMPTY FILE: "
                 + targetSlot.GetComponent<SaveSlot>().slotName;
 
-            }   
+            }
         }
 
         /* Consider another time
@@ -366,7 +421,7 @@ namespace ParavoidUI
         }
 
         private void ReloadMissingOverwriteFiles()
-        {              
+        {
             for (int i = 1; i <= fileLimit; i++)
                 if (!SaveSystem.DoesFileExist("Save " + i))
                     AddNewSaveFile("Save " + i, true);

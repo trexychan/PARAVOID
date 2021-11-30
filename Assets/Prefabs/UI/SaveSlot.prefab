@@ -222,6 +222,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotName: 
   isFileEmpty: 1
+  saving: 0
+  oldSystem: 1
 --- !u!1 &8422203067486062364
 GameObject:
   m_ObjectHideFlags: 0
