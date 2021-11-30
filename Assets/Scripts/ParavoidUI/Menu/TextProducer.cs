@@ -59,7 +59,7 @@ namespace ParavoidUI
         }
 
         /**
-        * Using Javadoc style for calrity
+        * Using Javadoc style for clarity
         *
         * @param text a string that is the input text for to be written on the textbox
         * @param effect an enum of type Effect that determines the text transmission.
