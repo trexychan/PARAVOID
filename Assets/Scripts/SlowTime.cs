@@ -6,30 +6,31 @@ namespace Fragsurf.Movement
 {
     public class SlowTime : MonoBehaviour
     {
-        public float timeMultiplier = 0.5f;
-        public float slowTimeLength = 5.0f;
-        public float slowTimeCooldown = 5.0f;
-        public bool enabled = false;
+        [SerializeField] private float timeMultiplier = 0.5f;
+        [SerializeField] private float slowTimeLength = 5.0f;
+        [SerializeField] private float slowTimeCooldown = 5.0f;
+        public bool slowTimeEnable = false;
 
         private bool slow = false;
         private bool hasSlowed = false;
         private float startSlowTime = 0f;
         private float startCooldown = 0f;
 
+        private PlayerController surf;
         private MovementConfig moveConfig;
         private MoveData _moveData;
 
-        // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
-            SurfCharacter surf = transform.GetComponent<SurfCharacter>();
-            moveConfig = surf.moveConfig;
-            _moveData = surf.MoveData;
+            surf = transform.GetComponent<PlayerController>();
+            // SurfCharacter surf = transform.GetComponent<SurfCharacter>();
+            // moveConfig = surf.moveConfig;
+            // _moveData = surf.MoveData;
         }
 
         void FixedUpdate()
         {   
-            if(enabled) 
+            if(slowTimeEnable) 
             {
                 float diffSlowTime = Time.time - startSlowTime;
                 float diffCooldown;
@@ -44,9 +45,10 @@ namespace Fragsurf.Movement
                     diffCooldown = Time.time - startCooldown;
                 }
 
-                //Placeholder right click to activate the time slow
-                if(Input.GetMouseButton(1) && !slow && diffCooldown >= slowTimeCooldown)
+                //Right click default key to activate ability
+                if(surf.playerControls.Player.TimeAbility.triggered && !slow && diffCooldown >= slowTimeCooldown)
                 {
+                    Debug.Log("Slowing down now!");
                     ApplyTimeMult(timeMultiplier);
                     startSlowTime = Time.time;
                     slow = true;
@@ -68,16 +70,17 @@ namespace Fragsurf.Movement
 
 
             //IDK entirely why, but this set of movement stuff seems to work in making the player feel like they're not slowing down
-            moveConfig.Friction /= mult;
-            moveConfig.AirAccel /= mult;
-            moveConfig.Gravity /= mult;
-            moveConfig.JumpHeight /= mult;
-            moveConfig.JumpPower /= mult;
-            moveConfig.Accel /= mult;
 
-            _moveData.WalkFactor /= mult;
-            _moveData.GravityFactor /= mult;
-            _moveData.Velocity /= mult;
+            // moveConfig.Friction /= mult;
+            // moveConfig.AirAccel /= mult;
+            // moveConfig.Gravity /= mult;
+            // moveConfig.JumpHeight /= mult;
+            // moveConfig.JumpPower /= mult;
+            // moveConfig.Accel /= mult;
+
+            // _moveData.WalkFactor /= mult;
+            // _moveData.GravityFactor /= mult;
+            // _moveData.Velocity /= mult;
         }
     }
 }

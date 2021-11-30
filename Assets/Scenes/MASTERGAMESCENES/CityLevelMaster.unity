@@ -48474,7 +48474,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh171238
+  m_Name: pb_Mesh242926
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -48803,11 +48803,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3708530533065193140, guid: 43d0add5c12ede44e871afee04b4382f,
-        type: 3}
-      propertyPath: playerSpeed
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 3708530533065193140, guid: 43d0add5c12ede44e871afee04b4382f,
         type: 3}
       propertyPath: doubleJumpUnlocked
@@ -60270,7 +60265,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: 463c55a69bf05254ca2bc4c6035ad226, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
