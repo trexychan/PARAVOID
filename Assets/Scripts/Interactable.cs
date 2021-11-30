@@ -19,7 +19,9 @@ public class Interactable : MonoBehaviour
     {
         player = PlayerController.singleton;
         promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
+        Debug.Log(promptText.name);
         dialogue_text = GameObject.Find("DialogueText").GetComponent<TextProducer>();
+        
     }
 
     void Start()
@@ -50,6 +52,7 @@ public class Interactable : MonoBehaviour
 
     public void SwitchSite()
     {
+        promptText.SetActive(false);
         SceneManager.LoadScene(dest_scene);
     }
 
@@ -87,7 +90,14 @@ public class Interactable : MonoBehaviour
 
     private void LocketInteractEvent()
     {
-        
+        GameObject[] idleMonsterProp = GameObject.FindGameObjectsWithTag("MonsterProp");
+        foreach (GameObject destructible in idleMonsterProp)
+        {
+            destructible.SetActive(false);
+        }
+        player.doubleJump = true;
+        promptText.SetActive(false);
+        gameObject.SetActive(false);
     }
 
 }

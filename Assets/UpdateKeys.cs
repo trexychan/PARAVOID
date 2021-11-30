@@ -15,7 +15,7 @@ public class UpdateKeys : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         canvasFade = GetComponent<CanvasGroup>();
         canvasFade.alpha = 0f;
         //textBox = GetComponent<TextMeshPro>();

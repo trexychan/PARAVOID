@@ -17,7 +17,7 @@ namespace ParavoidUI
         public void Awake()
         {
             //screen = GetComponent<Image>();
-            player = GameObject.Find("Player").GetComponent<Player>();
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
             UnFadeScreen();
         }
 
