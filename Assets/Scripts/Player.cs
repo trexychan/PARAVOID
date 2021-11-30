@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         gameObject.name = "Player";
         currentScene = gameObject.scene.name;
         dateAndTime = System.DateTime.Now;
-        deathScript = GameObject.Find("VisualCanvas").transform.Find("DeathPanel").GetComponent<DeathScript>();
+        if (GameObject.Find("VisualCanvas").transform.Find("DeathPanel") != null) deathScript = GameObject.Find("VisualCanvas").transform.Find("DeathPanel").GetComponent<DeathScript>();
         HP = 3;
 
         //Debug.Log("Awake: " + (PlayerCarryOverData.playerDupe != null? 
