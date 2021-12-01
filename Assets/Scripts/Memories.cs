@@ -20,6 +20,7 @@ public class Memories : MonoBehaviour
     private TextProducer dialogue;
     private CanvasGroup canvasFade;
     private Image faderImage;
+    private Fader fader;
     private AudioManager audioManager;
     private Color fadeColorBox;
     public void Awake()
@@ -27,7 +28,8 @@ public class Memories : MonoBehaviour
         dialogue = GameObject.Find("DialogueText").GetComponent<TextProducer>();
         canvasFade = GameObject.Find("Fader").GetComponent<CanvasGroup>();
         faderImage = GameObject.Find("Fader").GetComponent<Image>();
-        audioManager = GetComponent<AudioManager>();
+        fader = GameObject.Find("VisualCanvas").GetComponent<Fader>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         fadeColorBox = faderImage.color;
     }
     public void Start()
@@ -48,8 +50,9 @@ public class Memories : MonoBehaviour
 
     private IEnumerator ActivateMemory()
     {
+        Destroy(GetComponent<BoxCollider>());
         audioManager.Play("thoomp");
-        StartCoroutine(fadeThisShit(1f, 10f));
+        fader.MemoryFading(1f, 10f);
         yield return new WaitForSeconds(2f);
 
         fadeColorBox = new Color(255f, 255f, 255f);
@@ -148,16 +151,21 @@ public class Memories : MonoBehaviour
 
             case MemoryType.GamingConsole:
                 dialogue.ReplaceText("We played so many games on this.", Effect.Type, 0.05f);
+                faderImage.sprite = memory3Sprites[0];
                 yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("It was so fun", Effect.Type, 0.05f);
+                faderImage.sprite = memory3Sprites[1];
                 yield return new WaitForSeconds(2f);
                 dialogue.RunText(", back before we fought all the time.", Effect.Type, 0.05f);
                 yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("I beat her in Street Fighter", Effect.Type, 0.06f);
+                faderImage.sprite = memory3Sprites[2];
                 yield return new WaitForSeconds(3f);
                 dialogue.RunText(" but June beat me in Mario Kart.", Effect.Type, 0.06f);
-                yield return new WaitForSeconds(3f);
+                StartCoroutine(MarioKart());
+                yield return new WaitForSeconds(6f);
                 dialogue.ReplaceText("She was the better driver after all", Effect.Type, 0.07f);
+                StartCoroutine(DriveFade());
                 yield return new WaitForSeconds(2.6f);
                 dialogue.RunText("...", Effect.Type, 0.2f);
                 yield return new WaitForSeconds(5f);
@@ -167,7 +175,7 @@ public class Memories : MonoBehaviour
         fadeColorBox = new Color(0f, 0f, 0f);
         faderImage.color = fadeColorBox;
         dialogue.ReplaceText("", Effect.None, 1f);
-        StartCoroutine(fadeThisShit(0f, 10f));
+        fader.MemoryFading(0f, 10f);
         audioManager.Play("thoomp");
 
         if (GameObject.Find("Player").GetComponent<Player>().Memories >= 3)
@@ -175,6 +183,8 @@ public class Memories : MonoBehaviour
             GameObject.Find("DialogueText").GetComponent<TextProducer>().ReplaceTextFor(
                 "All Memories Collected", Effect.Type, 0.04f, 8f, true);
         }
+
+        gameObject.SetActive(false);
     }
 
     private IEnumerator fadeThisShit(float targetAlpha, float speed)
@@ -195,5 +205,33 @@ public class Memories : MonoBehaviour
                 yield return new WaitForSeconds(0.1f / speed);
             }
         }
+    }
+
+    private IEnumerator MarioKart()
+    {
+        faderImage.sprite = memory3Sprites[3];
+
+        yield return new WaitForSeconds(2f);
+
+        faderImage.sprite = memory3Sprites[4];
+
+        yield return new WaitForSeconds(2f);
+
+        faderImage.sprite = memory3Sprites[5];
+    }
+
+    private IEnumerator DriveFade()
+    {
+        faderImage.sprite = memory3Sprites[6];
+
+        yield return new WaitForSeconds(2.53f);
+
+        faderImage.sprite = memory3Sprites[7];
+
+        yield return new WaitForSeconds(2.53f);
+
+        faderImage.sprite = memory3Sprites[8];
+
+        yield return new WaitForSeconds(2.53f);
     }
 }

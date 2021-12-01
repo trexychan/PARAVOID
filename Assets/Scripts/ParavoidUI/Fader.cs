@@ -67,10 +67,9 @@ namespace ParavoidUI
             }
         }
 
-        public void SceneTransitioner()
+        public void MemoryFading(float targetAlpha, float speed)
         {
-            StartCoroutine(fadeThisShit(1f, 15f));
-            StartCoroutine(niceLoader());
+            StartCoroutine(fadeThisShit(targetAlpha, speed));
         }
 
         private IEnumerator niceLoader()

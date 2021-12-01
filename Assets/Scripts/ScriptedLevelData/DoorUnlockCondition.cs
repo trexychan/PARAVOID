@@ -24,7 +24,7 @@ public class DoorUnlockCondition : MonoBehaviour
     {
         if ((clockMode && clock.timeLeft <= 0) || (!clockMode && player.keys >= 4))
         {
-            SceneLoader.LoadScene("mall"); //Please put an actual scene in there
+            SceneLoader.LoadScene("ApartmentLevelMaster"); //Please put an actual scene in there
             gameObject.SetActive(false);
         }
         else if (clockMode)

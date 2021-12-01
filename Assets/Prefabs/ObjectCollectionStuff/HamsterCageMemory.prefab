@@ -497,7 +497,6 @@ GameObject:
   - component: {fileID: 5638173756290472674}
   - component: {fileID: 5004908228131143770}
   - component: {fileID: 5004908228131143773}
-  - component: {fileID: 5004908228131143771}
   m_Layer: 0
   m_Name: HamsterCageMemory
   m_TagString: Untagged
@@ -572,31 +571,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 18, y: 18, z: 18}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5004908228131143771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5004908228131143768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f988a3fca380e124f9a4afc37ac424c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds:
-  - clip: {fileID: 8300000, guid: 232812ba8379951438294c25e3174bf3, type: 3}
-    pitch: 1
-    volume: 0.915
-    name: thoomp
-    loop: 0
-    source: {fileID: 0}
-  - clip: {fileID: 8300000, guid: 232812ba8379951438294c25e3174bf3, type: 3}
-    pitch: 1
-    volume: 1
-    name: thoomp
-    loop: 0
-    source: {fileID: 0}
 --- !u!1 &7269148732403578777
 GameObject:
   m_ObjectHideFlags: 0
