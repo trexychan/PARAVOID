@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/TitleMaster.unity
+    guid: 4fc4b7815f39b6e41bbca1043cb36283
+  - enabled: 1
     path: Assets/Scenes/MASTERGAMESCENES/ApartmentLevelMaster.unity
     guid: 7bce8d1be28d0d447b267ee99b91dc28
   - enabled: 1

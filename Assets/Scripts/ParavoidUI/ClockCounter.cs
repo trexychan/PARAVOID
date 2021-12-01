@@ -3,30 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum ClockType
+{
+    None,
+    Smooth
+}
+
 public class ClockCounter : MonoBehaviour
 {
-    public enum Type
-    {
-        None,
-        Smooth
-    }
     public Image filling;
     public Text timeTrack;
     public float timeLeft;
     public bool clockStart;
 
+    void Awake()
+    {
+        filling = GetComponent<Image>();
+        filling.enabled = false;
+        filling.fillAmount = 1f;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        filling = GetComponent<Image>();
         timeTrack = transform.Find("Text").GetComponent<Text>();
-        filling.fillAmount = 1;
 
-        filling.enabled = false;
         timeTrack.text = "";
-
-        //RunTimer(10f, Type.None);
+        //RunTimer(10f, ClockType.None);
     }
 
     // Update is called once per frame
@@ -35,10 +38,10 @@ public class ClockCounter : MonoBehaviour
 
     }
 
-    public void RunTimer(float seconds, Type type)
+    public void RunTimer(float seconds, ClockType type)
     {
         filling.enabled = true;
-        StartCoroutine(Counter(seconds, type == Type.Smooth ? 0.001f : 1f));
+        StartCoroutine(Counter(seconds, type == ClockType.Smooth ? 0.001f : 1f));
     }
 
     private IEnumerator Counter(float seconds, float delayTick)
@@ -55,7 +58,6 @@ public class ClockCounter : MonoBehaviour
             filling.fillAmount = timeLeft / seconds;
         }
 
-        timeTrack.text = "";
         filling.enabled = false;
     }
 }

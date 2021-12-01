@@ -13,21 +13,25 @@ public class Interactable : MonoBehaviour
     public Vector3 dest_pos;
     private PlayerController player;
     private TextProducer dialogue_text;
+
+    public bool timerOnDoorMode = false;
+    public ClockCounter clock;
     [SerializeField] private bool playerInRange = false;
 
-    void Awake()
+    void Start()
     {
         player = PlayerController.singleton;
         promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
         dialogue_text = GameObject.Find("DialogueText").GetComponent<TextProducer>();
-        
-    }
-
-    void Start()
-    {
+        clock = GameObject.Find("Clock").GetComponent<ClockCounter>();
         if (promptText)
         {
             promptText.SetActive(false);
+        }
+
+        if (timerOnDoorMode)
+        {
+            clock.RunTimer(40f, ClockType.None);
         }
     }
     void OnTriggerEnter(Collider collider)
@@ -58,7 +62,7 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && player.playerControls.Player.Interact.triggered)
+        if (playerInRange && player.playerControls.Player.Interact.triggered && clock.timeLeft <= 0f)
         {
             switch (gameObject.tag)
             {
