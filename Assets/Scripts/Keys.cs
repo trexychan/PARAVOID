@@ -28,5 +28,6 @@ public class Keys : MonoBehaviour
         other.gameObject.GetComponent<Player>().keyCollected[(int)num] = true;
         Debug.Log(other.gameObject.GetComponent<Player>().keys);
         gameObject.SetActive(false);
+        FindObjectOfType<AudioManager>().Play("key");
     }
 }
