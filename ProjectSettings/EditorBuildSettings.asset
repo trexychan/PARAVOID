@@ -15,12 +15,30 @@ EditorBuildSettings:
     path: Assets/Scenes/MASTERGAMESCENES/SaraTutorialMaster.unity
     guid: a4d1324bbebd4b34187db96f89396a7e
   - enabled: 1
-    path: Assets/Scenes/MASTERGAMESCENES/MazeLevelMaster.unity
-    guid: 5189d65b56fb90a46b3398499337d96c
-  - enabled: 1
     path: Assets/Scenes/MASTERGAMESCENES/SistersRoomMaster.unity
     guid: 548d319a153e94649942881ecf7718f1
   - enabled: 1
     path: Assets/Scenes/MASTERGAMESCENES/CityLevelMaster.unity
     guid: f717f23817284cd4b8bbc4782656ab29
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/MazeLevelMaster.unity
+    guid: 5189d65b56fb90a46b3398499337d96c
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/Apartment2Master.unity
+    guid: dfb53920feeecb846b451ea4b43509ed
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/MallStartMaster.unity
+    guid: 20d15f9fecd437c4cab10a89436c145d
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/MallMaster.unity
+    guid: d89747afd68508948ab4fad50a9ac495
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/GroceryMaster.unity
+    guid: bdaa956f05d58d04299164017fb5fe26
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/ElevatorMaster.unity
+    guid: cfc5a49e6d3b1564b835fa46ebaee293
+  - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/ParkingMaster.unity
+    guid: 7797ec23f02a16349ad45658de257d25
   m_configObjects: {}

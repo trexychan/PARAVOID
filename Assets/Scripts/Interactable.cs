@@ -13,13 +13,12 @@ public class Interactable : MonoBehaviour
     public Vector3 dest_pos;
     private PlayerController player;
     private TextProducer dialogue_text;
-    private bool playerInRange = false;
+    [SerializeField] private bool playerInRange = false;
 
     void Awake()
     {
         player = PlayerController.singleton;
         promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
-        Debug.Log(promptText.name);
         dialogue_text = GameObject.Find("DialogueText").GetComponent<TextProducer>();
         
     }
@@ -33,6 +32,7 @@ public class Interactable : MonoBehaviour
     }
     void OnTriggerEnter(Collider collider)
     {
+        Debug.Log(collider.gameObject.name);
         if (gameObject.CompareTag("SceneTransition"))
         {
             SwitchSite();
@@ -53,7 +53,7 @@ public class Interactable : MonoBehaviour
     public void SwitchSite()
     {
         promptText.SetActive(false);
-        SceneManager.LoadScene(dest_scene);
+        SceneLoader.LoadScene(dest_scene);
     }
 
     void Update()

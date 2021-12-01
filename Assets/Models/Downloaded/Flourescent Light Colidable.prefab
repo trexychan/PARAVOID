@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4079192699103121171}
   - component: {fileID: 3735705693573404075}
   - component: {fileID: 3735705693573404072}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Flourescent Light Colidable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
