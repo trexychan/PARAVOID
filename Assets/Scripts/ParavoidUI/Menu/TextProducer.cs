@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 namespace ParavoidUI
 {
+    public enum Effect
+    {
+        None,
+        Type,
+        Fade
+    }
+
     /**
     * When using this script, make sure to attach it to the desired gameobject that has a text component, otherwise
     * the script will not work as intended.
@@ -27,6 +34,10 @@ namespace ParavoidUI
                     StartCoroutine(TypeText(text, effectAmount));
                     break;
 
+                case Effect.Fade:
+                    StartCoroutine(FadeText(text, effectAmount));
+                    break;
+
                 case Effect.None:
                 default:
                     textBox.text = text;
@@ -45,6 +56,10 @@ namespace ParavoidUI
             {
                 case Effect.Type:
                     StartCoroutine(TypeRevertText(effectAmount));
+                    break;
+
+                case Effect.Fade:
+                    StartCoroutine(FadeRevertText(effectAmount));
                     break;
 
                 case Effect.None:
@@ -117,7 +132,10 @@ namespace ParavoidUI
             for (int i = 0; i < text.Length; i++)
             {
                 textBox.text += text.Substring(i, 1);
-                typeSound.Play();
+
+                if (typeSound != null)
+                    typeSound.Play();
+
                 yield return new WaitForSeconds(delay);
             }
 
@@ -128,10 +146,42 @@ namespace ParavoidUI
             while (textBox.text.Length > 0)
             {
                 textBox.text = textBox.text.Remove(textBox.text.Length - 1);
-                typeSound.Play();
+
+                if (typeSound != null)
+                    typeSound.Play();
+
                 yield return new WaitForSeconds(delay);
             }
 
+        }
+
+        private IEnumerator FadeText(string text, float speed)
+        {
+            var colorBox = textBox.color;
+            colorBox.a = 0f;
+            textBox.color = colorBox;
+            textBox.text = text;
+            while (textBox.color.a < 1f)
+            {
+                colorBox.a += 0.01f;
+                textBox.color = colorBox;
+                yield return new WaitForSeconds((0.01f / speed));
+            }
+        }
+
+        private IEnumerator FadeRevertText(float speed)
+        {
+            var colorBox = textBox.color;
+            while (textBox.color.a > 0f)
+            {
+                colorBox.a -= 0.01f;
+                textBox.color = colorBox;
+                yield return new WaitForSeconds((0.01f / speed));
+            }
+
+            textBox.text = "";
+            colorBox.a = 1f;
+            textBox.color = colorBox;
         }
 
         #endregion

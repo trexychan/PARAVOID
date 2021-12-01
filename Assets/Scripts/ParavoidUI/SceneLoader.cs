@@ -10,14 +10,17 @@ namespace ParavoidUI
     {
         public static void LoadScene(string scene)
         {
-            PlayerCarryOverData.UpdatePlayerData(GameObject.Find("Player").GetComponent<Player>());
-            SceneManager.LoadSceneAsync(scene);
             Time.timeScale = 1f;
+            PlayerCarryOverData.UpdatePlayerData(GameObject.Find("Player").GetComponent<Player>());
+            GameObject.Find("VisualCanvas").GetComponent<Fader>().SceneTransitioner();
+            SceneManager.LoadSceneAsync(scene);
         }
 
         public void OnTriggerEnter(Collider collider)
         {
             LoadScene("MazeLevelMaster");
         }
+
+
     }
 }

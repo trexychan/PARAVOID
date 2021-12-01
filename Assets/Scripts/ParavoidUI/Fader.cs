@@ -13,12 +13,16 @@ namespace ParavoidUI
         private Player player;
 
         public KeyCode ToggleMenuPanel = KeyCode.Escape;
+        private CanvasGroup canvasFade;
+        private TextProducer dialogueText;
 
         public void Awake()
         {
             //screen = GetComponent<Image>();
+            dialogueText = GameObject.Find("DialogueText").GetComponent<TextProducer>();
+            canvasFade = GameObject.Find("Fader").GetComponent<CanvasGroup>();
             player = GameObject.Find("Player").GetComponent<Player>();
-            UnFadeScreen();
+            //UnFadeScreen();
         }
 
         public void Update()
@@ -59,31 +63,42 @@ namespace ParavoidUI
             }
         }
 
-        public void FadeScreenTo(float fade)
+        public void SceneTransitioner()
         {
-            //screen.CrossFadeAlpha(fade, 2.0f, true);
+            StartCoroutine(fadeThisShit(1f, 15f));
+            StartCoroutine(niceLoader());
         }
 
-        public void FadeScreenTo(float fade, float duration)
+        private IEnumerator niceLoader()
         {
-            //screen.CrossFadeAlpha(fade, duration, true);
-        }
-
-        public void UnFadeScreen()
-        {
-            FadeScreenTo(0);
-        }
-
-        public void ToggleFade()
-        {
-            if (!isFaded)
+            while (true)
             {
-                isFaded = false;
-                UnFadeScreen();
+                dialogueText.ReplaceText("Loading...", Effect.Type, 0.2f);
+                yield return new WaitForSeconds(5f);
+            }
+        }
+
+        private IEnumerator fadeThisShit(float targetAlpha, float speed)
+        {
+
+            if (canvasFade.alpha < targetAlpha)
+            {
+                while (canvasFade.alpha < targetAlpha)
+                {
+                    canvasFade.alpha += 0.01f;
+                    yield return new WaitForSeconds(0.1f / speed);
+                }
             }
             else
-                FadeScreenTo(0.4f);
+            {
+                while (canvasFade.alpha > targetAlpha)
+                {
+                    canvasFade.alpha -= 0.01f;
+                    yield return new WaitForSeconds(0.1f / speed);
+                }
+            }
         }
+
     }
 }
 
