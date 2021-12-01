@@ -28,7 +28,7 @@ namespace ParavoidUI
 
             returnToMenuButt.onClick.AddListener(delegate
             {
-                SceneLoader.LoadScene("TitleScene");
+                SceneLoader.LoadScene("TitleMaster");
             });
         }
 

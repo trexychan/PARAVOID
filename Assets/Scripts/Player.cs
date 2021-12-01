@@ -23,17 +23,8 @@ public class Player : MonoBehaviour
 
     public byte keys;
     public bool[] keyCollected = new bool[4];
-    private byte memories;
+    public byte Memories;
     public bool[] memoryCollected = new bool[3];
-    public byte Memories
-    {
-        get { return memories; }
-
-        set
-        {
-            memories = value;
-        }
-    }
     #endregion
 
     #region PlayerState
@@ -106,6 +97,8 @@ public class Player : MonoBehaviour
         playerFileName = slotName;
 
         SaveSystem.SerializePlayerData(this, slotName);
+
+        playerFileName = null;
     }
 
     public void LoadPlayer(string slotName)

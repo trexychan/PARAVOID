@@ -15,6 +15,7 @@ TagManager:
   - MovingPlatform
   - MonsterProp
   - AudioManager
+  - GoodEnding
   layers:
   - Default
   - TransparentFX

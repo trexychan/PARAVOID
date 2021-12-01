@@ -19,6 +19,9 @@ public class LinearMovement : MonoBehaviour {
     private Vector3 og;
     private bool reverse;
 
+    public bool startOpposite;
+    private float step;
+
 
     //Player Platform variables
     private Vector3 lastPosition;
@@ -36,49 +39,75 @@ public class LinearMovement : MonoBehaviour {
         switch (dir_enum)
         {
             case Direction.X:
-                direction = Vector3.right;
+                if (startOpposite)
+                {
+                    direction = Vector3.left;
+                } 
+                else
+                {
+                    direction = Vector3.right;
+                }
                 break;
             case Direction.Y:
-                direction = Vector3.up;
+                if (startOpposite)
+                {
+                    direction = Vector3.down;
+                } 
+                else
+                {
+                    direction = Vector3.up;
+                }
                 break;
             case Direction.Z:
-                direction = Vector3.forward;
+                if (startOpposite)
+                {
+                    direction = Vector3.back;
+                } 
+                else
+                {
+                    direction = Vector3.forward;
+                }
                 break;
         }
+
     }
 
     void Update() { //Y DIRECTION
         //check to see if past moveBy offset
+        step = speed * Time.deltaTime; //calculate the stepage
         switch (dir_enum)
         {
             case Direction.X:
-                if (transform.position.x >= og.x + moveBy && !reverse)
+                //transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(og.x + moveBy, transform.localPosition.y, transform.localPosition.z), step);
+                if ((startOpposite ? transform.position.x <= og.x : transform.position.x >= og.x + moveBy) && (startOpposite ? reverse : !reverse))
                 {
                     direction = Vector3.left;
                     reverse = true;
-                } else if (transform.position.x <= og.x && reverse)
+                } else if ((!startOpposite ? transform.position.x <= og.x : transform.position.x >= og.x + moveBy) && (startOpposite ? !reverse : reverse))
                 {
                     direction = Vector3.right;
                     reverse = false;
                 }
                 break;
             case Direction.Y:
-                if (transform.position.y >= og.y + moveBy && !reverse)
+                //transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(transform.localPosition.x, og.y + moveBy, transform.localPosition.z), step);
+                if ((startOpposite ? transform.position.y <= og.y : transform.position.y >= og.y + moveBy) && (startOpposite ? reverse : !reverse))
                 {
                     direction = Vector3.down;
                     reverse = true;
-                } else if (transform.position.y <= og.y && reverse)
+                } else if ((!startOpposite ? transform.position.y <= og.y : transform.position.y >= og.y + moveBy) && (startOpposite ? !reverse : reverse))
                 {
                     direction = Vector3.up;
                     reverse = false;
                 }
                 break;
             case Direction.Z:
-                if (transform.position.z >= og.z + moveBy && !reverse)
+                //transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(transform.localPosition.x, transform.localPosition.y, og.z + moveBy), step);   
+                if ((startOpposite ? transform.position.z <= og.z : transform.position.z >= og.z + moveBy) && (startOpposite ? reverse : !reverse))
                 {
                     direction = Vector3.back;
                     reverse = true;
-                } else if (transform.position.z <= og.z && reverse)
+                } else if ((!startOpposite ? transform.position.z <= og.z : transform.position.z >= og.z + moveBy) && (startOpposite ? !reverse : reverse))
                 {
                     direction = Vector3.forward;
                     reverse = false;
