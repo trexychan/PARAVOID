@@ -32,11 +32,6 @@ public class Player : MonoBehaviour
         set
         {
             memories = value;
-            if (memories >= 3)
-            {
-                GameObject.Find("DialogueText").GetComponent<TextProducer>().ReplaceTextFor(
-                    "All Memories Collected", Effect.Type, 0.04f, 10f, true);
-            }
         }
     }
     #endregion
@@ -64,7 +59,7 @@ public class Player : MonoBehaviour
         gameObject.name = "Player";
         currentScene = gameObject.scene.name;
         dateAndTime = System.DateTime.Now;
-        deathScript = GameObject.Find("VisualCanvas").transform.Find("DeathPanel").GetComponent<DeathScript>();
+        if (GameObject.Find("VisualCanvas").transform.Find("DeathPanel") != null) deathScript = GameObject.Find("VisualCanvas").transform.Find("DeathPanel").GetComponent<DeathScript>();
         HP = 3;
 
         //Debug.Log("Awake: " + (PlayerCarryOverData.playerDupe != null? 
