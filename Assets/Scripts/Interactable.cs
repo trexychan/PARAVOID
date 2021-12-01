@@ -66,6 +66,14 @@ public class Interactable : MonoBehaviour
         {
             switch (gameObject.tag)
             {
+                case "GoodEnding":
+                    var credits = GameObject.Find("VisualCanvas").transform.Find("Credits").GetComponent<Credits>();
+                    Destroy(GameObject.Find("VisualCanvas").transform.Find("MenuPanelV2").gameObject);
+                    credits.gameObject.SetActive(true);
+                    credits.RollCreditsAndReturnToMainMenu();
+                    player.DisableControls();
+                    gameObject.SetActive(false);
+                    break;
                 case "InteractableSceneTransition":
                     SwitchSite();
                     break;

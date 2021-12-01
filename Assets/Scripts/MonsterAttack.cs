@@ -14,6 +14,7 @@ public class MonsterAttack : MonoBehaviour
     private Image faderImage;
     private Fader fader;
     private AudioManager audioManager;
+    private Credits credits;
     private Color fadeColorBox;
 
     public void Awake()
@@ -23,6 +24,7 @@ public class MonsterAttack : MonoBehaviour
         faderImage = GameObject.Find("Fader").GetComponent<Image>();
         fader = GameObject.Find("VisualCanvas").GetComponent<Fader>();
         audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        credits = GameObject.Find("VisualCanvas").transform.Find("Credits").GetComponent<Credits>();
         fadeColorBox = faderImage.color;
     }
     
@@ -52,48 +54,54 @@ public class MonsterAttack : MonoBehaviour
         if (good) //Good ending stuff
         {
             dialogue.ReplaceText("June! I remember her.", Effect.Type, 0.05f);
-            fadeColorBox = new Color(0f, 0f, 0f);
-            faderImage.color = fadeColorBox;
-            // faderImage.sprite = goodEndSprites[0];
-            yield return new WaitForSeconds(2f);
-            dialogue.ReplaceText("She is my sister...", Effect.Type, 0.05f);
-            yield return new WaitForSeconds(2.5f);
+            faderImage.sprite = goodEndSprites[0];
+            yield return new WaitForSeconds(4f);
             dialogue.ReplaceText("She", Effect.Type, 0.1f);
-            yield return new WaitForSeconds(1f);
+            faderImage.sprite = goodEndSprites[2];
+            yield return new WaitForSeconds(2f);
             dialogue.RunText(" is my sister...", Effect.Type, 0.05f);
-            yield return new WaitForSeconds(2f);
+            faderImage.sprite = goodEndSprites[1];
+            yield return new WaitForSeconds(4f);
             dialogue.ReplaceText("She moved away.", Effect.Type, 0.05f);
-            yield return new WaitForSeconds(2f);
+            faderImage.sprite = goodEndSprites[3];
+            yield return new WaitForSeconds(4f);
             dialogue.RunText("I was visiting her.", Effect.Type, 0.05f);
-            yield return new WaitForSeconds(3f);
+            faderImage.sprite = goodEndSprites[5];
+            yield return new WaitForSeconds(4f);
             dialogue.ReplaceText("We were going to the mall, to get a game.", Effect.Type, 0.045f);
             yield return new WaitForSeconds(3f);
             dialogue.ReplaceText("But then...", Effect.Type, 0.1f);
+            faderImage.sprite = goodEndSprites[6];
             yield return new WaitForSeconds(1.5f);
             dialogue.RunText("what...", Effect.Type, 0.07f);
-            yield return new WaitForSeconds(1.5f);
+            faderImage.sprite = goodEndSprites[8];
+            yield return new WaitForSeconds(2f);
             dialogue.RunText("what happened...", Effect.Type, 0.07f);
-            yield return new WaitForSeconds(1.3f);
+            faderImage.sprite = goodEndSprites[9];
+            yield return new WaitForSeconds(1.5f);
             dialogue.ReplaceText("June?", Effect.Type, 0.1f);
-            yield return new WaitForSeconds(1f);
+            faderImage.sprite = goodEndSprites[10];
+            yield return new WaitForSeconds(1.5f);
             dialogue.ReplaceText("Oh... June.", Effect.Type, 0.1f);
+            faderImage.sprite = goodEndSprites[14];
             yield return new WaitForSeconds(2f);
             SceneLoader.LoadScene("GoodEndingMaster");
         }
         else if (!good) //Bad ending stuff
         {
             dialogue.ReplaceText("She... I... Know her...", Effect.Type, 0.05f);
-            fadeColorBox = new Color(0f, 0f, 0f);
-            faderImage.color = fadeColorBox;
-            // faderImage.sprite = badEndSprites[0];
-            yield return new WaitForSeconds(4f);
+            StartCoroutine(foggedMemoriesCollage());
+            yield return new WaitForSeconds(4.5f);
             dialogue.ReplaceText("Wait... where are we going...", Effect.Type, 0.05f);
+            faderImage.sprite = badEndSprites[8];
             yield return new WaitForSeconds(3f);
             dialogue.ReplaceText("...", Effect.Type, 0.1f);
             yield return new WaitForSeconds(1f);
             dialogue.ReplaceText("Hello?", Effect.Type, 0.1f);
+            faderImage.sprite = badEndSprites[9];
             yield return new WaitForSeconds(2f);
-            SceneLoader.LoadScene("BadEndingMaster");
+            credits.gameObject.SetActive(true);
+            credits.RollCreditsAndReturnToMainMenu();
         }
 
         /*---Having Only Black---- 
@@ -105,6 +113,25 @@ public class MonsterAttack : MonoBehaviour
           */  
         
         
+    }
+
+    private IEnumerator foggedMemoriesCollage()
+    {
+        faderImage.sprite = badEndSprites[0];
+        yield return new WaitForSeconds(0.5f);
+        faderImage.sprite = badEndSprites[1];
+        yield return new WaitForSeconds(0.5f);
+        faderImage.sprite = badEndSprites[2];
+        yield return new WaitForSeconds(0.5f);
+        faderImage.sprite = badEndSprites[3];
+        yield return new WaitForSeconds(0.5f);
+        faderImage.sprite = badEndSprites[4];
+        yield return new WaitForSeconds(0.5f);
+        faderImage.sprite = badEndSprites[5];
+        yield return new WaitForSeconds(0.5f);
+        faderImage.sprite = badEndSprites[6];
+        yield return new WaitForSeconds(0.5f);
+
     }
 
 

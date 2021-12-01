@@ -45,14 +45,16 @@ public class Memories : MonoBehaviour
         other.gameObject.GetComponent<Player>().Memories += 1;
         other.gameObject.GetComponent<Player>().memoryCollected[(int)memory] = true;
         Debug.Log(other.gameObject.GetComponent<Player>().Memories);
-        StartCoroutine(ActivateMemory());
+        StartCoroutine(ActivateMemory(other.gameObject));
     }
 
-    private IEnumerator ActivateMemory()
+    private IEnumerator ActivateMemory(GameObject player)
     {
+        var playerController = player.GetComponent<PlayerController>();
         Destroy(GetComponent<BoxCollider>());
         audioManager.Play("thoomp");
         fader.MemoryFading(1f, 10f);
+        playerController.DisableControls();
         yield return new WaitForSeconds(2f);
 
         fadeColorBox = new Color(255f, 255f, 255f);
@@ -184,6 +186,7 @@ public class Memories : MonoBehaviour
                 "All Memories Collected", Effect.Type, 0.04f, 8f, true);
         }
 
+        playerController.EnableControls();
         gameObject.SetActive(false);
     }
 

@@ -50,10 +50,16 @@ namespace ParavoidUI
         public void RollCredits()
         {
             StartCoroutine(fadeThisShit(1f, 10f));
-            StartCoroutine(CreditsMaker());
+            StartCoroutine(CreditsMaker(false));
         }
 
-        private IEnumerator CreditsMaker()
+        public void RollCreditsAndReturnToMainMenu()
+        {
+            StartCoroutine(fadeThisShit(1f, 10f));
+            StartCoroutine(CreditsMaker(true));
+        }
+
+        private IEnumerator CreditsMaker(bool backToMain)
         {
             title.RevertText(Effect.None, 0f);
             textLeft.RevertText(Effect.None, 0f);
@@ -190,7 +196,10 @@ namespace ParavoidUI
 
             yield return new WaitForSeconds(3f);
 
-            SkipCredits();
+            if (backToMain)
+                SceneLoader.LoadScene("TitleMaster");
+            else
+                SkipCredits();
         }
 
         private IEnumerator fadeThisShit(float targetAlpha, float speed)
