@@ -142,3 +142,4 @@ MonoBehaviour:
   speed: 0
   moveBy: 0
   dir_enum: 0
+  startOpposite: 0

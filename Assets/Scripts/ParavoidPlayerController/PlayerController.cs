@@ -63,6 +63,16 @@ public class PlayerController : MonoBehaviour
         playerControls.Disable();
     }
 
+    public void DisableControls()
+    {
+        playerControls.Disable();
+    }
+
+    public void EnableControls()
+    {
+        playerControls.Enable();
+    }
+
     public Vector2 getPlayerMoveVector()
     {
         return playerControls.Player.Move.ReadValue<Vector2>();
