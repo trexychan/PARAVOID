@@ -17,14 +17,15 @@ public class Interactable : MonoBehaviour
 
     void Awake()
     {
-        player = PlayerController.singleton;
-        promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
-        dialogue_text = GameObject.Find("DialogueText").GetComponent<TextProducer>();
+        
         
     }
 
     void Start()
     {
+        player = PlayerController.singleton;
+        promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
+        dialogue_text = GameObject.Find("DialogueText").GetComponent<TextProducer>();
         if (promptText)
         {
             promptText.SetActive(false);
