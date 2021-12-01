@@ -11537,6 +11537,9 @@ MonoBehaviour:
   promptText: {fileID: 0}
   dest_scene: MazeLevelMaster
   dest_pos: {x: -10, y: 2, z: 18}
+  timerOnDoorMode: 0
+  clock: {fileID: 0}
+  playerInRange: 0
 --- !u!65 &1338640558
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14501,6 +14504,56 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &1754222407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1754222409}
+  - component: {fileID: 1754222408}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1754222408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754222407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f988a3fca380e124f9a4afc37ac424c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - clip: {fileID: 8300000, guid: cf87f05e9fccff942b299fc7533d7c34, type: 3}
+    pitch: 1.02
+    volume: 0.454
+    name: TitleTheme
+    loop: 1
+    source: {fileID: 0}
+--- !u!4 &1754222409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754222407}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.011398, y: 9.396825, z: 27.754154}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1776585159
 GameObject:
   m_ObjectHideFlags: 0
@@ -18172,6 +18225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4517213775358723230}
   - component: {fileID: 8421837296234049059}
+  - component: {fileID: 4517213775358723232}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -18179,6 +18233,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4517213775358723232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517213775358723231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87ec9b7ef403414ebe04809f9df9793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4658725069737027617
 Transform:
   m_ObjectHideFlags: 0
