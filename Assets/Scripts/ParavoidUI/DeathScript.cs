@@ -23,7 +23,6 @@ namespace ParavoidUI
             returnToMenuButt = transform.Find("Buttons").Find("button_returnToMainMenu").GetComponent<Button>();
             returnToLastSaveButt = transform.Find("Buttons").Find("button_returnToLastSave").GetComponent<Button>();
             loadSaveButt = transform.Find("Buttons").Find("button_loadSave").GetComponent<Button>();
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
             canvasFade.alpha = 0f;
 
@@ -31,6 +30,11 @@ namespace ParavoidUI
             {
                 SceneLoader.LoadScene("TitleScene");
             });
+        }
+
+        public void Start()
+        {
+            player = GameObject.Find("Player").GetComponent<Player>();
         }
 
         public void Update()
