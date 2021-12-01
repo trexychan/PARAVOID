@@ -1265,6 +1265,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9070010830994326067, guid: 43d0add5c12ede44e871afee04b4382f,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 30ed3191434c7004db2cb19dfb45b9ec, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43d0add5c12ede44e871afee04b4382f, type: 3}
 --- !u!114 &748787877
@@ -1548,6 +1553,8 @@ MonoBehaviour:
   promptText: {fileID: 0}
   dest_scene: MallStartMaster
   dest_pos: {x: -45.49, y: 13.64, z: 135.687}
+  timerOnDoorMode: 0
+  clock: {fileID: 0}
   playerInRange: 0
 --- !u!1001 &999173146
 PrefabInstance:
