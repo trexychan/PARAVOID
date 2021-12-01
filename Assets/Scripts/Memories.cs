@@ -114,12 +114,12 @@ public class Memories : MonoBehaviour
                 yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("Someone told me it was a rat.", Effect.Type, 0.045f);
                 faderImage.sprite = memory2Sprites[1];
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("I said it was a hamster.", Effect.Type, 0.045f);
                 faderImage.sprite = memory2Sprites[2];
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("I guess they just went along.", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(4f);
                 dialogue.ReplaceText("It disappeared one day.", Effect.Type, 0.06f);
                 faderImage.sprite = memory2Sprites[3];
                 yield return new WaitForSeconds(3.5f);
@@ -132,12 +132,12 @@ public class Memories : MonoBehaviour
                 dialogue.ReplaceText("Strange enough", Effect.Type, 0.07f);
                 yield return new WaitForSeconds(2f);
                 dialogue.RunText(", I do remember seeing it recently", Effect.Type, 0.045f);
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(4f);
                 dialogue.RunText("--the rat, I mean.", Effect.Type, 0.045f);
                 fadeColorBox = new Color(255f, 255f, 255f);
                 faderImage.color = fadeColorBox;
                 faderImage.sprite = memory2Sprites[4];
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(3f);
                 dialogue.ReplaceText("When was that?", Effect.Type, 0.06f);
                 faderImage.sprite = memory2Sprites[5];
                 yield return new WaitForSeconds(3f);
@@ -169,6 +169,12 @@ public class Memories : MonoBehaviour
         dialogue.ReplaceText("", Effect.None, 1f);
         StartCoroutine(fadeThisShit(0f, 10f));
         audioManager.Play("thoomp");
+
+        if (GameObject.Find("Player").GetComponent<Player>().Memories >= 3)
+        {
+            GameObject.Find("DialogueText").GetComponent<TextProducer>().ReplaceTextFor(
+                "All Memories Collected", Effect.Type, 0.04f, 8f, true);
+        }
     }
 
     private IEnumerator fadeThisShit(float targetAlpha, float speed)

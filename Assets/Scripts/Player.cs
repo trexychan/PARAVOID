@@ -32,11 +32,6 @@ public class Player : MonoBehaviour
         set
         {
             memories = value;
-            if (memories >= 3)
-            {
-                GameObject.Find("DialogueText").GetComponent<TextProducer>().ReplaceTextFor(
-                    "All Memories Collected", Effect.Type, 0.04f, 10f, true);
-            }
         }
     }
     #endregion

@@ -12,7 +12,7 @@ namespace ParavoidUI
         {
             Time.timeScale = 1f;
             PlayerCarryOverData.UpdatePlayerData(GameObject.Find("Player").GetComponent<Player>());
-            GameObject.Find("VisualCanvas").GetComponent<Fader>().SceneTransitioner();
+            //GameObject.Find("VisualCanvas").GetComponent<Fader>().SceneTransitioner();
             SceneManager.LoadSceneAsync(scene);
         }
 

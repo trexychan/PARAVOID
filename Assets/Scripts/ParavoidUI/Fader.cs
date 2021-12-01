@@ -19,10 +19,14 @@ namespace ParavoidUI
         public void Awake()
         {
             //screen = GetComponent<Image>();
+            //UnFadeScreen();
+        }
+
+        public void Start()
+        {
             dialogueText = GameObject.Find("DialogueText").GetComponent<TextProducer>();
             canvasFade = GameObject.Find("Fader").GetComponent<CanvasGroup>();
             player = GameObject.Find("Player").GetComponent<Player>();
-            //UnFadeScreen();
         }
 
         public void Update()
