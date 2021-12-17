@@ -45,6 +45,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MASTERGAMESCENES/ParkingMaster.unity
     guid: 7797ec23f02a16349ad45658de257d25
   - enabled: 1
+    path: Assets/Scenes/MASTERGAMESCENES/Level3Master.unity
+    guid: b35aac554494f25419b759258482f4b2
+  - enabled: 1
     path: Assets/Scenes/MASTERGAMESCENES/GoodEndingMaster.unity
     guid: 4297124f08be0894d9e7988fa3108014
   m_configObjects: {}
