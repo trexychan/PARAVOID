@@ -14,11 +14,15 @@ public class UpdateKeys : MonoBehaviour
     private CanvasGroup canvasFade;
     // Start is called before the first frame update
     void Awake()
-    {
-        player = GameObject.Find("Player").GetComponent<Player>();
+    { 
         canvasFade = GetComponent<CanvasGroup>();
         canvasFade.alpha = 0f;
         //textBox = GetComponent<TextMeshPro>();
+    }
+
+    public void Start()
+    {
+        player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -30,7 +34,6 @@ public class UpdateKeys : MonoBehaviour
 
         if (graphicMode)
         {
-
             int i = 0;
             foreach (Transform child in transform)
             {
@@ -39,6 +42,6 @@ public class UpdateKeys : MonoBehaviour
                 child.GetComponent<Image>().sprite = KeyFilled;
                 i++;
             }
-        }
+        }     
     }
 }

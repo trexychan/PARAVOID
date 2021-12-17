@@ -18,7 +18,7 @@ public class ButtonBehavior : MonoBehaviour
 
         mainMenuButt.onClick.AddListener(delegate
         {
-            SceneLoader.LoadScene("TitleScene");
+            SceneLoader.LoadScene("TitleMaster");
         });
 
         exitGameButt.onClick.AddListener(delegate

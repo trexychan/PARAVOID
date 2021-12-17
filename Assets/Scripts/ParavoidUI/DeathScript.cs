@@ -23,14 +23,18 @@ namespace ParavoidUI
             returnToMenuButt = transform.Find("Buttons").Find("button_returnToMainMenu").GetComponent<Button>();
             returnToLastSaveButt = transform.Find("Buttons").Find("button_returnToLastSave").GetComponent<Button>();
             loadSaveButt = transform.Find("Buttons").Find("button_loadSave").GetComponent<Button>();
-            player = GameObject.Find("Player").GetComponent<Player>();
 
             canvasFade.alpha = 0f;
 
             returnToMenuButt.onClick.AddListener(delegate
             {
-                SceneLoader.LoadScene("TitleScene");
+                SceneLoader.LoadScene("TitleMaster");
             });
+        }
+
+        public void Start()
+        {
+            player = GameObject.Find("Player").GetComponent<Player>();
         }
 
         public void Update()

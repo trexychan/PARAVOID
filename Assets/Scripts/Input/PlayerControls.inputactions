@@ -22,20 +22,12 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Sprint",
-                    "type": "PassThrough",
-                    "id": "1758ee5f-0599-4ea9-8120-a06bd02e31e5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "0aec45cf-71d0-4f9e-acd2-fabba241ed95",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "Look",
@@ -44,6 +36,14 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "TimeAbility",
+                    "type": "Button",
+                    "id": "903d92b3-6971-4185-9697-c27f771113f7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -181,28 +181,6 @@
                 },
                 {
                     "name": "",
-                    "id": "7c6249bf-a2f3-4354-8100-e9f35faffe8b",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ee12d152-9c17-4a14-bb9c-82f9dbc9d1aa",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "fc965416-bb93-4b5e-a270-0f1ef288c706",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
@@ -242,6 +220,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2689b58-da8c-4a73-8b8f-bc130cc97d7c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "TimeAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0517fdd-f067-41c0-8481-60d2f408460a",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "TimeAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

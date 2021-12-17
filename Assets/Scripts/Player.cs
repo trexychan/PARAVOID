@@ -22,11 +22,9 @@ public class Player : MonoBehaviour
     public string playerFileName;
 
     public byte keys;
-    private byte memories;
-    public byte Memories
-    {
-        get; set;
-    }
+    public bool[] keyCollected = new bool[4];
+    public byte Memories;
+    public bool[] memoryCollected = new bool[3];
     #endregion
 
     #region PlayerState
@@ -52,7 +50,7 @@ public class Player : MonoBehaviour
         gameObject.name = "Player";
         currentScene = gameObject.scene.name;
         dateAndTime = System.DateTime.Now;
-        deathScript = GameObject.Find("VisualCanvas").transform.Find("DeathPanel").GetComponent<DeathScript>();
+        if (GameObject.Find("VisualCanvas").transform.Find("DeathPanel") != null) deathScript = GameObject.Find("VisualCanvas").transform.Find("DeathPanel").GetComponent<DeathScript>();
         HP = 3;
 
         //Debug.Log("Awake: " + (PlayerCarryOverData.playerDupe != null? 
@@ -99,6 +97,8 @@ public class Player : MonoBehaviour
         playerFileName = slotName;
 
         SaveSystem.SerializePlayerData(this, slotName);
+
+        playerFileName = null;
     }
 
     public void LoadPlayer(string slotName)
@@ -113,13 +113,20 @@ public class Player : MonoBehaviour
         dateAndTime = data.dateAndTime;
         playerFileName = data.playerFileName;
 
+        //Level Specific
+        keys = data.keys;
+        Memories = data.memories;
+
+        keyCollected = data.keyCollected;
+        memoryCollected = data.memoryCollected;
+
         //Load specific objects, entities, and player positions and states
         transform.localPosition = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
         Debug.Log(data.currentRotation[0] + ", " + data.currentRotation[1] + ", " + data.currentRotation[2] + ", " + data.currentRotation[3] + ", ");
         transform.localRotation = new Quaternion(data.currentRotation[0], data.currentRotation[1], data.currentRotation[2], data.currentRotation[3]);
 
         //Load the scene
-        PlayerCarryOverData.UpdatePlayerData(this);
+
         //Debug.Log("Loader: " + (PlayerCarryOverData.playerDupe != null? 
         //PlayerCarryOverData.playerDupe.playerFileName : "Null"));
         SceneLoader.LoadScene(currentScene);
@@ -127,19 +134,45 @@ public class Player : MonoBehaviour
 
     public void PastePlayerData(Player player)
     {
-        PlayerData data = SaveSystem.DeserializePlayerData(player.playerFileName);
+        try
+        {
+            PlayerData data = SaveSystem.DeserializePlayerData(player.playerFileName);
 
-        //Load Data
-        currentScene = data.currentScene;
+            //Load Data
+            currentScene = data.currentScene;
 
-        //Load File Data
-        dateAndTime = data.dateAndTime;
-        playerFileName = data.playerFileName;
+            //Level Specific
+            keys = data.keys;
+            Memories = data.memories;
 
-        //Load specific objects, entities, and player positions and states
-        transform.position = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
+            keyCollected = data.keyCollected;
+            memoryCollected = data.memoryCollected;
 
-        transform.rotation = new Quaternion(data.currentRotation[0], data.currentRotation[1], data.currentRotation[2], data.currentRotation[3]);
+            //Load File Data
+            dateAndTime = data.dateAndTime;
+            //playerFileName = data.playerFileName;
+
+            //Load specific objects, entities, and player positions and states
+            transform.position = new Vector3(data.currentPosition[0], data.currentPosition[1], data.currentPosition[2]);
+
+            transform.rotation = new Quaternion(data.currentRotation[0], data.currentRotation[1], data.currentRotation[2], data.currentRotation[3]);
+        }
+        catch (NullReferenceException ex)
+        {
+            //Load Data
+            currentScene = player.currentScene;
+
+            //Level Specific
+            keys = player.keys;
+            Memories = player.Memories;
+
+            keyCollected = player.keyCollected;
+            memoryCollected = player.memoryCollected;
+
+            //Load File Data
+            dateAndTime = player.dateAndTime;
+            //playerFileName = player.playerFileName;
+        }
     }
 
     public void ErasePlayer(string slotName)

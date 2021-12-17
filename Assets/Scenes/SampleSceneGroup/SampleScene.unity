@@ -619,6 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8455b12adb2e3b443a1239d5e612522c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ToggleMenuPanel: 27
 --- !u!1 &371495925
 GameObject:
   m_ObjectHideFlags: 0
@@ -6672,7 +6673,7 @@ MonoBehaviour:
   sounds:
   - clip: {fileID: 8300000, guid: 69845c63bc5911f458e4037992ad95c7, type: 3}
     pitch: 0.98
-    volume: 0
+    volume: 1
     name: WONDERWALL
     loop: 1
     source: {fileID: 0}
@@ -15586,6 +15587,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeMultiplier: 0.5
+  slowTimeLength: 5
+  slowTimeCooldown: 5
   enabled: 1
 --- !u!1001 &5305052311443545371
 PrefabInstance:

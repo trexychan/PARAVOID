@@ -38,6 +38,5 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         Play("WONDERWALL");
-
     }
 }

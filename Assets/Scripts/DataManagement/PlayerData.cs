@@ -26,6 +26,9 @@ namespace DataManagement
         public byte keys;
         public byte memories;
 
+        public bool[] keyCollected;
+        public bool[] memoryCollected;
+
         #endregion
 
         public PlayerData(Player player)
@@ -40,6 +43,9 @@ namespace DataManagement
 
                 keys = player.keys;
                 memories = player.Memories;
+
+                keyCollected = player.keyCollected;
+                memoryCollected = player.memoryCollected;
 
                 //Stores player current position in currentlevel
                 currentPosition[0] = player.currentPosition.x;

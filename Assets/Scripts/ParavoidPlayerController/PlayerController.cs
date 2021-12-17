@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     
     //Secondary Mechanics    
     [SerializeField] private bool doubleJumpUnlocked = false;
+    public bool doubleJump { get {return doubleJumpUnlocked;} set {doubleJumpUnlocked = value;} }
     [SerializeField] private bool hasDoubleJumped;
     [SerializeField] private bool hasJumpedOnce;
 
@@ -60,6 +61,16 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         playerControls.Disable();
+    }
+
+    public void DisableControls()
+    {
+        playerControls.Disable();
+    }
+
+    public void EnableControls()
+    {
+        playerControls.Enable();
     }
 
     public Vector2 getPlayerMoveVector()
@@ -199,6 +210,4 @@ public class PlayerController : MonoBehaviour
     public void EnableDoubleJump() {
         doubleJumpUnlocked = true;
     }
-
-    
 }
