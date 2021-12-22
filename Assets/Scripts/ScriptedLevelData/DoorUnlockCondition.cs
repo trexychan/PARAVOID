@@ -45,7 +45,6 @@ public class DoorUnlockCondition : MonoBehaviour
         }
         if (clock.clockStart)
         {
-            clock.timeLeft -= Time.deltaTime;
             Debug.Log($"Time Left: {clock.timeLeft}");
         }
     }
@@ -71,7 +70,7 @@ public class DoorUnlockCondition : MonoBehaviour
                 clock.clockStart = true;
                 if (!isGarageTriggered)
                 {
-                    clock.timeLeft = 80f;
+                    clock.timeLeft = 40f;
                 }
                 isGarageTriggered = true;
             }
