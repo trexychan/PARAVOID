@@ -21,12 +21,16 @@ namespace ParavoidUI
 
             saveContent = GameObject.Find("SaveContent").GetComponent<SlotManager>();
 
-            buttonCreateNewFile.onClick.AddListener(delegate {
+            buttonCreateNewFile.onClick.AddListener(delegate
+            {
                 saveContent.AddNewSaveFile(inputField.text);
-                Destroy(gameObject);});
-                
-            buttonCancel.onClick.AddListener(delegate { 
-                Destroy(gameObject);});
+                Destroy(gameObject);
+            });
+
+            buttonCancel.onClick.AddListener(delegate
+            {
+                Destroy(gameObject);
+            });
         }
 
         public void Update()
@@ -47,7 +51,7 @@ namespace ParavoidUI
                 buttonCreateNewFile.gameObject.transform.Find("Text").GetComponent<Text>().text = "Creat New File";
             }
 
-            if(Input.GetKeyDown(KeyCode.Return) && buttonCreateNewFile.interactable == true)
+            if (Input.GetKeyDown(KeyCode.Return) && buttonCreateNewFile.interactable == true)
                 buttonCreateNewFile.Select();
         }
 

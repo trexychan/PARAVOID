@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using DataManagement;
 
 namespace ParavoidUI
@@ -9,11 +10,15 @@ namespace ParavoidUI
     public class SaveSlot : MonoBehaviour
     {
         public string slotName;
+        public GameObject currentView;
+        public GameObject alertWindow;
         public bool isFileEmpty = true;
         public bool saving;
         public bool oldSystem;
         private Player player;
-        private Text slotText;
+        private Text emptyText;
+        private Text fileText;
+        private Text descriptionText;
         private SlotManager slotManager;
 
         private GameObject saveSlotButt;
@@ -23,13 +28,20 @@ namespace ParavoidUI
         public void Awake()
         {
             player = GameObject.Find("Player").GetComponent<Player>();
-            slotText = transform.Find("Text").GetComponent<Text>();
+            emptyText = transform.Find("EmptyText").GetComponent<Text>();
+            fileText = transform.Find("FileText").GetComponent<Text>();
+            descriptionText = transform.Find("DescriptionText").GetComponent<Text>();
+            currentView = transform.Find("CurrentView").gameObject;
 
             if (!oldSystem)
             {
                 saveSlotButt = transform.Find("Buttons").Find("button_saveSlot").gameObject;
                 loadSlotButt = transform.Find("Buttons").Find("button_loadSlot").gameObject;
                 eraseSlotButt = transform.Find("Buttons").Find("button_eraseSlot").gameObject;
+
+                saveSlotButt.SetActive(false);
+                loadSlotButt.SetActive(false);
+                eraseSlotButt.SetActive(false);
             }
         }
 
@@ -55,11 +67,20 @@ namespace ParavoidUI
                 {
                     saveSlotButt.SetActive(true);
                     loadSlotButt.SetActive(false);
+                    eraseSlotButt.SetActive(false);
+                }
+                else if (!isFileEmpty)
+                {
+                    saveSlotButt.SetActive(false);
+                    loadSlotButt.SetActive(true);
+                    eraseSlotButt.SetActive(true);
                 }
                 else
                 {
                     saveSlotButt.SetActive(false);
-                    loadSlotButt.SetActive(true);
+                    loadSlotButt.SetActive(false);
+                    eraseSlotButt.SetActive(false);
+                    GetComponent<Toggle>().isOn = false;
                 }
             }
             else if (!oldSystem)
@@ -68,14 +89,16 @@ namespace ParavoidUI
                 loadSlotButt.SetActive(false);
                 eraseSlotButt.SetActive(false);
             }
-
         }
 
         public void SaveSlotFile()
         {
             player.SavePlayer(this.slotName);
             this.isFileEmpty = false;
-            slotText.text = "FILE: " + this.slotName + "\nLAST PLAYED: " + player.dateAndTime.ToString();
+            currentView.SetActive(true);
+            emptyText.text = "";
+            fileText.text = this.slotName + "\n";
+            descriptionText.text = "\nLAST PLAYED: " + player.dateAndTime.ToString();
         }
 
         public void LoadSlotFile()
@@ -92,7 +115,77 @@ namespace ParavoidUI
             player.ErasePlayer(this.slotName);
             //Environemtn Datat Delete
 
-            slotText.text = "EMPTY FILE: " + this.slotName;
+            currentView.SetActive(false);
+            emptyText.text = "Empty " + this.slotName;
+            fileText.text = "";
+            descriptionText.text = "";
+            this.isFileEmpty = true;
+        }
+
+        public void OpenSaveFileWindow()
+        {
+            GameObject window = Instantiate(alertWindow);
+            AlertWindow windowScript = window.GetComponent<AlertWindow>();
+            windowScript.message.text = "SAVE current progress to " + slotName + "?";
+
+            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+            windowScript.AddMethodToButtonLeft(delegate
+            {
+                SaveSlotFile();
+                Destroy(window);
+            });
+
+            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+            windowScript.AddMethodToButtonRight(delegate
+            {
+                Destroy(window);
+            });
+
+            window.transform.SetParent(transform.parent.parent.parent.parent, false);
+        }
+
+        public void OpenLoadFileWindow()
+        {
+            GameObject window = Instantiate(alertWindow);
+            AlertWindow windowScript = window.GetComponent<AlertWindow>();
+            windowScript.message.text = "Do you want to LOAD " + slotName + "?";
+
+            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+            windowScript.AddMethodToButtonLeft(delegate
+            {
+                LoadSlotFile();
+                Destroy(window);
+            });
+
+            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+            windowScript.AddMethodToButtonRight(delegate
+            {
+                Destroy(window);
+            });
+
+            window.transform.SetParent(transform.parent.parent.parent.parent, false);
+        }
+
+        public void OpenEraseFileWindow()
+        {
+            GameObject window = Instantiate(alertWindow);
+            AlertWindow windowScript = window.GetComponent<AlertWindow>();
+            windowScript.message.text = "Are you sure you want to ERASE " + slotName + "?";
+
+            windowScript.buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "YES";
+            windowScript.AddMethodToButtonLeft(delegate
+            {
+                EraseSlotFile();
+                Destroy(window);
+            });
+
+            windowScript.buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "NO";
+            windowScript.AddMethodToButtonRight(delegate
+            {
+                Destroy(window);
+            });
+
+            window.transform.SetParent(transform.parent.parent.parent.parent, false);
         }
 
         public static void FormatSlot()

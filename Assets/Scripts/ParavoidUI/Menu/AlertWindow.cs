@@ -14,14 +14,22 @@ namespace ParavoidUI
 
         public void Awake()
         {
-            message = transform.Find("message").gameObject.GetComponent<Text>();
-            buttonLeft = transform.Find("button_leftButton").gameObject.GetComponent<Button>();
-            buttonRight = transform.Find("button_rightButton").gameObject.GetComponent<Button>();
+            try
+            {
+                message = transform.Find("message").gameObject.GetComponent<Text>();
+                buttonLeft = transform.Find("button_leftButton").gameObject.GetComponent<Button>();
+                buttonRight = transform.Find("button_rightButton").gameObject.GetComponent<Button>();
 
-            //Default Values
-            message.text = "[Empty Message Space]";
-            buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "Left Button";
-            buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "Right Button";
+                //Default Values
+                message.text = "[Empty Message Space]";
+                buttonLeft.gameObject.transform.Find("Text").GetComponent<Text>().text = "Left Button";
+                buttonRight.gameObject.transform.Find("Text").GetComponent<Text>().text = "Right Button";
+            }
+            catch
+            {
+                Debug.LogError("Just here to say that this alert box has no buttons on it :p");
+            }
+
         }
 
         public void AddMethodToButtonLeft(UnityAction call)
