@@ -72,7 +72,7 @@ namespace ParavoidUI
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
             StartCoroutine(FadeTo(1f, 10f));
-            deathMessage.RunText(message, Effect.Type, 0.06f);
+            deathMessage.RunText(message, Effect.Type, 0.035f);
             SetLastSaveButt();
         }
 

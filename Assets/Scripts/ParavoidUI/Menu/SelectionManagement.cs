@@ -47,6 +47,28 @@ namespace ParavoidUI
 
         }
 
+        public void DeactiveAllGameObjects()
+        {
+            foreach (Transform child in transform)
+                if (IsObjectConsidered(child.gameObject))
+                    child.gameObject.SetActive(false);
+        }
+
+        public void DeactiveAllToggleCompoenents()
+        {
+            foreach (Transform child in transform)
+            {
+                try
+                {
+                    child.gameObject.GetComponent<Toggle>().SetIsOnWithoutNotify(false);
+                }
+                catch (System.Exception)
+                {
+                    //To just overthrow GameObjects that don't have toggle componenet
+                }
+            }
+        }
+
         private bool IsObjectConsidered(GameObject obj)
         {
             if (considerdObjects != null && considerdObjects.Length > 0)

@@ -9,24 +9,26 @@ namespace ParavoidUI
 {
     public class SlotManager : MonoBehaviour
     {
+        [Header("SlotManager Settings")]
+        public List<GameObject> saveSlots;
+        public int fileLimit = 0;
+        public bool overwriteMode = false;
+        public bool savingMode;
+        public bool includeDivider;
+
+        [Header("SlotManager Prefabs")]
         public GameObject saveSlotPrefab;
         public GameObject addNewSlotPrefab;
         public Player player;
         public SelectionManagement selectManager;
         public GameObject lineDivider;
 
-        //windows
+        [Header("Window Creation")]
         public GameObject createNewFileWindow;
         public GameObject alertWindow;
 
         public GameObject targetSlot;
-        public List<GameObject> saveSlots;
 
-        //SlotManager Settings
-        public int fileLimit = 0;
-        public bool overwriteMode = false;
-        public bool savingMode;
-        public bool includeDivider;
 
         public void Awake()
         {
@@ -59,6 +61,14 @@ namespace ParavoidUI
         }
 
         #region SlotManger methods
+        public void SetSavingMode(bool mode)
+        {
+            savingMode = mode;
+            foreach (GameObject saveSlot in saveSlots)
+            {
+                saveSlot.GetComponent<SaveSlot>().saving = mode;
+            }
+        }
 
         public void AddNewSaveFile(string slotName)
         {
@@ -111,9 +121,14 @@ namespace ParavoidUI
             newSlot.name = FormatSlotInspectorName(slotName);
             newSlot.transform.SetParent(transform, false);
             newSlot.GetComponent<SaveSlot>().slotName = slotName;
-            newSlot.transform.Find("Text").GetComponent<Text>().text =
-            !data.empty ? ("FILE: " + slotName + "\nLAST PLAYED: " + data.dateAndTime)
-            : ("EMPTY FILE: " + slotName);
+            newSlot.GetComponent<SaveSlot>().saving = savingMode;
+            newSlot.transform.Find("EmptyText").GetComponent<Text>().text =
+            !data.empty ? "" : ("Empty " + slotName);
+            newSlot.transform.Find("FileText").GetComponent<Text>().text =
+            !data.empty ? (slotName + "\n") : "";
+            newSlot.transform.Find("DescriptionText").GetComponent<Text>().text =
+            !data.empty ? "\nLAST PLAYED: " + data.dateAndTime : "";
+            newSlot.transform.Find("CurrentView").gameObject.SetActive(!data.empty ? true : false);
             newSlot.GetComponent<SaveSlot>().isFileEmpty = data.empty ? true : false;
             newSlot.GetComponent<Toggle>().onValueChanged.AddListener(delegate
             {
@@ -170,15 +185,6 @@ namespace ParavoidUI
             if (files != null)
                 foreach (string file in files)
                     AddNewSlot(file);
-        }
-
-        public void ToggleSlotData(bool Saving)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.gameObject.name.Contains("SaveSlot"))
-                    child.gameObject.GetComponent<SaveSlot>().saving = Saving;
-            }
         }
 
         #endregion
