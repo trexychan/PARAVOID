@@ -11,12 +11,22 @@ public class DoorUnlockCondition : MonoBehaviour
     public bool clockMode; //if false, then condition is for keys instead
     private GameObject promptText;
     private bool playerInRange = false;
+
+    [SerializeField] private bool isTimmyLevel;
+    [SerializeField] private GameObject timmy;
+    private bool isGarageTriggered = false;
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
         playerController = player.gameObject.GetComponent<PlayerController>();
         promptText = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("InteractText").gameObject;
         clock = GameObject.Find("VisualCanvas").transform.Find("IngameUIPanel").Find("Clock").GetComponent<ClockCounter>();
+        clock.clockStart = false;
+        if (isTimmyLevel && timmy != null)
+        {
+            timmy.SetActive(false);
+            this.GetComponent<Interactable>().enabled = false;
+        }
     }
 
     // Update is called once per frame
@@ -33,6 +43,10 @@ public class DoorUnlockCondition : MonoBehaviour
                 SceneLoader.LoadScene("ParkingMaster");
             }
         }
+        if (clock.clockStart)
+        {
+            Debug.Log($"Time Left: {clock.timeLeft}");
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -44,11 +58,22 @@ public class DoorUnlockCondition : MonoBehaviour
         {
             //SceneLoader.LoadScene("ApartmentLevelMaster"); //Please put an actual scene in there
             //gameObject.SetActive(false);
+            this.GetComponent<Interactable>().enabled = true;
         }
         else if (clockMode)
         {
             GameObject.Find("DialogueText").GetComponent<TextProducer>().ReplaceTextFor(
                     "Elevator hasn't arrived", Effect.Type, 0.04f, 4f, true);
+            if (isTimmyLevel)
+            {
+                timmy.SetActive(true);
+                clock.clockStart = true;
+                if (!isGarageTriggered)
+                {
+                    clock.timeLeft = 40f;
+                }
+                isGarageTriggered = true;
+            }
         }
         else if (!clockMode)
         {
