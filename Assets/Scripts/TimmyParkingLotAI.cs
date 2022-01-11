@@ -19,4 +19,13 @@ public class TimmyParkingLotAI : MonoBehaviour
     {
         navMeshAgent.SetDestination(player.position);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name);
+        if (CompareTag("Player"))
+        {
+            
+        }
+    }
 }

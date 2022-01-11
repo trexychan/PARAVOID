@@ -45,7 +45,7 @@ public class DoorUnlockCondition : MonoBehaviour
         }
         if (clock.clockStart)
         {
-            Debug.Log($"Time Left: {clock.timeLeft}");
+            // Debug.Log($"Time Left: {clock.timeLeft}");
         }
     }
 
@@ -67,6 +67,7 @@ public class DoorUnlockCondition : MonoBehaviour
             if (isTimmyLevel)
             {
                 timmy.SetActive(true);
+                timmy.GetComponent<Animator>().SetBool("awakened", true);
                 clock.clockStart = true;
                 if (!isGarageTriggered)
                 {

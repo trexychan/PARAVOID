@@ -29,6 +29,7 @@ public class MazeEntrance : MonoBehaviour
         if (other.Equals(player.gameObject.GetComponent<Collider>()))
         {
             timmy.SetActive(true);
+            timmy.GetComponent<Animator>().SetBool("awakened", true);
             Debug.Log("Entrance Trigger Works!");
             this.gameObject.GetComponent<Collider>().enabled = false;
             this.gameObject.SetActive(false);
