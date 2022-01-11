@@ -10,7 +10,6 @@ public class ButtonInteractable_ts : MonoBehaviour
     private Button newGameButt;
     private Button continueButt;
     private Button loadButt;
-    private Button exitGameButt;
     private Player player;
 
     private int currentEmptyFiles;
@@ -19,10 +18,14 @@ public class ButtonInteractable_ts : MonoBehaviour
 
     public void Awake()
     {
+        player = GameObject.Find("Player").GetComponent<Player>();
+    }
+
+    public void Start()
+    {
         newGameButt = transform.Find("button_newGame").GetComponent<Button>();
         continueButt = transform.Find("button_continue").GetComponent<Button>();
         loadButt = transform.Find("button_load").GetComponent<Button>();
-        exitGameButt = transform.Find("button_exitGame").GetComponent<Button>();
         currentEmptyFiles = -1;
 
         SetButtonActivity();
@@ -32,13 +35,6 @@ public class ButtonInteractable_ts : MonoBehaviour
             Debug.LogError("Error: Player Does Not Exist in game. I will now destroy game!!");
             return;
         }
-
-        player = GameObject.Find("Player").GetComponent<Player>();
-
-        exitGameButt.onClick.AddListener(delegate
-        {
-            Application.Quit();
-        });
 
         SetNewSaveButton();
     }
@@ -154,7 +150,7 @@ public class ButtonInteractable_ts : MonoBehaviour
     {
         GameObject window = Instantiate(alertWindow);
         AlertWindow windowScript = window.GetComponent<AlertWindow>();
-        window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
+        window.transform.SetParent(transform.parent, false);
 
         RectTransform rectTransform = window.GetComponent<RectTransform>();
         rectTransform.offsetMin = new Vector2(530.5799f, 269.3063f);
@@ -180,7 +176,7 @@ public class ButtonInteractable_ts : MonoBehaviour
     {
         GameObject window = Instantiate(alertWindow);
         AlertWindow windowScript = window.GetComponent<AlertWindow>();
-        window.transform.SetParent(GameObject.Find("TitlePanel").transform, false);
+        window.transform.SetParent(transform.parent, false);
 
         RectTransform rectTransform = window.GetComponent<RectTransform>();
         rectTransform.offsetMin = new Vector2(530.5799f, 269.3063f);

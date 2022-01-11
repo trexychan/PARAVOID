@@ -40,7 +40,7 @@ namespace ParavoidUI
             {
                 foreach (Transform child in transform)
                 {
-                    if (child.gameObject.name == "MenuPanelV2")
+                    if (child.gameObject.name == "MenuPanelV3")
                     {
                         if (child.gameObject.activeInHierarchy)
                         {
